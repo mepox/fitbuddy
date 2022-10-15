@@ -30,6 +30,6 @@ public class Exercise {
 	
 	@ManyToOne
 	@JoinColumn(name = "app_user_id", referencedColumnName = "id")
-	private AppUser appUser;
+	private Integer appUserId;
 
 }
