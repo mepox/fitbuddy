@@ -1,5 +1,7 @@
 package com.laszlojanku.fitbuddy.jpa.service.converter;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,12 @@ public class AppUserConverterService implements TwoWayConverterService<AppUserDt
 
 	@Override
 	public AppUserDto convertToDto(AppUser entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<AppUserDto> convertAllEntity(List<AppUser> entities) {
 		// TODO Auto-generated method stub
 		return null;
 	}
