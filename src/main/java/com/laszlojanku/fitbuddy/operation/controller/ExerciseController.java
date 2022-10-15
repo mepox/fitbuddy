@@ -2,37 +2,81 @@ package com.laszlojanku.fitbuddy.operation.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.laszlojanku.fitbuddy.dto.AppUserDto;
 import com.laszlojanku.fitbuddy.dto.ExerciseDto;
+import com.laszlojanku.fitbuddy.jpa.service.crud.AppUserCrudService;
+import com.laszlojanku.fitbuddy.jpa.service.crud.ExerciseCrudService;
 
 @RestController
-@RequestMapping("/user/exercise")
+@RequestMapping("/user/exercises")
 public class ExerciseController {
 	
+	private final Logger logger;
+	private final ExerciseCrudService exerciseCrudService;;
+	private final AppUserCrudService appUserCrudService;
+	
+	@Autowired
+	public ExerciseController(ExerciseCrudService exerciseCrudService, 
+								AppUserCrudService appUserCrudService) {
+		this.exerciseCrudService = exerciseCrudService;
+		this.appUserCrudService = appUserCrudService;
+		this.logger = LoggerFactory.getLogger(ExerciseController.class);
+	}
+	
 	@PostMapping
-	public void create() {
-		
+	public void create(Authentication auth, @RequestBody String exerciseName) {		
+		if (auth != null) {
+			Integer userId = appUserCrudService.readByName(auth.getName()).getId();			
+			ExerciseDto exerciseDto = new ExerciseDto(null, exerciseName, userId);			
+			exerciseCrudService.create(exerciseDto);
+			logger.info("Creating new exercise: " + exerciseDto);
+		}	
 	}
 	
 	@GetMapping
-	public List<ExerciseDto> readAll() {
+	public List<ExerciseDto> readAll(Authentication auth) {		
+		if (auth != null) {			
+			AppUserDto appUserDto =  appUserCrudService.readByName(auth.getName());						
+			if (appUserDto != null) {
+				List<ExerciseDto> dtos = exerciseCrudService.readMany(appUserDto.getId());
+				logger.info("Sending a list of exercises.");
+				return dtos;
+			}
+		}
 		return null;
 	}
 	
-	@PutMapping()
-	public void update() {
-		
+	@PutMapping("{id}")
+	public void update(@PathVariable("id") Integer exerciseId, Authentication auth, @RequestBody String newExerciseName) {
+		if (auth != null) {
+			Integer userId = appUserCrudService.readByName(auth.getName()).getId();
+			ExerciseDto exerciseDto = new ExerciseDto(exerciseId, newExerciseName, userId);			
+			exerciseCrudService.create(exerciseDto);	
+			logger.info("Updating the exercise: " + exerciseDto);
+		}
 	}
 	
 	@DeleteMapping()
-	public void delete() {
-		
+	public void delete(Authentication auth, @RequestBody Integer exerciseId) {
+		AppUserDto appUserDto =  appUserCrudService.readByName(auth.getName());
+		ExerciseDto exerciseDto = exerciseCrudService.read(exerciseId);				
+		if (exerciseDto.getAppUserId().equals(appUserDto.getId())) {
+			exerciseCrudService.delete(exerciseId);
+			logger.info("Deleting exercise: " + exerciseDto);
+		}
 	}
 
 }
