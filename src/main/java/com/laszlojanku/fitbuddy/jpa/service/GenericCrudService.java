@@ -34,8 +34,7 @@ public abstract class GenericCrudService<D, E> implements CrudService<D> {
 
 	@Override
 	public void delete(Integer id) {
-		// TODO Auto-generated method stub
-		
+		repository.deleteById(id);		
 	}
 	
 }
