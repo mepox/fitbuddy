@@ -9,3 +9,11 @@ INSERT INTO app_user
 VALUES
 ('admin', 'admin', 01),
 ('user', 'user', 02);
+
+INSERT INTO exercise
+(name, app_user_id)
+VALUES
+('Flat Barbell Bench Press', 2),
+('Incline Barbell Bench Press', 2),
+('Flat Dumbbell Bench Press', 2),
+('Incline Dumbbell Bench Press', 2);
