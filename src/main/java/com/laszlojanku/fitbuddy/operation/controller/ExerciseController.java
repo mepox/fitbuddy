@@ -71,11 +71,13 @@ public class ExerciseController {
 	
 	@DeleteMapping()
 	public void delete(Authentication auth, @RequestBody Integer exerciseId) {
-		AppUserDto appUserDto =  appUserCrudService.readByName(auth.getName());
-		ExerciseDto exerciseDto = exerciseCrudService.read(exerciseId);				
-		if (exerciseDto.getAppUserId().equals(appUserDto.getId())) {
-			exerciseCrudService.delete(exerciseId);
-			logger.info("Deleting exercise: " + exerciseDto);
+		if (auth != null) {
+			AppUserDto appUserDto =  appUserCrudService.readByName(auth.getName());
+			ExerciseDto exerciseDto = exerciseCrudService.read(exerciseId);				
+			if (exerciseDto.getAppUserId().equals(appUserDto.getId())) {
+				exerciseCrudService.delete(exerciseId);
+				logger.info("Deleting exercise: " + exerciseDto);
+			}
 		}
 	}
 
