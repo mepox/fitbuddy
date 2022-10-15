@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Register</title>
+  </head>
+  <body>
+    <h1>Register</h1>
+    <form id="registerForm" action="javascript:onSubmit()">
+		<p id="statusMessage" hidden="true"></p>
+		Username:<br>
+		<input type="text" name="name" required><br><br>
+		Password:<br>
+		<input type="password" name="password" required><br><br>
+		Confirm Password:<br>
+		<input type="password" name="passwordConfirm" required><br><br>
+		<a href="/login">Back to login</a><br><br>
+		<input type="submit" class="blueButton" value="Register">
+	</form>
+	<script src="/public/js/register.js"></script>
+	<script src="/public/js/commons.js"></script>	
+  </body>
+</html>
