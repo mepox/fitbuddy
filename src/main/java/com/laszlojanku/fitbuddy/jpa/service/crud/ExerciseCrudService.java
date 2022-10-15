@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.laszlojanku.fitbuddy.dto.ExerciseDto;
 import com.laszlojanku.fitbuddy.jpa.entity.Exercise;
@@ -12,12 +14,14 @@ import com.laszlojanku.fitbuddy.jpa.repository.ExerciseRepository;
 import com.laszlojanku.fitbuddy.jpa.service.GenericCrudService;
 import com.laszlojanku.fitbuddy.jpa.service.converter.ExerciseConverterService;
 
+@Service
 public class ExerciseCrudService extends GenericCrudService<ExerciseDto, Exercise> {
 	
 	private final Logger logger;
 	private final ExerciseRepository repository;
 	private final ExerciseConverterService converter;
 	
+	@Autowired
 	public ExerciseCrudService(ExerciseRepository repository, ExerciseConverterService converter) {
 		super(repository, converter);
 		this.repository = repository;
