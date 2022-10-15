@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.laszlojanku.fitbuddy.dto.ExerciseDto;
+import com.laszlojanku.fitbuddy.jpa.entity.AppUser;
 import com.laszlojanku.fitbuddy.jpa.entity.Exercise;
 import com.laszlojanku.fitbuddy.jpa.repository.ExerciseRepository;
 import com.laszlojanku.fitbuddy.jpa.service.TwoWayConverterService;
@@ -29,9 +30,13 @@ public class ExerciseConverterService implements TwoWayConverterService<Exercise
 	@Override
 	public Exercise convertToEntity(Optional<ExerciseDto> dto) {
 		if (dto.isPresent()) {
-			Exercise exercise = new Exercise();
+			AppUser appUser = new AppUser();
+			appUser.setId(dto.get().getAppUserId());
+			
+			Exercise exercise = new Exercise();			
 			exercise.setName(dto.get().getName());
-			exercise.setAppUserId(dto.get().getAppUserId());
+			exercise.setAppUser(appUser);
+			
 			return exercise;
 		}
 		return null;
@@ -39,7 +44,7 @@ public class ExerciseConverterService implements TwoWayConverterService<Exercise
 	@Override
 	public ExerciseDto convertToDto(Optional<Exercise> entity) {
 		if (entity.isPresent()) {
-			return new ExerciseDto(entity.get().getId(), entity.get().getName(), entity.get().getAppUserId());
+			return new ExerciseDto(entity.get().getId(), entity.get().getName(), entity.get().getAppUser().getId());
 		}
 		return null;
 	}
