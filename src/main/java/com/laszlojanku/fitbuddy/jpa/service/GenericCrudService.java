@@ -18,6 +18,13 @@ public abstract class GenericCrudService<D, E> implements CrudService<D> {
 
 	@Override
 	public D create(D dto) {
+		if (dto != null) {
+			E entity = converter.convertToEntity(Optional.of(dto));
+			if (entity != null) {
+				repository.save(entity);
+				return dto;
+			}
+		}
 		return null;
 	}
 
