@@ -32,7 +32,9 @@ public class AppUserConverterService implements TwoWayConverterService<AppUserDt
 
 	@Override
 	public AppUserDto convertToDto(AppUser entity) {
-		// TODO Auto-generated method stub
+		if (entity != null) {
+			return new AppUserDto(entity.getId(), entity.getName(), entity.getRole().getName());
+		}
 		return null;
 	}
 
