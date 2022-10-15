@@ -8,6 +8,31 @@
   <body>
     <h1>Home</h1>
     <input type="button" value="Logout" onclick="onLogout()">
+    <input type="button" value="History" onclick="onHistory()">
+    <input type="button" value="Exercises" onclick="onExercises()">
+    <div id="Exercises">
+    	MyExercises
+    	<br>
+    	<form id="ExerciseForm" action="javascript:onAddExercise()">
+    		<input type="text" name="name"><br>
+    		<input type="submit" value="Add">
+    	</form>
+    	<br>    
+    	<ul id="ExerciseList">
+    	</ul>
+    	<input type="button" value="Test Update" onclick="onTestUpdate()">
+    </div>
+    <div id="History">
+    	History
+    	<br>
+    	<form id="HistoryForm" action="javascript:onAddHistory()">    		
+    	</form>    		
+    	<ul id="HistoryList">
+    	</ul>
+    </div>
+    <script src="/public/js/commons.js"></script>
+    <script src="/user/js/exercises.js"></script>
+    <script src="/user/js/history.js"></script>
     <script src="/user/js/home.js"></script>
   </body>
 </html>
