@@ -22,8 +22,9 @@ public abstract class GenericCrudService<D, E> implements CrudService<D> {
 	}
 
 	@Override
-	public D read(int id) {
-		return null;
+	public D read(Integer id) {
+		Optional<E> entity = repository.findById(id);		
+		return converter.convertToDto(entity);
 	}
 	
 	@Override
@@ -32,7 +33,7 @@ public abstract class GenericCrudService<D, E> implements CrudService<D> {
 	}
 
 	@Override
-	public void delete(int id) {
+	public void delete(Integer id) {
 		// TODO Auto-generated method stub
 		
 	}

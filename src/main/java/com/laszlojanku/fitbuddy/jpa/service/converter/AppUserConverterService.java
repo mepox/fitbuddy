@@ -1,6 +1,7 @@
 package com.laszlojanku.fitbuddy.jpa.service.converter;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,15 +26,15 @@ public class AppUserConverterService implements TwoWayConverterService<AppUserDt
 	}
 
 	@Override
-	public AppUser convertToEntity(AppUserDto dto) {
+	public AppUser convertToEntity(Optional<AppUserDto> dto) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public AppUserDto convertToDto(AppUser entity) {
-		if (entity != null) {
-			return new AppUserDto(entity.getId(), entity.getName(), entity.getRole().getName());
+	public AppUserDto convertToDto(Optional<AppUser> entity) {
+		if (entity.isPresent()) {
+			return new AppUserDto(entity.get().getId(), entity.get().getName(), entity.get().getRole().getName());
 		}
 		return null;
 	}
