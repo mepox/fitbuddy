@@ -33,7 +33,8 @@ public class ExerciseConverterService implements TwoWayConverterService<Exercise
 			AppUser appUser = new AppUser();
 			appUser.setId(dto.get().getAppUserId());
 			
-			Exercise exercise = new Exercise();			
+			Exercise exercise = new Exercise();
+			exercise.setId(dto.get().getId());
 			exercise.setName(dto.get().getName());
 			exercise.setAppUser(appUser);
 			
