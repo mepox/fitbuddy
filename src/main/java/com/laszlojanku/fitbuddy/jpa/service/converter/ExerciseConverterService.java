@@ -1,5 +1,6 @@
 package com.laszlojanku.fitbuddy.jpa.service.converter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -26,18 +27,21 @@ public class ExerciseConverterService implements TwoWayConverterService<Exercise
 		return null;
 	}
 	@Override
-	public ExerciseDto convertToDto(Exercise entity) {
-		// TODO Auto-generated method stub
-		return null;
+	public ExerciseDto convertToDto(Exercise entity) {		
+		return new ExerciseDto(entity.getId(), entity.getName(), entity.getAppUser().getId());
 	}
 
 	@Override
 	public List<ExerciseDto> convertAllEntity(List<Exercise> entities) {
-		// TODO Auto-generated method stub
-		return null;
+		List<ExerciseDto> dtos = null;
+		if (entities != null) {
+			dtos = new ArrayList<>();
+			for (Exercise entity : entities) {
+				ExerciseDto dto = convertToDto(entity);
+				dtos.add(dto);
+			}
+		}
+		return dtos;
 	}
-	
-	
-	
 
 }
