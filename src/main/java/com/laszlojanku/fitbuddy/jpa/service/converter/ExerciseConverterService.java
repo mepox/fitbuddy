@@ -28,13 +28,18 @@ public class ExerciseConverterService implements TwoWayConverterService<Exercise
 	
 	@Override
 	public Exercise convertToEntity(Optional<ExerciseDto> dto) {
-		// TODO Auto-generated method stub
+		if (dto.isPresent()) {
+			Exercise exercise = new Exercise();
+			exercise.setName(dto.get().getName());
+			exercise.setAppUserId(dto.get().getAppUserId());
+			return exercise;
+		}
 		return null;
 	}
 	@Override
 	public ExerciseDto convertToDto(Optional<Exercise> entity) {
 		if (entity.isPresent()) {
-			return new ExerciseDto(entity.get().getId(), entity.get().getName(), entity.get().getAppUser().getId());
+			return new ExerciseDto(entity.get().getId(), entity.get().getName(), entity.get().getAppUserId());
 		}
 		return null;
 	}
