@@ -5,11 +5,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+@Setter
 @Getter
+@ToString
 @Entity
 @Table(name = "history")
 public class History {
@@ -19,8 +25,9 @@ public class History {
 	@Column(name = "id")
 	private Integer id;
 	
-	@Column(name = "exercise_id")	
-	private int exerciseId;
+	@ManyToOne
+	@JoinColumn(name = "exercise_id", referencedColumnName = "id")	
+	private Exercise exercise;
 	
 	@Column(name = "weight")
 	private int weight;
@@ -31,7 +38,8 @@ public class History {
 	@Column(name = "created_on")
 	private String createdOn;
 	
-	@Column(name = "app_user_id")
-	private int appUserId;
+	@ManyToOne
+	@JoinColumn(name = "app_user_id", referencedColumnName = "id")
+	private AppUser appUser;
 
 }
