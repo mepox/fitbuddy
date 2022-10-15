@@ -34,4 +34,13 @@ public class AppUserCrudService extends GenericCrudService<AppUserDto, AppUser> 
 		return Optional.empty();
 	}
 	
+	public AppUserDto readByName(String name) {
+		Optional<AppUser> appUser =	userRepository.findByName(name);
+		if (appUser.isPresent()) {
+			return converter.convertToDto(appUser.get());			
+		} else {
+			return null;
+		}
+	}
+	
 }
