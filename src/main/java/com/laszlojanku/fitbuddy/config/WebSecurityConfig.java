@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
@@ -18,7 +19,7 @@ public class WebSecurityConfig {
 		http.csrf().disable();
 		
 		// User's page
-		http.authorizeRequests().antMatchers("/user/**").hasRole("USER");
+		http.authorizeRequests().antMatchers("/user/**").hasRole("USER");		
 		
 		// Admin's page
 		http.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN");
@@ -45,6 +46,11 @@ public class WebSecurityConfig {
 		http.authorizeRequests().anyRequest().authenticated();
 		
 		return http.build();
+	}
+	
+	@Bean
+	GrantedAuthorityDefaults grantedAuthorityDefaults() {
+	    return new GrantedAuthorityDefaults(""); // Remove the ROLE_ prefix
 	}
 
 }
