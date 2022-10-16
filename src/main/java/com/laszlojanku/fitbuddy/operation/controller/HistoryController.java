@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,16 +43,15 @@ public class HistoryController {
 	
 	@GetMapping("{date}")
 	public List<HistoryDto> readAll(@PathVariable("date") String strDate, Authentication auth) {
-		LocalDate date = null;
-		try {
-			date = LocalDate.parse(strDate);
-		} catch (DateTimeParseException e) {
-			return null;
-		}
-		
-		if (auth != null) {
+		if (auth != null && strDate != null) {			
+			try {
+				LocalDate.parse(strDate);
+			} catch (DateTimeParseException e) {
+				return null;
+			}
+			
 			AppUserDto appUserDto = appUserCrudService.readByName(auth.getName());
-			if (appUserDto != null) {
+			if (appUserDto != null && appUserDto.getId() != null) {
 				List<HistoryDto> historyDtos = historyCrudService.readMany(appUserDto.getId(), strDate);
 				logger.info("Sending a history for " + strDate);
 				return historyDtos;
@@ -67,16 +65,17 @@ public class HistoryController {
 		
 	}
 	
-	@DeleteMapping
-	public void delete(Authentication auth, @RequestBody Integer historyId) {
-		if (auth == null) {
-			return;
-		}		
-		AppUserDto appUserDto = appUserCrudService.readByName(auth.getName());
-		HistoryDto historyDto = historyCrudService.read(historyId);
-		if (historyDto.getAppUserId().equals(appUserDto.getId())) {
-			historyCrudService.delete(historyId);
-			logger.info("Deleting history: " + historyDto);
-		}
+	@DeleteMapping("{id}")
+	public void delete(@PathVariable("id") Integer historyId, Authentication auth) {
+		if (auth != null && historyId != null) {
+			AppUserDto appUserDto = appUserCrudService.readByName(auth.getName());
+			if (appUserDto != null && appUserDto.getId() != null) {
+				HistoryDto historyDto = historyCrudService.read(historyId);				
+				if (historyDto != null && historyDto.getAppUserId().equals(appUserDto.getId())) {
+					historyCrudService.delete(historyId);
+					logger.info("Deleting history: " + historyDto);
+				}
+			}
+		}	
 	}
 }
