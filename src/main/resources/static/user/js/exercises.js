@@ -1,7 +1,6 @@
 function showExercises() {	
-	let url = "/user/exercises";
+	let url = "/user/exercises";	
     let xhr = new XMLHttpRequest();
-
 	xhr.open("GET", url);
     xhr.send();
     
@@ -35,16 +34,11 @@ function showExercises() {
     };
 }
 
-function deleteExercise(exerciseId) {
-	let url = "/user/exercises";
+function deleteExercise(exerciseId) {	
+	let url = "/user/exercises/" + exerciseId;	
     let xhr = new XMLHttpRequest();
-    
-    let data = exerciseId;
-    
 	xhr.open("DELETE", url);
-	
-	xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");			
-	xhr.send(JSON.stringify(data));    
+	xhr.send();  
     
     xhr.onreadystatechange = function() {
 		if (this.readyState == XMLHttpRequest.DONE) {
@@ -62,14 +56,16 @@ function deleteExercise(exerciseId) {
 }
 
 function onAddExercise() {
-	let name = document.forms["ExerciseForm"]["name"].value;
-	
+	let name = document.forms["ExerciseForm"]["name"].value;	
 	name = name.trim();
 	
-	let url = "/user/exercises";
-	let xhr = new XMLHttpRequest();
-	xhr.open("POST", url);	
-	xhr.send(name);
+	let data = { "name" : name };
+		
+	let url = "/user/exercises";	
+	let xhr = new XMLHttpRequest();		
+	xhr.open("POST", url);
+	xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");		
+	xhr.send(JSON.stringify(data));
 	
 	xhr.onreadystatechange = function() {
 		if (this.readyState == XMLHttpRequest.DONE) {
@@ -88,14 +84,17 @@ function onAddExercise() {
 	document.forms["ExerciseForm"]["name"].value = "";	
 }
 
-function onTestUpdate() {
+function onTestUpdateExercise() {
 	let name = "testupdate";
 	let testId = "1";
 	
-	let url = "/user/exercises/" + testId;
-	let xhr = new XMLHttpRequest();
+	let data = { "name" : name };
+		
+	let url = "/user/exercises/" + testId;	
+	let xhr = new XMLHttpRequest();	
 	xhr.open("PUT", url);	
-	xhr.send(name);
+	xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+	xhr.send(JSON.stringify(data));
 	
 	xhr.onreadystatechange = function() {
 		if (this.readyState == XMLHttpRequest.DONE) {

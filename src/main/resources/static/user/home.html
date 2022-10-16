@@ -20,15 +20,22 @@
     	<br>    
     	<ul id="ExerciseList">
     	</ul>
-    	<input type="button" value="Test Update" onclick="onTestUpdate()">
+    	<input type="button" value="Test Update Exercise 1" onclick="onTestUpdateExercise()">
     </div>
     <div id="History">
     	History
     	<br>
     	<form id="HistoryForm" action="javascript:onAddHistory()">    		
+    		Exercise ID: <input type="text" name="exerciseId">
+    		Weight: <input type="text" name="weight">
+    		Reps: <input type="text" name="reps">
+    		Date: <input type="text" name="createdOn">
+    		<br>  
+    		<input type="submit" value="Add">		
     	</form>    		
     	<ul id="HistoryList">
     	</ul>
+    	<input type="button" value="Test Update History 1" onclick="onTestUpdateHistory()">
     </div>
     <script src="/public/js/commons.js"></script>
     <script src="/user/js/exercises.js"></script>
