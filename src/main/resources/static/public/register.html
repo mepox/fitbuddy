@@ -7,7 +7,7 @@
     <title>Register</title>
   </head>
   <body>
-    <h1>Register</h1>
+    <!-- <h1>Register</h1>
     <form id="registerForm" action="javascript:onSubmit()">
 		<p id="statusMessage" hidden="true"></p>
 		Username:<br>
@@ -18,7 +18,35 @@
 		<input type="password" name="passwordConfirm" required><br><br>
 		<a href="/login">Back to login</a><br><br>
 		<input type="submit" class="blueButton" value="Register">
-	</form>
+	</form> -->
+	<div class="container py-5 h-100">
+		<div class="row d-flex justify-content-center align-items-center h-100">
+      		<div class="col-12 col-md-8 col-lg-6 col-xl-5">
+				<div class="card shadow-2-strong" style="border-radius: 1rem;">
+					<div class="card-body p-5 text-center">
+						<form id="registerForm" action="javascript:onRegister()">
+							<div class="mb-3">
+								<label for="name" class="form-label">Username</label>
+								<input type="text" class="form-control" id="name" name="name" autofocus required>
+							</div>
+							<div class="mb-3">
+								<label for="password" class="form-label">Password</label>
+								<input type="password" class="form-control" id="password" name="password" required>
+							</div>
+							<div class="mb-3">
+								<label for="passwordConfirm" class="form-label">Confirm Password</label>
+								<input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm" required>
+							</div>
+							<div class="mb-3">
+								<a href="/login">Back to login</a>
+							</div>
+							<button type="submit" class="btn btn-primary">Register</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<script src="/public/js/bootstrap.bundle.min.js"></script>
 	<script src="/public/js/register.js"></script>
 	<script src="/public/js/commons.js"></script>	

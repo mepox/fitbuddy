@@ -7,7 +7,7 @@ function onLoaded() {
 	console.log("Page loaded.");	
 }
 
-function onSubmit() {
+function onLogin() {
 	let name = document.forms["loginForm"]["name"].value.trim();
 	let password = document.forms["loginForm"]["password"].value;
 	

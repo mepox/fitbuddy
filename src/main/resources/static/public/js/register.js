@@ -6,7 +6,7 @@ function onLoaded() {
 	console.log("Page loaded.");
 }
 
-function onSubmit() {
+function onRegister() {
 	let name = document.forms["registerForm"]["name"].value;
 	let password = document.forms["registerForm"]["password"].value;
 	let passwordConfirm = document.forms["registerForm"]["passwordConfirm"].value;
