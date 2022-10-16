@@ -1,15 +1,17 @@
 package com.laszlojanku.fitbuddy.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class HistoryDto {
 	
-	private final Integer id;
-	private final Integer appUserId;
-	private final Integer exerciseId;
-	private final Integer weight;
-	private final Integer reps;
-	private final String createdOn;	
+	private Integer id;
+	private Integer appUserId;
+	private Integer exerciseId;
+	private Integer weight;
+	private Integer reps;
+	private String createdOn;	
 
 }

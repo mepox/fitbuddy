@@ -1,12 +1,14 @@
 package com.laszlojanku.fitbuddy.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class AppUserDto {
 	
-	private final Integer id;
-	private final String name;
-	private final String rolename;
+	private Integer id;
+	private String name;
+	private String rolename;
 	
 }
