@@ -37,20 +37,22 @@ public class ExerciseController {
 	}
 	
 	@PostMapping
-	public void create(Authentication auth, @RequestBody String exerciseName) {		
+	public void create(Authentication auth, @RequestBody ExerciseDto exerciseDto) {		
 		if (auth != null) {
-			Integer userId = appUserCrudService.readByName(auth.getName()).getId();			
-			ExerciseDto exerciseDto = new ExerciseDto(null, exerciseName, userId);			
-			exerciseCrudService.create(exerciseDto);
-			logger.info("Creating new exercise: " + exerciseDto);
+			Integer userId = appUserCrudService.readByName(auth.getName()).getId();
+			if (userId != null) {
+				exerciseDto.setAppUserId(userId);	
+				exerciseCrudService.create(exerciseDto);
+				logger.info("Creating new exercise: " + exerciseDto);
+			}			
 		}	
 	}
 	
-	@GetMapping
-	public List<ExerciseDto> readAll(Authentication auth) {		
+	@GetMapping	
+	public List<ExerciseDto> readAll(Authentication auth) {
 		if (auth != null) {			
 			AppUserDto appUserDto =  appUserCrudService.readByName(auth.getName());						
-			if (appUserDto != null) {
+			if (appUserDto != null && appUserDto.getId() != null) {
 				List<ExerciseDto> dtos = exerciseCrudService.readMany(appUserDto.getId());
 				logger.info("Sending a list of exercises.");
 				return dtos;
@@ -60,23 +62,28 @@ public class ExerciseController {
 	}
 	
 	@PutMapping("{id}")
-	public void update(@PathVariable("id") Integer exerciseId, Authentication auth, @RequestBody String newExerciseName) {
-		if (auth != null) {
+	public void update(@PathVariable("id") Integer exerciseId, Authentication auth, @RequestBody ExerciseDto exerciseDto) {
+		if (auth != null && exerciseId != null) {
 			Integer userId = appUserCrudService.readByName(auth.getName()).getId();
-			ExerciseDto exerciseDto = new ExerciseDto(exerciseId, newExerciseName, userId);			
-			exerciseCrudService.create(exerciseDto);	
-			logger.info("Updating the exercise: " + exerciseDto);
+			if (userId != null) {
+				exerciseDto.setId(exerciseId);
+				exerciseDto.setAppUserId(userId);
+				exerciseCrudService.create(exerciseDto);	
+				logger.info("Updating the exercise: " + exerciseDto);
+			}
 		}
 	}
 	
-	@DeleteMapping()
-	public void delete(Authentication auth, @RequestBody Integer exerciseId) {
-		if (auth != null) {
+	@DeleteMapping("{id}")
+	public void delete(@PathVariable("id") Integer exerciseId, Authentication auth) {
+		if (auth != null && exerciseId != null) {
 			AppUserDto appUserDto =  appUserCrudService.readByName(auth.getName());
-			ExerciseDto exerciseDto = exerciseCrudService.read(exerciseId);				
-			if (exerciseDto.getAppUserId().equals(appUserDto.getId())) {
-				exerciseCrudService.delete(exerciseId);
-				logger.info("Deleting exercise: " + exerciseDto);
+			if (appUserDto != null && appUserDto.getId() != null) {
+				ExerciseDto exerciseDto = exerciseCrudService.read(exerciseId);				
+				if (exerciseDto != null && exerciseDto.getAppUserId().equals(appUserDto.getId())) {
+					exerciseCrudService.delete(exerciseId);
+					logger.info("Deleting exercise: " + exerciseDto);
+				}
 			}
 		}
 	}
