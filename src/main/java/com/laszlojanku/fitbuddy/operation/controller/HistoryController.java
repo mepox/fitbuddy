@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,8 +38,16 @@ public class HistoryController {
 	}
 	
 	@PostMapping
-	public void create() {
-		
+	public void create(Authentication auth, @RequestBody HistoryDto historyDto) {
+		if (auth != null) {
+			AppUserDto appUserDto = appUserCrudService.readByName(auth.getName());
+			if (appUserDto != null && appUserDto.getId() != null) {
+				historyDto.setId(null);
+				historyDto.setAppUserId(appUserDto.getId());
+				historyCrudService.create(historyDto);
+				logger.info("Creating new history: " + historyDto);
+			}
+		}		
 	}
 	
 	@GetMapping("{date}")
@@ -60,9 +69,17 @@ public class HistoryController {
 		return null;
 	}
 	
-	@PutMapping
-	public void update() {
-		
+	@PutMapping("{id}")
+	public void update(@PathVariable("id") Integer historyId, Authentication auth, @RequestBody HistoryDto historyDto) {
+		if (auth != null && historyId != null) {
+			AppUserDto appUserDto = appUserCrudService.readByName(auth.getName());
+			if (appUserDto != null && appUserDto.getId() != null) {
+				historyDto.setId(historyId);
+				historyDto.setAppUserId(appUserDto.getId());
+				historyCrudService.create(historyDto);
+				logger.info("Updating history: " + historyDto);
+			}
+		}
 	}
 	
 	@DeleteMapping("{id}")
