@@ -10,21 +10,27 @@ function showExercises() {
 				// SUCCESS
 				let data = JSON.parse(this.responseText);
 				
-				let exerciseList = document.getElementById("ExerciseList");
+				//let exerciseList = document.getElementById("ExerciseList");
+				let tbody = document.getElementById("ExerciseTable").getElementsByTagName("tbody")[0];
 				
-				while (exerciseList.firstChild) {
+				/*while (exerciseList.firstChild) {
 					exerciseList.removeChild(exerciseList.firstChild);
+				}*/
+				while (tbody.firstChild) {
+					tbody.removeChild(tbody.firstChild);
 				}
 				
 				let add = "";				
 				
 				for (let i = 0; i < data.length; i++) {
 					//console.log("ID: " + data[i].id, " ", "NAME: " + data[i].name);
-					add += "<li>" + data[i].id + " " + data[i].name +
-						"<input type='button' value='Delete' onclick=deleteExercise(" + data[i].id + ")></li>";					 
+					//add += "<li>" + data[i].id + " " + data[i].name +
+						//"<input type='button' value='Delete' onclick=deleteExercise(" + data[i].id + ")></li>";
+					add += "<tr><th>" + (i+1) + "</th>"	+ "<td>" + data[i].name + "</td>" + "<td>" + 
+						"<input type='button' value='Delete' onclick=deleteExercise(" + data[i].id + ")></td></tr>";					
 				}
 				
-				exerciseList.innerHTML += add;
+				tbody.innerHTML += add;
 				
 			} else {
 				// ERROR				

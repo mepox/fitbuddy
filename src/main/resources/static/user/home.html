@@ -7,7 +7,7 @@
     <title>Home</title>
   </head>
   <body>
-    <h1>Home</h1>
+    <!--<h1>Home</h1>
     <input type="button" value="Logout" onclick="onLogout()">
     <input type="button" value="History" onclick="onHistory()">
     <input type="button" value="Exercises" onclick="onExercises()">
@@ -37,11 +37,75 @@
     	<ul id="HistoryList">
     	</ul>
     	<input type="button" value="Test Update History 1" onclick="onTestUpdateHistory()">
+    </div>-->
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    	<div class="navbar-collapse justify-content-center">
+    		<button type="button" class="btn btn-primary me-3" onclick="onHistory()">History</button>
+	  		<button type="button" class="btn btn-primary me-3" onclick="onExercises()">Exercises</button>
+	  		<button type="button" class="btn btn-primary me-3" onclick="onLogout()">Logout</button>
+    	</div>
+	</nav>
+	
+	<div id="Exercises">		
+		<div class="row d-flex justify-content-center">		
+			<div class="card text-center w-50">
+				<div class="card-header">
+		    		Exercises
+		    	</div>
+		    	<div class="card-body">
+		    		<form id="newExerciseForm" class="d-flex" action="javascript:onAddExercise()">
+						<div class="">
+							<label for="name" class="form-label">Exercise name</label>
+							<input type="text" class="form-control" id="name" name="name" required>							
+						</div>						
+						<button type="submit" class="btn btn-primary">Add</button>
+					</form>
+		    		
+			    	<table class="table table-sm table-hover" id="ExerciseTable">
+					  <thead>
+					    <tr>
+					      <th>#</th>
+					      <th>Exercise Name</th>
+					      <th>Actions</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+					  </tbody>
+					</table>
+				</div>			
+			</div>
+		</div>		
     </div>
+    
+    <div id="History" class="d-flex justify-content-center">
+		<div class="card text-center w-50">
+			<div class="card-header">
+	    		History
+	    	</div>
+	    	<div class="card-body">
+		    	<table class="table table-sm table-hover" id="HistoryTable">
+				  <thead>
+				    <tr>
+				      <th>#</th>
+				      <th>Exercise ID</th>
+				      <th>Weight</th>
+				      <th>Reps</th>
+				      <th>Date</th>
+				      <th>Actions</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+				  </tbody>
+				</table>
+			</div>			
+		</div>
+    </div> 
+	
     <script src="/public/js/bootstrap.bundle.min.js"></script>
     <script src="/public/js/commons.js"></script>
     <script src="/user/js/exercises.js"></script>
     <script src="/user/js/history.js"></script>
-    <script src="/user/js/home.js"></script>
+    <script src="/user/js/home.js"></script>    
   </body>
 </html>

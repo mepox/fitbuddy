@@ -12,21 +12,31 @@ function showHistory() {
 				// SUCCESS
 				let data = JSON.parse(this.responseText);
 				
-				let historyList = document.getElementById("HistoryList");
+				//let historyList = document.getElementById("HistoryList");
+				let tbody = document.getElementById("HistoryTable").getElementsByTagName("tbody")[0];
 				
-				while (historyList.firstChild) {
+				/*while (historyList.firstChild) {
 					historyList.removeChild(historyList.firstChild);
+				}*/
+				while (tbody.firstChild) {
+					tbody.removeChild(tbody.firstChild);
 				}
 				
 				let add = "";				
 				
-				for (let i = 0; i < data.length; i++) {					
-					add += "<li>" + data[i].id + " " + data[i].weight + " " + data[i].reps + " " + 
+				for (let i = 0; i < data.length; i++) {										
+					/*add += "<li>" + data[i].id + " " + data[i].weight + " " + data[i].reps + " " + 
 							data[i].appUserId + " " + data[i].exerciseId + " " + data[i].createdOn + " " +
-						"<input type='button' value='Delete' onclick=deleteHistory(" + data[i].id + ")></li>";					 
+						"<input type='button' value='Delete' onclick=deleteHistory(" + data[i].id + ")></li>";*/
+					add += "<tr><th>" + (i+1) + "</th>" +
+						"<td>" + data[i].exerciseId + "</td>" + 
+						"<td>" + data[i].weight + "</td>" +
+						"<td>" + data[i].reps + "</td>" +
+						"<td>" + data[i].createdOn + "</td>" +
+						"<td><input type='button' value='Delete' onclick=deleteHistory(" + data[i].id + ")></td></tr>";											 
 				}
 				
-				historyList.innerHTML += add;
+				tbody.innerHTML += add;
 				
 			} else {
 				// ERROR				
