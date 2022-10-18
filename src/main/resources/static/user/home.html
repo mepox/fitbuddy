@@ -39,66 +39,91 @@
     	<input type="button" value="Test Update History 1" onclick="onTestUpdateHistory()">
     </div>-->
     
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    	<div class="navbar-collapse justify-content-center">
-    		<button type="button" class="btn btn-primary me-3" onclick="onHistory()">History</button>
-	  		<button type="button" class="btn btn-primary me-3" onclick="onExercises()">Exercises</button>
-	  		<button type="button" class="btn btn-primary me-3" onclick="onLogout()">Logout</button>
+    <nav class="navbar navbar-expand-lg">
+    	<div class="container-fluid justify-content-center">
+	    	<div class="navbar-nav">
+	    		<button type="button" class="btn btn-primary me-3" onclick="onHistory()">History</button>
+		  		<button type="button" class="btn btn-primary me-3" onclick="onExercises()">Exercises</button>
+		  		<button type="button" class="btn btn-primary me-3" onclick="onLogout()">Logout</button>
+	    	</div>
     	</div>
 	</nav>
 	
-	<div id="Exercises">		
-		<div class="row d-flex justify-content-center">		
-			<div class="card text-center w-50">
-				<div class="card-header">
-		    		Exercises
-		    	</div>
-		    	<div class="card-body">
-		    		<form id="newExerciseForm" class="d-flex" action="javascript:onAddExercise()">
-						<div class="">
-							<label for="name" class="form-label">Exercise name</label>
-							<input type="text" class="form-control" id="name" name="name" required>							
-						</div>						
-						<button type="submit" class="btn btn-primary">Add</button>
-					</form>
-		    		
-			    	<table class="table table-sm table-hover" id="ExerciseTable">
-					  <thead>
-					    <tr>
-					      <th>#</th>
-					      <th>Exercise Name</th>
-					      <th>Actions</th>
-					    </tr>
-					  </thead>
-					  <tbody>
-					  </tbody>
-					</table>
-				</div>			
+	<div id="Exercises" class="container">
+		<div class="row justify-content-center text-center">
+			<div class="col-6">
+				<div class="card">
+					<div class="card-header">
+			    		Exercises
+			    	</div>
+			    	<div class="card-body">
+			    		<form id="newExerciseForm" class="d-flex" action="javascript:onAddExercise()">			    			
+							<input type="text" class="form-control" placeholder="Add new exercise..." id="name" name="name" required>										
+							<button type="submit" class="btn btn-primary ms-2">Add</button>
+						</form>
+			    		
+				    	<table class="table table-sm table-hover" id="ExerciseTable">
+						  <thead>
+						    <tr>
+						      <th>#</th>
+						      <th>Exercise Name</th>
+						      <th>Actions</th>
+						    </tr>
+						  </thead>
+						  <tbody>
+						  </tbody>
+						</table>
+					</div>			
+				</div>	
 			</div>
-		</div>		
+		</div>
     </div>
     
-    <div id="History" class="d-flex justify-content-center">
-		<div class="card text-center w-50">
-			<div class="card-header">
-	    		History
-	    	</div>
-	    	<div class="card-body">
-		    	<table class="table table-sm table-hover" id="HistoryTable">
-				  <thead>
-				    <tr>
-				      <th>#</th>
-				      <th>Exercise ID</th>
-				      <th>Weight</th>
-				      <th>Reps</th>
-				      <th>Date</th>
-				      <th>Actions</th>
-				    </tr>
-				  </thead>
-				  <tbody>
-				  </tbody>
-				</table>
-			</div>			
+    <div id="History" class="container">
+    	<div class="row justify-content-center text-center">
+    		<div class="col-6">
+				<div class="card">
+					<div class="card-header">
+			    		History
+			    	</div>
+			    	<div class="card-body">
+			    	
+			    		<form id="newHistoryForm" onclick="javascript:onAddHistory()">
+			    			<div class="d-flex align-items-center">
+			    				<label class="form-label" for="ExerciseSelect">Select an exercise: </label>
+			    				<select class="form-select" id="ExerciseSelect">
+				    				<option value="2">Two</option>
+				    				<option value="1">One</option>
+				    			</select>
+			    			</div>
+			    			<div class="d-flex mt-2 align-items-center">			    						    					
+		    					<label class="form-label" for="weight">Weight: </label>
+			    				<input type="text" class="form-control" id="weight" name="weight" required>				    								    				
+				    		</div>
+				    		<div class="d-flex mt-2 align-items-center">
+			    				<label class="form-label" for="reps">Reps: </label>
+			    				<input type="text" class="form-control" id="reps" name="reps" required>				    		
+			    			</div>	    			
+			    			<button type="submit" class="btn btn-primary mt-2 mb-2">Add</button>			    						    			
+			    		</form>
+			    		
+				    	<table class="table table-sm table-hover" id="HistoryTable">
+						  <thead>
+						    <tr>
+						      <th>#</th>
+						      <th>Exercise ID</th>
+						      <th>Weight</th>
+						      <th>Reps</th>
+						      <th>Date</th>
+						      <th>Actions</th>
+						    </tr>
+						  </thead>
+						  <tbody>
+						  </tbody>
+						</table>
+					</div>			
+				</div>
+			</div>
 		</div>
     </div> 
 	
