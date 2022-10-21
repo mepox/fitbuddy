@@ -8,30 +8,21 @@ function showExercises() {
         if (this.readyState == XMLHttpRequest.DONE) {
 			if (this.status == 200) {
 				// SUCCESS
-				let data = JSON.parse(this.responseText);
-				
-				//let exerciseList = document.getElementById("ExerciseList");
-				let tbody = document.getElementById("ExerciseTable").getElementsByTagName("tbody")[0];
-				
-				/*while (exerciseList.firstChild) {
-					exerciseList.removeChild(exerciseList.firstChild);
-				}*/
+				let data = JSON.parse(this.responseText);				
+				let tbody = document.getElementById("exercise-table").getElementsByTagName("tbody")[0];				
+
 				while (tbody.firstChild) {
 					tbody.removeChild(tbody.firstChild);
 				}
 				
 				let add = "";				
 				
-				for (let i = 0; i < data.length; i++) {
-					//console.log("ID: " + data[i].id, " ", "NAME: " + data[i].name);
-					//add += "<li>" + data[i].id + " " + data[i].name +
-						//"<input type='button' value='Delete' onclick=deleteExercise(" + data[i].id + ")></li>";
+				for (let i = 0; i < data.length; i++) {					
 					add += "<tr><th>" + (i+1) + "</th>"	+ "<td>" + data[i].name + "</td>" + "<td>" + 
 						"<input type='button' value='Delete' onclick=deleteExercise(" + data[i].id + ")></td></tr>";					
 				}
 				
-				tbody.innerHTML += add;
-				
+				tbody.innerHTML += add;				
 			} else {
 				// ERROR				
 				console.log("ERROR: " + this.responseText);
@@ -62,7 +53,7 @@ function deleteExercise(exerciseId) {
 }
 
 function onAddExercise() {
-	let name = document.forms["ExerciseForm"]["name"].value;	
+	let name = document.forms["new-exercise-form"]["name"].value;	
 	name = name.trim();
 	
 	let data = { "name" : name };
@@ -87,7 +78,7 @@ function onAddExercise() {
 		}		
 	}
 			
-	document.forms["ExerciseForm"]["name"].value = "";	
+	document.forms["new-exercise-form"]["name"].value = "";	
 }
 
 function onTestUpdateExercise() {

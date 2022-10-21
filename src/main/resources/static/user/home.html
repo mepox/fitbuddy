@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -49,20 +49,20 @@
     	</div>
 	</nav>
 	
-	<div id="Exercises" class="container">
+	<div id="Exercises" class="container-fluid">
 		<div class="row justify-content-center text-center">
-			<div class="col-6">
+			<div class="col-xl-4">
 				<div class="card">
 					<div class="card-header">
 			    		Exercises
 			    	</div>
 			    	<div class="card-body">
-			    		<form id="newExerciseForm" class="d-flex" action="javascript:onAddExercise()">			    			
+			    		<form id="new-exercise-form" class="d-flex" action="javascript:onAddExercise()">			    			
 							<input type="text" class="form-control" placeholder="Add new exercise..." id="name" name="name" required>										
 							<button type="submit" class="btn btn-primary ms-2">Add</button>
 						</form>
 			    		
-				    	<table class="table table-sm table-hover" id="ExerciseTable">
+				    	<table class="table table-sm table-hover" id="exercise-table">
 						  <thead>
 						    <tr>
 						      <th>#</th>
@@ -129,7 +129,7 @@
 	
     <script src="/public/js/bootstrap.bundle.min.js"></script>
     <script src="/public/js/commons.js"></script>
-    <script src="/user/js/exercises.js"></script>
+    <script src="/user/js/exercise.js"></script>
     <script src="/user/js/history.js"></script>
     <script src="/user/js/home.js"></script>    
   </body>
