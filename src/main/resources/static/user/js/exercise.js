@@ -18,7 +18,8 @@ function showExercises() {
 				let add = "";				
 				
 				for (let i = 0; i < data.length; i++) {					
-					add += "<tr><th>" + (i+1) + "</th>"	+ "<td>" + data[i].name + "</td>" + "<td>" + 
+					add += "<tr><th>" + (i+1) + "</th>"	+ "<td>" + data[i].name + "</td>" + "<td>" +
+						"<input type='button' value='Edit' onclick=editExercise(" + i + ")>" +
 						"<input type='button' value='Delete' onclick=deleteExercise(" + data[i].id + ")></td></tr>";					
 				}
 				
@@ -80,6 +81,11 @@ function onAddExercise() {
 			
 	document.forms["new-exercise-form"]["name"].value = "";	
 }
+
+function editExercise(rowId) {
+	
+}
+
 
 function onTestUpdateExercise() {
 	let name = "testupdate";
