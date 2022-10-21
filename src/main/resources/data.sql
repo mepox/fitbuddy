@@ -21,9 +21,9 @@ VALUES
 INSERT INTO history
 (app_user_id, exercise_id, weight, reps, created_on)
 VALUES
-(2, 1, 100, 10, '2022-10-15'),
-(2, 1, 100, 10, '2022-10-15'),
-(2, 1, 100, 10, '2022-10-15'),
-(2, 2, 60, 10, '2022-10-15'),
-(2, 2, 60, 10, '2022-10-15'),
-(2, 2, 60, 10, '2022-10-15');
+(2, 1, 100, 10,  CURRENT_DATE()),
+(2, 1, 100, 10, CURRENT_DATE()),
+(2, 1, 100, 10, CURRENT_DATE()),
+(2, 2, 60, 10, CURRENT_DATE()),
+(2, 2, 60, 10, CURRENT_DATE()),
+(2, 2, 60, 10, CURRENT_DATE());
