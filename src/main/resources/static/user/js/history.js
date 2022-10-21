@@ -1,5 +1,36 @@
+/* CALENDAR functions */
+
+function resetCalendar() {
+	// Set calendar for the current date    
+    var today = new Date();
+	var dd = String(today.getDate()).padStart(2, '0');
+	var mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+	var yyyy = today.getFullYear();
+	today = yyyy + "-" + mm + "-" + dd;
+	
+    document.getElementById("calendar").value = today;
+}
+
+function onCalendarChange() {
+	showHistory();
+}
+
+function stepUpCalendar() {
+	document.getElementById("calendar").stepUp();
+	onCalendarChange();
+}
+
+function stepDownCalendar() {
+	document.getElementById("calendar").stepDown();
+	onCalendarChange();
+}
+
+/* WORKOUT LOG functions */
+
 function showHistory() {
-	let date = "2022-10-15";
+	refreshExerciseOptions();
+	
+	let date = document.getElementById("calendar").value;
 	
 	let url = "/user/history/" + date;	
 	let xhr = new XMLHttpRequest();	
@@ -12,7 +43,7 @@ function showHistory() {
 				// SUCCESS
 				let data = JSON.parse(this.responseText);
 				
-				let tbody = document.getElementById("HistoryTable").getElementsByTagName("tbody")[0];
+				let tbody = document.getElementById("history-table").getElementsByTagName("tbody")[0];
 								
 				while (tbody.firstChild) {
 					tbody.removeChild(tbody.firstChild);
@@ -22,7 +53,7 @@ function showHistory() {
 				
 				for (let i = 0; i < data.length; i++) {
 					add += "<tr><th>" + (i+1) + "</th>" +
-						"<td>" + data[i].exerciseId + "</td>" + 
+						"<td>" + data[i].exerciseName + "</td>" + 
 						"<td>" + data[i].weight + "</td>" +
 						"<td>" + data[i].reps + "</td>" +
 						"<td>" + data[i].createdOn + "</td>" +
@@ -38,6 +69,40 @@ function showHistory() {
 		}        
     };
 }
+
+function refreshExerciseOptions() {
+	let url = "/user/exercises";	
+    let xhr = new XMLHttpRequest();
+	xhr.open("GET", url);
+    xhr.send();
+    
+    xhr.onreadystatechange = function() {
+        if (this.readyState == XMLHttpRequest.DONE) {
+			if (this.status == 200) {
+				// SUCCESS
+				let data = JSON.parse(this.responseText);
+				
+				let exerciseSelect = document.getElementById("exercise-select");
+				
+				while(exerciseSelect.firstChild) {
+					exerciseSelect.removeChild(exerciseSelect.firstChild);
+				}	
+				
+				let add = "";		
+				
+				for (let i = 0; i < data.length; i++) {
+					add += "<option value='" + data[i].id + "'>" + data[i].name + "</option>"; 
+				}
+				
+				exerciseSelect.innerHTML += add;			
+			} else {
+				// ERROR				
+				console.log("ERROR: " + this.responseText);
+			}
+		}        
+    };
+}
+
 
 function deleteHistory(historyId) {
 	let url = "/user/history/" + historyId;	
@@ -61,10 +126,10 @@ function deleteHistory(historyId) {
 }
 
 function onAddHistory() {
-	let exerciseId = document.forms["HistoryForm"]["exerciseId"].value;
-	let weight = document.forms["HistoryForm"]["weight"].value;
-	let reps = document.forms["HistoryForm"]["reps"].value;
-	let createdOn = document.forms["HistoryForm"]["createdOn"].value;
+	let exerciseId = document.getElementById("exercise-select").value;
+	let weight = document.forms["new-history-form"]["weight"].value;
+	let reps = document.forms["new-history-form"]["reps"].value;	
+	let createdOn = document.getElementById("calendar").value;	
 	
 	exerciseId = exerciseId.trim();
 	weight = weight.trim();
@@ -94,12 +159,10 @@ function onAddHistory() {
 			//showStatus(this.responseText);
 			showHistory();
 		}		
-	}
-			
-	document.forms["HistoryForm"]["exerciseId"].value = "";
-	document.forms["HistoryForm"]["weight"].value = "";
-	document.forms["HistoryForm"]["reps"].value = "";
-	document.forms["HistoryForm"]["createdOn"].value = "";
+	}			
+	
+	document.forms["new-history-form"]["weight"].value = "";
+	document.forms["new-history-form"]["reps"].value = "";	
 }
 
 function onTestUpdateHistory() {

@@ -20,5 +20,6 @@ function onExercises() {
 function onHistory() {
 	hideDiv("Exercises");
 	showDiv("History");
+	resetCalendar();
 	showHistory();
 }
