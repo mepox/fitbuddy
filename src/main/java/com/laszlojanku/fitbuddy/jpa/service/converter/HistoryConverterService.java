@@ -55,7 +55,7 @@ public class HistoryConverterService implements TwoWayConverterService<HistoryDt
 	public HistoryDto convertToDto(Optional<History> entity) {
 		if (entity.isPresent()) {
 			return new HistoryDto(entity.get().getId(), entity.get().getAppUser().getId(), 
-									entity.get().getExercise().getId(),
+									entity.get().getExercise().getId(), entity.get().getExercise().getName(),
 									entity.get().getWeight(), entity.get().getReps(), entity.get().getCreatedOn());
 		}
 		return null;
