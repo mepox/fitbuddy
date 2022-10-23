@@ -17,10 +17,15 @@ function showExercises() {
 				
 				let add = "";				
 				
-				for (let i = 0; i < data.length; i++) {					
-					add += "<tr><th>" + (i+1) + "</th>"	+ "<td>" + data[i].name + "</td>" + "<td>" +
-						"<input type='button' value='Edit' onclick=editExercise(" + i + ")>" +
-						"<input type='button' value='Delete' onclick=deleteExercise(" + data[i].id + ")></td></tr>";					
+				for (let i = 0; i < data.length; i++) {
+					let exerciseId = data[i].id;
+					let exerciseNameId = "exercise-name-" + exerciseId;
+					let actionsId = "actions-" + exerciseId;			
+					add += 	"<tr><th>" + (i+1) + "</th>"	+ 
+							"<td id='" + exerciseNameId + "'>" + data[i].name + "</td>" + 
+							"<td id='" + actionsId + "'>" +
+							"<input type='button' value='Edit' onclick=editExercise('" + exerciseId + "')>" +
+							"<input type='button' value='Delete' onclick=deleteExercise('" + exerciseId + "')></td></tr>";					
 				}
 				
 				tbody.innerHTML += add;				
@@ -82,18 +87,36 @@ function onAddExercise() {
 	document.forms["new-exercise-form"]["name"].value = "";	
 }
 
-function editExercise(rowId) {
-	
+function editExercise(exerciseId) {
+	let exerciseNameElement = document.getElementById("exercise-name-" + exerciseId);
+	let actionsElement = document.getElementById("actions-" + exerciseId);
+	// read exercise name
+	let exerciseName = exerciseNameElement.textContent;	
+	// add input field
+	exerciseNameElement.innerHTML = "<input type='text' value='" + exerciseName + "' autofocus required>";
+	// remove edit button
+	actionsElement.removeChild(actionsElement.firstChild);
+	// add save button
+	actionsElement.innerHTML = 	"<input type='button' value='Save' onclick=saveExercise('" + exerciseId + "')>" 
+								+ actionsElement.innerHTML;
 }
 
-
-function onTestUpdateExercise() {
-	let name = "testupdate";
-	let testId = "1";
+function saveExercise(exerciseId) {
+	// read the exercise name
+	let exerciseNameElement = document.getElementById("exercise-name-" + exerciseId);
+	let exerciseName = exerciseNameElement.firstChild.value;	
+	// remove input field and add text
+	exerciseNameElement.innerHTML = exerciseName;	
+	// remove save button
+	let actionsElement = document.getElementById("actions-" + exerciseId);
+	actionsElement.removeChild(actionsElement.firstChild);
+	// add edit button
+	actionsElement.innerHTML = 	"<input type='button' value='Edit' onclick=editExercise('" + exerciseId + "')>" 
+								+ actionsElement.innerHTML;	
 	
-	let data = { "name" : name };
-		
-	let url = "/user/exercises/" + testId;	
+	let data = { "name" : exerciseName };
+	
+	let url = "/user/exercises/" + exerciseId;	
 	let xhr = new XMLHttpRequest();	
 	xhr.open("PUT", url);	
 	xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
