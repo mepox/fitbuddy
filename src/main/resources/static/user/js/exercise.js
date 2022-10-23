@@ -104,7 +104,8 @@ function editExercise(exerciseId) {
 function saveExercise(exerciseId) {
 	// read the exercise name
 	let exerciseNameElement = document.getElementById("exercise-name-" + exerciseId);
-	let exerciseName = exerciseNameElement.firstChild.value;	
+	let exerciseName = exerciseNameElement.firstChild.value;
+	exerciseName = exerciseName.trim();	
 	// remove input field and add text
 	exerciseNameElement.innerHTML = exerciseName;	
 	// remove save button
@@ -112,7 +113,7 @@ function saveExercise(exerciseId) {
 	actionsElement.removeChild(actionsElement.firstChild);
 	// add edit button
 	actionsElement.innerHTML = 	"<input type='button' value='Edit' onclick=editExercise('" + exerciseId + "')>" 
-								+ actionsElement.innerHTML;	
+								+ actionsElement.innerHTML;
 	
 	let data = { "name" : exerciseName };
 	
