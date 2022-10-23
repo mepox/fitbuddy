@@ -20,7 +20,7 @@ function showExercises() {
 				for (let i = 0; i < data.length; i++) {
 					let exerciseId = data[i].id;
 					let exerciseNameId = "exercise-name-" + exerciseId;
-					let actionsId = "actions-" + exerciseId;			
+					let actionsId = "exercise-actions-" + exerciseId;			
 					add += 	"<tr><th>" + (i+1) + "</th>"	+ 
 							"<td id='" + exerciseNameId + "'>" + data[i].name + "</td>" + 
 							"<td id='" + actionsId + "'>" +
@@ -89,7 +89,7 @@ function onAddExercise() {
 
 function editExercise(exerciseId) {
 	let exerciseNameElement = document.getElementById("exercise-name-" + exerciseId);
-	let actionsElement = document.getElementById("actions-" + exerciseId);
+	let actionsElement = document.getElementById("exercise-actions-" + exerciseId);
 	// read exercise name
 	let exerciseName = exerciseNameElement.textContent;	
 	// add input field
@@ -109,7 +109,7 @@ function saveExercise(exerciseId) {
 	// remove input field and add text
 	exerciseNameElement.innerHTML = exerciseName;	
 	// remove save button
-	let actionsElement = document.getElementById("actions-" + exerciseId);
+	let actionsElement = document.getElementById("exercise-actions-" + exerciseId);
 	actionsElement.removeChild(actionsElement.firstChild);
 	// add edit button
 	actionsElement.innerHTML = 	"<input type='button' value='Edit' onclick=editExercise('" + exerciseId + "')>" 
