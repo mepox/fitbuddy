@@ -24,13 +24,22 @@ Frontend:
 - Users can create their custom exercises.
 - Users can log their workout by adding their own custom exercises to a specific date.
 
-## Overview
-
 ## Installation
+
+The project is created with Maven, so you just need to import it to your IDE and build the project to resolve the dependencies.
+
+Maven Wrapper included in the project, you can start the app with: `mvnw spring-boot:run` without installing Maven.
+
+Alternatively, you can start the project with Maven: `mvn spring-boot:run`
 
 ## Running the application
 
-## Live Preview
+A default user with some preloaded data is added at the start of the application.
+
+```
+username: user
+password: user
+```
 
 ## Data Storage
 
@@ -48,3 +57,5 @@ spring.datasource.password=admin
 ```
 
 ## Endpoints
+
+*TODO*
