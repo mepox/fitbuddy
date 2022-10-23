@@ -30,8 +30,11 @@ public abstract class GenericCrudService<D, E> implements CrudService<D> {
 
 	@Override
 	public D read(Integer id) {
-		Optional<E> entity = repository.findById(id);		
-		return converter.convertToDto(entity.get());
+		Optional<E> entity = repository.findById(id);
+		if (entity.isPresent()) {
+			return converter.convertToDto(entity.get());
+		}
+		return null;		
 	}
 
 	@Override
