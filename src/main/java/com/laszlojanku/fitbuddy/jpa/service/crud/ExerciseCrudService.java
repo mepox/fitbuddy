@@ -45,4 +45,18 @@ public class ExerciseCrudService extends GenericCrudService<ExerciseDto, Exercis
 		return exerciseDtos;
 	}
 
+	@Override
+	public ExerciseDto update(Integer id, ExerciseDto dto) {
+		ExerciseDto existingDto = read(id);
+		if (existingDto != null) {
+			if (dto.getName() != null) {
+				existingDto.setName(dto.getName());
+			}
+			Exercise entity = converter.convertToEntity(existingDto);
+			repository.save(entity);
+			return existingDto;
+		}
+		return null;
+	}
+
 }

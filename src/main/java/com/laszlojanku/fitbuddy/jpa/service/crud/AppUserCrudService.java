@@ -42,5 +42,17 @@ public class AppUserCrudService extends GenericCrudService<AppUserDto, AppUser> 
 			return null;
 		}
 	}
+
+	@Override
+	public AppUserDto update(Integer id, AppUserDto dto) {
+		AppUserDto existingDto = read(id);
+		if (existingDto != null) {
+			if (dto.getName() != null) {
+				existingDto.setName(dto.getName());
+			}
+			// TODO
+		}
+		return null;
+	}
 	
 }

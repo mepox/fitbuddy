@@ -41,6 +41,7 @@ public class ExerciseController {
 		if (auth != null) {
 			Integer userId = appUserCrudService.readByName(auth.getName()).getId();
 			if (userId != null) {
+				exerciseDto.setId(null);
 				exerciseDto.setAppUserId(userId);	
 				exerciseCrudService.create(exerciseDto);
 				logger.info("Creating new exercise: " + exerciseDto);
@@ -65,10 +66,9 @@ public class ExerciseController {
 	public void update(@PathVariable("id") Integer exerciseId, Authentication auth, @RequestBody ExerciseDto exerciseDto) {
 		if (auth != null && exerciseId != null) {
 			Integer userId = appUserCrudService.readByName(auth.getName()).getId();
-			if (userId != null) {
-				exerciseDto.setId(exerciseId);
+			if (userId != null) {				
 				exerciseDto.setAppUserId(userId);
-				exerciseCrudService.create(exerciseDto);	
+				exerciseCrudService.update(exerciseId, exerciseDto);	
 				logger.info("Updating the exercise: " + exerciseDto);
 			}
 		}

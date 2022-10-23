@@ -73,10 +73,9 @@ public class HistoryController {
 	public void update(@PathVariable("id") Integer historyId, Authentication auth, @RequestBody HistoryDto historyDto) {
 		if (auth != null && historyId != null) {
 			AppUserDto appUserDto = appUserCrudService.readByName(auth.getName());
-			if (appUserDto != null && appUserDto.getId() != null) {
-				historyDto.setId(historyId);
+			if (appUserDto != null && appUserDto.getId() != null) {				
 				historyDto.setAppUserId(appUserDto.getId());
-				historyCrudService.create(historyDto);
+				historyCrudService.update(historyId, historyDto);
 				logger.info("Updating history: " + historyDto);
 			}
 		}

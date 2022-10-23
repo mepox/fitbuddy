@@ -46,4 +46,29 @@ public class HistoryCrudService extends GenericCrudService<HistoryDto, History> 
 		return dtos;
 	}
 
+	@Override
+	public HistoryDto update(Integer id, HistoryDto dto) {
+		HistoryDto existingDto = read(id);
+		if (existingDto != null) {
+			if (dto.getExerciseId() != null) {
+				existingDto.setExerciseId(dto.getExerciseId());
+			}
+			if (dto.getWeight() != null) {
+				existingDto.setWeight(dto.getWeight());
+			}
+			if (dto.getReps() != null) {
+				existingDto.setReps(dto.getReps());
+			}
+			if (dto.getCreatedOn() != null) {
+				existingDto.setCreatedOn(dto.getCreatedOn());
+			}
+			History entity = converter.convertToEntity(existingDto);			
+			repository.save(entity);
+			return existingDto;
+		}
+		return null;
+	}
+	
+	
+
 }
