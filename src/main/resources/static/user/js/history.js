@@ -52,12 +52,17 @@ function showHistory() {
 				let add = "";
 				
 				for (let i = 0; i < data.length; i++) {
+					let historyId = data[i].id;
+					let weightId = "history-weight-" + historyId;
+					let repsId = "history-reps-" + historyId;
+					let actionsId = "history-actions-" + historyId;
 					add += "<tr><th>" + (i+1) + "</th>" +
 						"<td>" + data[i].exerciseName + "</td>" + 
-						"<td>" + data[i].weight + "</td>" +
-						"<td>" + data[i].reps + "</td>" +
-						"<td>" + data[i].createdOn + "</td>" +
-						"<td><input type='button' value='Delete' onclick=deleteHistory(" + data[i].id + ")></td></tr>";											 
+						"<td id='" + weightId + "'>" + data[i].weight + "</td>" +
+						"<td id='" + repsId + "'>" + data[i].reps + "</td>" +
+						"<td id='" + actionsId + "'>" +
+						"<input type='button' value='Edit' onclick=editHistory('" + historyId + "')>" +					
+						"<input type='button' value='Delete' onclick=deleteHistory('" + historyId + "')></td></tr>";											 
 				}
 				
 				tbody.innerHTML += add;
@@ -102,7 +107,6 @@ function refreshExerciseOptions() {
 		}        
     };
 }
-
 
 function deleteHistory(historyId) {
 	let url = "/user/history/" + historyId;	
@@ -165,16 +169,46 @@ function onAddHistory() {
 	document.forms["new-history-form"]["reps"].value = "";	
 }
 
-function onTestUpdateHistory() {
-	let historyId = 1;
+function editHistory(historyId) {
+	let weightElement = document.getElementById("history-weight-" + historyId);
+	let repsElement = document.getElementById("history-reps-" + historyId);
+	let actionsElement = document.getElementById("history-actions-" + historyId);	
+	// read weight and reps
+	let weight = weightElement.innerHTML;
+	let reps = repsElement.innerHTML;	
+	// add input field
+	weightElement.innerHTML = "<input type='text' value='" + weight + "' size='4'>";
+	repsElement.innerHTML = "<input type='text' value='" + reps + "' size='4'>";
+	// remove edit button	
+	actionsElement.removeChild(actionsElement.firstChild);
+	// add save button
+	actionsElement.innerHTML = 	"<input type='button' value='Save' onclick=saveHistory('" + historyId + "')>" +
+								actionsElement.innerHTML;
+}
+
+function saveHistory(historyId) {
+	// read fields
+	let weightElement = document.getElementById("history-weight-" + historyId);
+	let repsElement = document.getElementById("history-reps-" + historyId);
+	let weight = weightElement.firstChild.value;
+	let reps = repsElement.firstChild.value;	
+	// remove input field and add text
+	weightElement.innerHTML = weight;
+	repsElement.innerHTML = reps;	
+	// remove save button
+	let actionsElement = document.getElementById("history-actions-" + historyId);
+	actionsElement.removeChild(actionsElement.firstChild);
+	// add edit button
+	actionsElement.innerHTML = 	"<input type='button' value='Edit' onclick=editHistory('" + historyId + "')>" + 
+								actionsElement.innerHTML;
+	// get date								
+	let createdOn = document.getElementById("calendar").value;
 	
-	let exerciseId = 2;
-	let weight = 222;
-	let reps = 22;
-	let createdOn = "2022-10-15";
-	
-	let data = { 	"exerciseId" : exerciseId,
-					"weight" : weight,
+	weight = weight.trim();
+	reps = reps.trim();
+	createdOn = createdOn.trim();
+								
+	let data = {	"weight" : weight,
 					"reps" : reps,
 					"createdOn" : createdOn };
 					

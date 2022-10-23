@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 	onLoaded();
-	onExercises();
+	onHistory();
 });
 
 function onLoaded() {
