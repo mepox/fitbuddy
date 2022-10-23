@@ -2,7 +2,6 @@ package com.laszlojanku.fitbuddy.jpa.service.converter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,19 +28,19 @@ public class HistoryConverterService implements TwoWayConverterService<HistoryDt
 	}
 
 	@Override
-	public History convertToEntity(Optional<HistoryDto> dto) {
-		if (dto.isPresent()) {
+	public History convertToEntity(HistoryDto dto) {
+		if (dto != null) {
 			AppUser appUser = new AppUser();
-			appUser.setId(dto.get().getAppUserId());
+			appUser.setId(dto.getAppUserId());
 			
 			Exercise exercise = new Exercise();
-			exercise.setId(dto.get().getExerciseId());
+			exercise.setId(dto.getExerciseId());
 			
 			History history = new History();
-			history.setId(dto.get().getId());
-			history.setWeight(dto.get().getWeight());
-			history.setReps(dto.get().getReps());
-			history.setCreatedOn(dto.get().getCreatedOn());
+			history.setId(dto.getId());
+			history.setWeight(dto.getWeight());
+			history.setReps(dto.getReps());
+			history.setCreatedOn(dto.getCreatedOn());
 			
 			history.setAppUser(appUser);
 			history.setExercise(exercise);
@@ -52,11 +51,11 @@ public class HistoryConverterService implements TwoWayConverterService<HistoryDt
 	}
 
 	@Override
-	public HistoryDto convertToDto(Optional<History> entity) {
-		if (entity.isPresent()) {
-			return new HistoryDto(entity.get().getId(), entity.get().getAppUser().getId(), 
-									entity.get().getExercise().getId(), entity.get().getExercise().getName(),
-									entity.get().getWeight(), entity.get().getReps(), entity.get().getCreatedOn());
+	public HistoryDto convertToDto(History entity) {
+		if (entity != null) {
+			return new HistoryDto(entity.getId(), entity.getAppUser().getId(), 
+									entity.getExercise().getId(), entity.getExercise().getName(),
+									entity.getWeight(), entity.getReps(), entity.getCreatedOn());
 		}
 		return null;
 	}
@@ -67,7 +66,7 @@ public class HistoryConverterService implements TwoWayConverterService<HistoryDt
 		if (entities != null) {
 			dtos = new ArrayList<>();
 			for (History entity : entities) {
-				HistoryDto dto = convertToDto(Optional.of(entity));
+				HistoryDto dto = convertToDto(entity);
 				dtos.add(dto);
 			}
 		}

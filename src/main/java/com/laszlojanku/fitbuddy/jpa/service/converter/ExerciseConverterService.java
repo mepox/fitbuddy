@@ -2,7 +2,6 @@ package com.laszlojanku.fitbuddy.jpa.service.converter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,14 +27,14 @@ public class ExerciseConverterService implements TwoWayConverterService<Exercise
 	}
 	
 	@Override
-	public Exercise convertToEntity(Optional<ExerciseDto> dto) {
-		if (dto.isPresent()) {
+	public Exercise convertToEntity(ExerciseDto dto) {
+		if (dto != null) {
 			AppUser appUser = new AppUser();
-			appUser.setId(dto.get().getAppUserId());
+			appUser.setId(dto.getAppUserId());
 			
 			Exercise exercise = new Exercise();
-			exercise.setId(dto.get().getId());
-			exercise.setName(dto.get().getName());
+			exercise.setId(dto.getId());
+			exercise.setName(dto.getName());
 			exercise.setAppUser(appUser);
 			
 			return exercise;
@@ -43,9 +42,9 @@ public class ExerciseConverterService implements TwoWayConverterService<Exercise
 		return null;
 	}
 	@Override
-	public ExerciseDto convertToDto(Optional<Exercise> entity) {
-		if (entity.isPresent()) {
-			return new ExerciseDto(entity.get().getId(), entity.get().getName(), entity.get().getAppUser().getId());
+	public ExerciseDto convertToDto(Exercise entity) {
+		if (entity != null) {
+			return new ExerciseDto(entity.getId(), entity.getName(), entity.getAppUser().getId());
 		}
 		return null;
 	}
@@ -56,7 +55,7 @@ public class ExerciseConverterService implements TwoWayConverterService<Exercise
 		if (entities != null) {
 			dtos = new ArrayList<>();
 			for (Exercise entity : entities) {
-				ExerciseDto dto = convertToDto(Optional.of(entity));
+				ExerciseDto dto = convertToDto(entity);
 				dtos.add(dto);
 			}
 		}

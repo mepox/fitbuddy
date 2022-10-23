@@ -19,7 +19,7 @@ public abstract class GenericCrudService<D, E> implements CrudService<D> {
 	@Override
 	public D create(D dto) {
 		if (dto != null) {
-			E entity = converter.convertToEntity(Optional.of(dto));
+			E entity = converter.convertToEntity(dto);
 			if (entity != null) {
 				repository.save(entity);
 				return dto;
@@ -31,7 +31,7 @@ public abstract class GenericCrudService<D, E> implements CrudService<D> {
 	@Override
 	public D read(Integer id) {
 		Optional<E> entity = repository.findById(id);		
-		return converter.convertToDto(entity);
+		return converter.convertToDto(entity.get());
 	}
 
 	@Override
