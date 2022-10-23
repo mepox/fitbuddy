@@ -15,7 +15,7 @@ function onRegister() {
 	password = password.trim();
 	passwordConfirm = passwordConfirm.trim();
 	
-	let url = "/register";
+	let url = API + "/register";
 	let data = { 	name : name,
 					password : password,
 					passwordConfirm : passwordConfirm };

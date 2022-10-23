@@ -32,7 +32,7 @@ function showHistory() {
 	
 	let date = document.getElementById("calendar").value;
 	
-	let url = "/user/history/" + date;	
+	let url = API + "/user/history/" + date;	
 	let xhr = new XMLHttpRequest();	
 	xhr.open("GET", url);
 	xhr.send();
@@ -60,9 +60,10 @@ function showHistory() {
 						"<td>" + data[i].exerciseName + "</td>" + 
 						"<td id='" + weightId + "'>" + data[i].weight + "</td>" +
 						"<td id='" + repsId + "'>" + data[i].reps + "</td>" +
-						"<td id='" + actionsId + "'>" +
-						"<input type='button' value='Edit' onclick=editHistory('" + historyId + "')>" +					
-						"<input type='button' value='Delete' onclick=deleteHistory('" + historyId + "')></td></tr>";											 
+						"<td id='" + actionsId + "'>" +						
+						"<a href='#' title='Edit'><i class='bi bi-pencil-fill icon-grey me-3 fs-5' onclick=editHistory('" + historyId + "')></i></a>" +
+						"<a href='#' title='Delete'><i class='bi bi-trash-fill icon-red fs-5' onclick=deleteHistory('" + historyId + "')></i></a>" +
+						"</td></tr>";									 
 				}
 				
 				tbody.innerHTML += add;
@@ -76,7 +77,7 @@ function showHistory() {
 }
 
 function refreshExerciseOptions() {
-	let url = "/user/exercises";	
+	let url = API + "/user/exercises";	
     let xhr = new XMLHttpRequest();
 	xhr.open("GET", url);
     xhr.send();
@@ -109,7 +110,7 @@ function refreshExerciseOptions() {
 }
 
 function deleteHistory(historyId) {
-	let url = "/user/history/" + historyId;	
+	let url = API + "/user/history/" + historyId;	
     let xhr = new XMLHttpRequest();
 	xhr.open("DELETE", url);
 	xhr.send();    
@@ -145,7 +146,7 @@ function onAddHistory() {
 					"reps" : reps,
 					"createdOn" : createdOn };	
 	
-	let url = "/user/history";
+	let url = API + "/user/history";
 	let xhr = new XMLHttpRequest();
 	xhr.open("POST", url);
 	xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
@@ -182,7 +183,7 @@ function editHistory(historyId) {
 	// remove edit button	
 	actionsElement.removeChild(actionsElement.firstChild);
 	// add save button
-	actionsElement.innerHTML = 	"<input type='button' value='Save' onclick=saveHistory('" + historyId + "')>" +
+	actionsElement.innerHTML = 	"<a href='#' title='Save'><i class='bi bi-check-square-fill icon-green me-3 fs-5' onclick=saveHistory('" + historyId + "')></i></a>" +
 								actionsElement.innerHTML;
 }
 
@@ -191,16 +192,7 @@ function saveHistory(historyId) {
 	let weightElement = document.getElementById("history-weight-" + historyId);
 	let repsElement = document.getElementById("history-reps-" + historyId);
 	let weight = weightElement.firstChild.value;
-	let reps = repsElement.firstChild.value;	
-	// remove input field and add text
-	weightElement.innerHTML = weight;
-	repsElement.innerHTML = reps;	
-	// remove save button
-	let actionsElement = document.getElementById("history-actions-" + historyId);
-	actionsElement.removeChild(actionsElement.firstChild);
-	// add edit button
-	actionsElement.innerHTML = 	"<input type='button' value='Edit' onclick=editHistory('" + historyId + "')>" + 
-								actionsElement.innerHTML;
+	let reps = repsElement.firstChild.value;
 	// get date								
 	let createdOn = document.getElementById("calendar").value;
 	
@@ -212,7 +204,7 @@ function saveHistory(historyId) {
 					"reps" : reps,
 					"createdOn" : createdOn };
 					
-	let url = "/user/history/" + historyId;	
+	let url = API + "/user/history/" + historyId;	
 	let xhr = new XMLHttpRequest();	
 	xhr.open("PUT", url);	
 	xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");

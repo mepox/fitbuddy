@@ -1,5 +1,5 @@
 function showExercises() {	
-	let url = "/user/exercises";	
+	let url = API + "/user/exercises";	
     let xhr = new XMLHttpRequest();
 	xhr.open("GET", url);
     xhr.send();
@@ -23,12 +23,13 @@ function showExercises() {
 					let actionsId = "exercise-actions-" + exerciseId;			
 					add += 	"<tr><th>" + (i+1) + "</th>"	+ 
 							"<td id='" + exerciseNameId + "'>" + data[i].name + "</td>" + 
-							"<td id='" + actionsId + "'>" +
-							"<input type='button' value='Edit' onclick=editExercise('" + exerciseId + "')>" +
-							"<input type='button' value='Delete' onclick=deleteExercise('" + exerciseId + "')></td></tr>";					
+							"<td id='" + actionsId + "'>" +							
+							"<a href='#' title='Edit'><i class='bi bi-pencil-fill icon-grey me-3 fs-5' onclick=editExercise('" + exerciseId + "')></i></a>" +
+							"<a href='#' title='Delete'><i class='bi bi-trash-fill icon-red fs-5' onclick=deleteExercise('" + exerciseId + "')></i></a>" +
+							"</td></tr>";			
 				}
 				
-				tbody.innerHTML += add;				
+				tbody.innerHTML = add;				
 			} else {
 				// ERROR				
 				console.log("ERROR: " + this.responseText);
@@ -38,7 +39,7 @@ function showExercises() {
 }
 
 function deleteExercise(exerciseId) {	
-	let url = "/user/exercises/" + exerciseId;	
+	let url = API + "/user/exercises/" + exerciseId;	
     let xhr = new XMLHttpRequest();
 	xhr.open("DELETE", url);
 	xhr.send();  
@@ -64,7 +65,7 @@ function onAddExercise() {
 	
 	let data = { "name" : name };
 		
-	let url = "/user/exercises";	
+	let url = API + "/user/exercises";	
 	let xhr = new XMLHttpRequest();		
 	xhr.open("POST", url);
 	xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");		
@@ -97,27 +98,19 @@ function editExercise(exerciseId) {
 	// remove edit button
 	actionsElement.removeChild(actionsElement.firstChild);
 	// add save button
-	actionsElement.innerHTML = 	"<input type='button' value='Save' onclick=saveExercise('" + exerciseId + "')>" 
-								+ actionsElement.innerHTML;
+	actionsElement.innerHTML = 	"<a href='#' title='Save'><i class='bi bi-check-square-fill icon-green me-3 fs-5' onclick=saveExercise('" + exerciseId + "')></i></a>" + 
+								actionsElement.innerHTML;
 }
 
 function saveExercise(exerciseId) {
 	// read the exercise name
 	let exerciseNameElement = document.getElementById("exercise-name-" + exerciseId);
 	let exerciseName = exerciseNameElement.firstChild.value;
-	exerciseName = exerciseName.trim();	
-	// remove input field and add text
-	exerciseNameElement.innerHTML = exerciseName;	
-	// remove save button
-	let actionsElement = document.getElementById("exercise-actions-" + exerciseId);
-	actionsElement.removeChild(actionsElement.firstChild);
-	// add edit button
-	actionsElement.innerHTML = 	"<input type='button' value='Edit' onclick=editExercise('" + exerciseId + "')>" 
-								+ actionsElement.innerHTML;
+	exerciseName = exerciseName.trim();		
 	
 	let data = { "name" : exerciseName };
 	
-	let url = "/user/exercises/" + exerciseId;	
+	let url = API + "/user/exercises/" + exerciseId;	
 	let xhr = new XMLHttpRequest();	
 	xhr.open("PUT", url);	
 	xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");

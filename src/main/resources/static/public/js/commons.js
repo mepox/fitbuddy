@@ -1,3 +1,5 @@
+const API = "http://localhost:8080";
+
 function hideStatus() {
     var statusMessage = document.getElementById("statusMessage");
     statusMessage.hidden = true;    	
