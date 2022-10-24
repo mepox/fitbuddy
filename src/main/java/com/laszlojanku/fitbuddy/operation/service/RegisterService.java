@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.laszlojanku.fitbuddy.jpa.entity.AppUser;
@@ -18,11 +19,13 @@ public class RegisterService {
 	private final Logger logger;
 	private final AppUserCrudRepository userRepository;
 	private final RoleCrudRepository roleRepository;
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Autowired
 	public RegisterService(AppUserCrudRepository userRepository, RoleCrudRepository roleRepository) {
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
+		this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		this.logger = LoggerFactory.getLogger(RegisterService.class);
 	}
 	
@@ -37,7 +40,7 @@ public class RegisterService {
 		}	
 				
 		// encode password
-		String encodedPassword = password;
+		String encodedPassword = bCryptPasswordEncoder.encode(password);
 		
 		// add user - with default role
 		Optional<Role> userRole = roleRepository.findByName("USER");		

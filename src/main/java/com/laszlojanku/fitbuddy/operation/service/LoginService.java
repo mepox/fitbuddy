@@ -13,6 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.laszlojanku.fitbuddy.jpa.entity.AppUser;
@@ -25,11 +26,13 @@ import com.laszlojanku.fitbuddy.jpa.repository.AppUserCrudRepository;
 public class LoginService {	
 	
 	private final Logger logger;
-	private final AppUserCrudRepository userRepository;	
+	private final AppUserCrudRepository userRepository;
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Autowired
 	public LoginService(AppUserCrudRepository userRepository) {
 		this.userRepository = userRepository;
+		this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		this.logger = LoggerFactory.getLogger(LoginService.class);
 	}
 	
@@ -41,9 +44,9 @@ public class LoginService {
 		}		
 		
 		// check the password
-		if (!optional.get().getPassword().equals(password)) {
+		if (!bCryptPasswordEncoder.matches(password, optional.get().getPassword())) {
 			return; // password not correct
-		}		
+		}
 		
 		// create the GrantedAuthority list
 		List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();

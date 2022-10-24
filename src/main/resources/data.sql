@@ -7,8 +7,8 @@ VALUES
 INSERT INTO app_user
 (name, password, role_id)
 VALUES
-('admin', 'admin', 01),
-('user', 'user', 02);
+('admin', '$2a$12$v/mRrRfQ18gpz5ekVluQ8eEEUiN.7gNJ4MtxQCbmWWCavtagHl6cy', 01),
+('user', '$2a$12$.gvecgyfihq.ozfUhC/pGe48uNmgzsYpluQabfwWWvlO4G5xsXQXy', 02);
 
 INSERT INTO exercise
 (name, app_user_id)
