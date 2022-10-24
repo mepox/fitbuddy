@@ -1,14 +1,14 @@
 const API = "http://localhost:8080";
 
 function hideStatus() {
-    var statusMessage = document.getElementById("statusMessage");
+    var statusMessage = document.getElementById("status-message");
     statusMessage.hidden = true;    	
 }
 
 function showStatus(message) {
-    var statusMessage = document.getElementById("statusMessage");
+    var statusMessage = document.getElementById("status-message");
     statusMessage.hidden = false;
-    statusMessage.innerHTML = "Status: " + message;    
+    statusMessage.innerHTML = message;    
 }
 
 function clearFormValue(formId, valueName) {

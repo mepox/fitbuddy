@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,12 +42,12 @@ public class LoginService {
 		// find the user
 		Optional<AppUser> optional = userRepository.findByName(name);
 		if (optional.isEmpty()) {
-			return; // not found
+			throw new EntityNotFoundException("Username not found.");
 		}		
 		
 		// check the password
 		if (!bCryptPasswordEncoder.matches(password, optional.get().getPassword())) {
-			return; // password not correct
+			throw new RuntimeException("Incorrect password.");
 		}
 		
 		// create the GrantedAuthority list

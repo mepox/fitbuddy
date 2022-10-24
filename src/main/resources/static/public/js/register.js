@@ -29,12 +29,13 @@ function onRegister() {
 		if (this.readyState == XMLHttpRequest.DONE) {
 			if (this.status == 200) {
 				// SUCCESS
-				console.log("OK: " + this.responseText);	
+				console.log("OK: " + this.responseText);
+				showStatus("Registered successfully.")
 			} else {
 				// ERROR
-				console.log("ERROR: " + this.responseText);		
-			}
-			//showStatus(this.responseText);
+				console.log("ERROR: " + this.responseText);
+				showStatus(JSON.parse(this.responseText).message);	
+			}			
 			clearRegisterForm();		
 		}		
 	}

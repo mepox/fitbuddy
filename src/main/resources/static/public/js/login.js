@@ -29,12 +29,12 @@ function onLogin() {
 			if (this.status == 200) {
 				// SUCCESS
 				console.log("OK: " + this.responseText);
-				//showStatus(this.responseText);
+				showStatus("Logged in successfully.")
 				window.open("/", "_top");
 			} else {
 				// ERROR
 				console.log("ERROR: " + this.responseText);
-				//showStatus(this.responseText);
+				showStatus(JSON.parse(this.responseText).message);
 				clearLoginForm();
 			}
 		}		
