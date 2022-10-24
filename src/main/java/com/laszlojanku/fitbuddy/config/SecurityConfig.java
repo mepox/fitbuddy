@@ -8,11 +8,11 @@ import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
- * WebSecurity configuration class where we set up our SecurityFilterChain. 
+ * Security related configuration. 
  */
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig {
+public class SecurityConfig {
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

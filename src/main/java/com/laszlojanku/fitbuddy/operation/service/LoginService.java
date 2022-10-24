@@ -20,7 +20,7 @@ import com.laszlojanku.fitbuddy.jpa.entity.AppUser;
 import com.laszlojanku.fitbuddy.jpa.repository.AppUserCrudRepository;
 
 /**
- * Provides a service to handle the logging in process.
+ * Provides a service to handle the login process.
  */
 @Service
 public class LoginService {	

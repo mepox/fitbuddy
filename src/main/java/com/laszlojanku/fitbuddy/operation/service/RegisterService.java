@@ -13,6 +13,9 @@ import com.laszlojanku.fitbuddy.jpa.entity.Role;
 import com.laszlojanku.fitbuddy.jpa.repository.AppUserCrudRepository;
 import com.laszlojanku.fitbuddy.jpa.repository.RoleCrudRepository;
 
+/**
+ * Provides a service to handle the registration process.
+ */
 @Service
 public class RegisterService {
 	
