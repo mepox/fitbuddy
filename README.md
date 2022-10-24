@@ -40,3 +40,7 @@ A default user with some preloaded data is added at the start of the application
 username: user
 password: user
 ```
+
+## Live demo
+
+https://fitbuddy-demo.herokuapp.com/
