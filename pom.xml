@@ -17,10 +17,7 @@
 	<description>FitBuddy, a workout tracker app</description>
 	
 	<properties>
-		<java.version>11</java.version>
-		
-		<!-- Dependencies' version -->
-		<project-lombok.version>1.18.24</project-lombok.version>
+		<java.version>11</java.version>		
 	</properties>
 	
 	<dependencies>
@@ -64,7 +61,7 @@
     	<dependency>
       		<groupId>org.projectlombok</groupId>
       		<artifactId>lombok</artifactId>
-      		<version>${project-lombok.version}</version>
+      		<version>1.18.24</version>
       		<scope>provided</scope>
     	</dependency>
 	</dependencies>
