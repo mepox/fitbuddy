@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.laszlojanku.fitbuddy.dto.AppUserDto;
 import com.laszlojanku.fitbuddy.exception.FitBuddyException;
 import com.laszlojanku.fitbuddy.jpa.entity.AppUser;
 import com.laszlojanku.fitbuddy.jpa.entity.Role;
 import com.laszlojanku.fitbuddy.jpa.repository.AppUserCrudRepository;
 import com.laszlojanku.fitbuddy.jpa.repository.RoleCrudRepository;
+import com.laszlojanku.fitbuddy.jpa.service.converter.AppUserConverterService;
 
 /**
  * Provides a service to handle the registration process.
@@ -23,40 +25,35 @@ public class RegisterService {
 	private final Logger logger;
 	private final AppUserCrudRepository userRepository;
 	private final RoleCrudRepository roleRepository;
+	private final AppUserConverterService converterService;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Autowired
-	public RegisterService(AppUserCrudRepository userRepository, RoleCrudRepository roleRepository) {
+	public RegisterService(AppUserCrudRepository userRepository, RoleCrudRepository roleRepository,
+			AppUserConverterService converterService) {
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
+		this.converterService = converterService;
 		this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		this.logger = LoggerFactory.getLogger(RegisterService.class);
 	}
 	
-	public void register(String name, String password) {
-		// validate name?
-		// validate password?
-		
+	public AppUserDto register(String name, String password) {
 		// check if already exists
 		Optional<AppUser> optional = userRepository.findByName(name);
 		if (optional.isPresent()) {
 			throw new FitBuddyException("Username already exists.");			
 		}
-				
-		// encode password
-		String encodedPassword = bCryptPasswordEncoder.encode(password);
 		
 		// add user - with default role
 		Optional<Role> userRole = roleRepository.findByName("USER");		
 		AppUser appUser = new AppUser();
 		appUser.setName(name);		
-		appUser.setPassword(encodedPassword);
+		appUser.setPassword(bCryptPasswordEncoder.encode(password));
 		appUser.setRole(userRole.get());
 		
-		userRepository.save(appUser);
 		logger.info("User registered: " + appUser);
-		
-		// add default exercise		
+		return converterService.convertToDto(userRepository.save(appUser));
 	}
 
 }
