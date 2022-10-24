@@ -1,4 +1,14 @@
-# FitBuddy
+<h1 align="center">FitBuddy</h1>
+
+<div align="center">
+
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=mepox_fitbuddy&metric=sqale_rating)](https://github.com/mepox/fitbuddy)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=mepox_fitbuddy&metric=reliability_rating)](https://github.com/mepox/fitbuddy)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=mepox_fitbuddy&metric=coverage)](https://github.com/mepox/fitbuddy)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=mepox_fitbuddy&metric=ncloc)](https://github.com/mepox/fitbuddy)
+[![mepox](https://circleci.com/gh/mepox/fitbuddy.svg?style=svg)](https://github.com/mepox/fitbuddy)
+
+</div>
 
 FitBuddy is a workout tracker app made with Spring Boot
 
