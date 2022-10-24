@@ -1,5 +1,7 @@
 package com.laszlojanku.fitbuddy.operation.controller;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,7 @@ public class RegisterController {
 	}
 	
 	@PostMapping("/register")
-	public void register(@RequestBody RegisterDto registerDto) {
+	public void register(@Valid @RequestBody RegisterDto registerDto) {
 		logger.info("Trying to register with: " + registerDto);
 		registerService.register(registerDto.getName(), registerDto.getPassword());
 	}
