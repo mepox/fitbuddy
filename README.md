@@ -40,22 +40,3 @@ A default user with some preloaded data is added at the start of the application
 username: user
 password: user
 ```
-
-## Data Storage
-
-It uses an in-memory (H2) database to store the data.
-
-To view and query the database you can browse to /console, eg.: http://localhost:8080/console
-
-Login details:
-
-```
-spring.datasource.url=jdbc:h2:mem:db
-spring.datasource.driverClassName=org.h2.Driver
-spring.datasource.username=admin
-spring.datasource.password=admin
-```
-
-## Endpoints
-
-*TODO*
