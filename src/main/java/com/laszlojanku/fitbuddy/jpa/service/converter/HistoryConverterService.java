@@ -3,29 +3,16 @@ package com.laszlojanku.fitbuddy.jpa.service.converter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.laszlojanku.fitbuddy.dto.HistoryDto;
 import com.laszlojanku.fitbuddy.jpa.entity.AppUser;
 import com.laszlojanku.fitbuddy.jpa.entity.Exercise;
 import com.laszlojanku.fitbuddy.jpa.entity.History;
-import com.laszlojanku.fitbuddy.jpa.repository.HistoryCrudRepository;
 import com.laszlojanku.fitbuddy.jpa.service.TwoWayConverterService;
 
 @Service
 public class HistoryConverterService implements TwoWayConverterService<HistoryDto, History> {
-	
-	private final Logger logger;
-	private final HistoryCrudRepository repository;
-	
-	@Autowired
-	public HistoryConverterService(HistoryCrudRepository repository) {
-		this.repository = repository;
-		this.logger = LoggerFactory.getLogger(HistoryConverterService.class);
-	}
 
 	@Override
 	public History convertToEntity(HistoryDto dto) {
