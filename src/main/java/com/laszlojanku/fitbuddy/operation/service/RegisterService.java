@@ -2,14 +2,13 @@ package com.laszlojanku.fitbuddy.operation.service;
 
 import java.util.Optional;
 
-import javax.persistence.EntityExistsException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.laszlojanku.fitbuddy.exception.FitBuddyException;
 import com.laszlojanku.fitbuddy.jpa.entity.AppUser;
 import com.laszlojanku.fitbuddy.jpa.entity.Role;
 import com.laszlojanku.fitbuddy.jpa.repository.AppUserCrudRepository;
@@ -41,7 +40,7 @@ public class RegisterService {
 		// check if already exists
 		Optional<AppUser> optional = userRepository.findByName(name);
 		if (optional.isPresent()) {
-			throw new EntityExistsException("Username already exists.");			
+			throw new FitBuddyException("Username already exists.");			
 		}
 				
 		// encode password

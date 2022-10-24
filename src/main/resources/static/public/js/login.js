@@ -32,7 +32,7 @@ function onLogin() {
 				window.open("/", "_top");
 			} else {
 				// ERROR				
-				showStatus(JSON.parse(this.responseText).message);
+				showStatus(this.responseText);
 				clearLoginForm();
 			}
 		}		

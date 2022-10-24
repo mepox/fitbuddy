@@ -32,8 +32,8 @@ function onRegister() {
 				// SUCCESS			
 				showStatus("Registered successfully.")
 			} else {
-				// ERROR				
-				showStatus(JSON.parse(this.responseText).message);	
+				// ERROR
+				showStatus(this.responseText);	
 			}			
 			clearRegisterForm();		
 		}		
