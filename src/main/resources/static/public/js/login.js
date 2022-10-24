@@ -27,13 +27,11 @@ function onLogin() {
 	xhr.onreadystatechange = function() {
 		if (this.readyState == XMLHttpRequest.DONE) {
 			if (this.status == 200) {
-				// SUCCESS
-				console.log("OK: " + this.responseText);
+				// SUCCESS				
 				showStatus("Logged in successfully.")
 				window.open("/", "_top");
 			} else {
-				// ERROR
-				console.log("ERROR: " + this.responseText);
+				// ERROR				
 				showStatus(JSON.parse(this.responseText).message);
 				clearLoginForm();
 			}

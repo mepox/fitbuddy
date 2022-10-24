@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function onLoaded() {
+	clearRegisterForm();
 	console.log("Page loaded.");
 }
 
@@ -28,12 +29,10 @@ function onRegister() {
 	xhr.onreadystatechange = function() {
 		if (this.readyState == XMLHttpRequest.DONE) {
 			if (this.status == 200) {
-				// SUCCESS
-				console.log("OK: " + this.responseText);
+				// SUCCESS			
 				showStatus("Registered successfully.")
 			} else {
-				// ERROR
-				console.log("ERROR: " + this.responseText);
+				// ERROR				
 				showStatus(JSON.parse(this.responseText).message);	
 			}			
 			clearRegisterForm();		
