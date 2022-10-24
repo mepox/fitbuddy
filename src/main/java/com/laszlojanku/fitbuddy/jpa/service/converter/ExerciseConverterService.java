@@ -11,17 +11,17 @@ import org.springframework.stereotype.Service;
 import com.laszlojanku.fitbuddy.dto.ExerciseDto;
 import com.laszlojanku.fitbuddy.jpa.entity.AppUser;
 import com.laszlojanku.fitbuddy.jpa.entity.Exercise;
-import com.laszlojanku.fitbuddy.jpa.repository.ExerciseRepository;
+import com.laszlojanku.fitbuddy.jpa.repository.ExerciseCrudRepository;
 import com.laszlojanku.fitbuddy.jpa.service.TwoWayConverterService;
 
 @Service
 public class ExerciseConverterService implements TwoWayConverterService<ExerciseDto, Exercise> {
 	
 	private final Logger logger;
-	private final ExerciseRepository repository;
+	private final ExerciseCrudRepository repository;
 	
 	@Autowired
-	public ExerciseConverterService(ExerciseRepository repository) {
+	public ExerciseConverterService(ExerciseCrudRepository repository) {
 		this.repository = repository;
 		this.logger = LoggerFactory.getLogger(ExerciseConverterService.class);
 	}

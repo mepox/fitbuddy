@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.laszlojanku.fitbuddy.dto.ExerciseDto;
 import com.laszlojanku.fitbuddy.jpa.entity.Exercise;
-import com.laszlojanku.fitbuddy.jpa.repository.ExerciseRepository;
+import com.laszlojanku.fitbuddy.jpa.repository.ExerciseCrudRepository;
 import com.laszlojanku.fitbuddy.jpa.service.GenericCrudService;
 import com.laszlojanku.fitbuddy.jpa.service.converter.ExerciseConverterService;
 
@@ -18,11 +18,11 @@ import com.laszlojanku.fitbuddy.jpa.service.converter.ExerciseConverterService;
 public class ExerciseCrudService extends GenericCrudService<ExerciseDto, Exercise> {
 	
 	private final Logger logger;
-	private final ExerciseRepository repository;
+	private final ExerciseCrudRepository repository;
 	private final ExerciseConverterService converter;
 	
 	@Autowired
-	public ExerciseCrudService(ExerciseRepository repository, ExerciseConverterService converter) {
+	public ExerciseCrudService(ExerciseCrudRepository repository, ExerciseConverterService converter) {
 		super(repository, converter);
 		this.repository = repository;
 		this.converter = converter;
