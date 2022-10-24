@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.laszlojanku.fitbuddy.dto.AppUserDto;
 import com.laszlojanku.fitbuddy.exception.FitBuddyException;
 import com.laszlojanku.fitbuddy.jpa.entity.AppUser;
 import com.laszlojanku.fitbuddy.jpa.entity.Role;
@@ -38,7 +37,7 @@ public class RegisterService {
 		this.logger = LoggerFactory.getLogger(RegisterService.class);
 	}
 	
-	public AppUserDto register(String name, String password) {
+	public Integer register(String name, String password) {
 		// check if already exists
 		Optional<AppUser> optional = userRepository.findByName(name);
 		if (optional.isPresent()) {
@@ -53,7 +52,7 @@ public class RegisterService {
 		appUser.setRole(userRole.get());
 		
 		logger.info("User registered: " + appUser);
-		return converterService.convertToDto(userRepository.save(appUser));
+		return converterService.convertToDto(userRepository.save(appUser)).getId();
 	}
 
 }
