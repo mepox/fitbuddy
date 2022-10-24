@@ -1,10 +1,7 @@
 package com.laszlojanku.fitbuddy.jpa.service.crud;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +14,6 @@ import com.laszlojanku.fitbuddy.jpa.service.converter.ExerciseConverterService;
 @Service
 public class ExerciseCrudService extends GenericCrudService<ExerciseDto, Exercise> {
 	
-	private final Logger logger;
 	private final ExerciseCrudRepository repository;
 	private final ExerciseConverterService converter;
 	
@@ -25,14 +21,7 @@ public class ExerciseCrudService extends GenericCrudService<ExerciseDto, Exercis
 	public ExerciseCrudService(ExerciseCrudRepository repository, ExerciseConverterService converter) {
 		super(repository, converter);
 		this.repository = repository;
-		this.converter = converter;
-		this.logger = LoggerFactory.getLogger(ExerciseCrudService.class);
-	}
-
-	@Override
-	public Optional<Exercise> getExisting(ExerciseDto dto) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
+		this.converter = converter;		
 	}
 	
 	public List<ExerciseDto> readMany(Integer userId) {

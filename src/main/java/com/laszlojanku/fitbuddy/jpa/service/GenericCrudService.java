@@ -12,9 +12,7 @@ public abstract class GenericCrudService<D, E> implements CrudService<D> {
 	public GenericCrudService(CrudRepository<E, Integer> repository, TwoWayConverterService<D, E> converter) {
 		this.repository = repository;
 		this.converter = converter;
-	}
-	
-	public abstract Optional<E> getExisting (D dto);	
+	}	
 
 	@Override
 	public D create(D dto) {
