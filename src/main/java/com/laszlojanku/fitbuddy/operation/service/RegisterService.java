@@ -13,7 +13,6 @@ import com.laszlojanku.fitbuddy.jpa.entity.AppUser;
 import com.laszlojanku.fitbuddy.jpa.entity.Role;
 import com.laszlojanku.fitbuddy.jpa.repository.AppUserCrudRepository;
 import com.laszlojanku.fitbuddy.jpa.repository.RoleCrudRepository;
-import com.laszlojanku.fitbuddy.jpa.service.converter.AppUserConverterService;
 
 /**
  * Provides a service to handle the registration process.
@@ -24,15 +23,13 @@ public class RegisterService {
 	private final Logger logger;
 	private final AppUserCrudRepository userRepository;
 	private final RoleCrudRepository roleRepository;
-	private final AppUserConverterService converterService;
+	
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Autowired
-	public RegisterService(AppUserCrudRepository userRepository, RoleCrudRepository roleRepository,
-			AppUserConverterService converterService) {
+	public RegisterService(AppUserCrudRepository userRepository, RoleCrudRepository roleRepository) {
 		this.userRepository = userRepository;
-		this.roleRepository = roleRepository;
-		this.converterService = converterService;
+		this.roleRepository = roleRepository;		
 		this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		this.logger = LoggerFactory.getLogger(RegisterService.class);
 	}
@@ -51,8 +48,10 @@ public class RegisterService {
 		appUser.setPassword(bCryptPasswordEncoder.encode(password));
 		appUser.setRole(userRole.get());
 		
-		logger.info("User registered: " + appUser);
-		return converterService.convertToDto(userRepository.save(appUser)).getId();
+		AppUser newAppUser = userRepository.save(appUser);
+		logger.info("User registered: " + newAppUser);
+		
+		return newAppUser.getId();
 	}
 
 }

@@ -32,3 +32,9 @@ CREATE TABLE history (
 	FOREIGN KEY (app_user_id) REFERENCES app_user(id),
 	FOREIGN KEY (exercise_id) REFERENCES exercise(id)
 );
+
+CREATE TABLE default_exercise (
+	id INT NOT NULL AUTO_INCREMENT,
+	name VARCHAR(32) NOT NULL,
+	PRIMARY KEY (id)
+);

@@ -1,3 +1,11 @@
+INSERT INTO default_exercise
+(name)
+VALUES
+('Flat Barbell Bench Press'),
+('Incline Barbell Bench Press'),
+('Flat Dumbbell Bench Press'),
+('Incline Dumbbell Bench Press');
+
 INSERT INTO role
 (name)
 VALUES
@@ -12,11 +20,8 @@ VALUES
 
 INSERT INTO exercise
 (name, app_user_id)
-VALUES
-('Flat Barbell Bench Press', 2),
-('Incline Barbell Bench Press', 2),
-('Flat Dumbbell Bench Press', 2),
-('Incline Dumbbell Bench Press', 2);
+SELECT name, '2' 
+FROM default_exercise;
 
 INSERT INTO history
 (app_user_id, exercise_id, weight, reps, created_on)
