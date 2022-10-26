@@ -18,9 +18,15 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {		
 		FieldError fe = ex.getBindingResult().getFieldError();
-		String field = fe.getField();
-		String message = fe.getDefaultMessage();	
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(field + " " + message);
+		if (fe != null) {
+			String field = fe.getField();
+			String message = fe.getDefaultMessage();
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(field + " " + message);
+		} else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error");
+		}
+		
+		
 	}
 	
 	@ExceptionHandler(FitBuddyException.class)
