@@ -2,11 +2,15 @@
 
 <div align="center">
 
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=mepox_fitbuddy&metric=sqale_rating)](https://github.com/mepox/fitbuddy)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=mepox_fitbuddy&metric=reliability_rating)](https://github.com/mepox/fitbuddy)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=mepox_fitbuddy&metric=coverage)](https://github.com/mepox/fitbuddy)
-[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=mepox_fitbuddy&metric=ncloc)](https://github.com/mepox/fitbuddy)
-[![mepox](https://circleci.com/gh/mepox/fitbuddy.svg?style=svg)](https://github.com/mepox/fitbuddy)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=fitbuddy-app&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=fitbuddy-app)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=fitbuddy-app&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=fitbuddy-app)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=fitbuddy-app&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=fitbuddy-app)
+
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=fitbuddy-app&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=fitbuddy-app)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=fitbuddy-app&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=fitbuddy-app)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=fitbuddy-app&metric=coverage)](https://sonarcloud.io/summary/new_code?id=fitbuddy-app)
+
+![Build](https://github.com/mepox/fitbuddy/actions/workflows/build.yml/badge.svg)
 
 </div>
 
