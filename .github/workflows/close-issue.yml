@@ -1,4 +1,6 @@
-name: Close issues related to a merged pull request based on main branch.
+# Close issues related to a merged pull request based on main branch.
+
+name: Close issues
 
 on:
   pull_request:
