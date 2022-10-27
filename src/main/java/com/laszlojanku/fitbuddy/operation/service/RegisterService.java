@@ -42,7 +42,10 @@ public class RegisterService {
 		}
 		
 		// add user - with default role
-		Optional<Role> userRole = roleRepository.findByName("USER");		
+		Optional<Role> userRole = roleRepository.findByName("USER");
+		if (userRole.isEmpty()) {
+			throw new FitBuddyException("Internal server error - default role doesn't exists.");
+		}
 		AppUser appUser = new AppUser();
 		appUser.setName(name);		
 		appUser.setPassword(bCryptPasswordEncoder.encode(password));
