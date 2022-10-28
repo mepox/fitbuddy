@@ -60,6 +60,7 @@ public class AppUserConverterService implements TwoWayConverterService<AppUserDt
 				AppUserDto dto = convertToDto(appUser);
 				dtos.add(dto);
 			}
+			return dtos;
 		}
 		return null;
 	}
