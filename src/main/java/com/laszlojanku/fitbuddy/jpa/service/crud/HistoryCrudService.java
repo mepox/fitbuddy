@@ -39,8 +39,8 @@ public class HistoryCrudService extends GenericCrudService<HistoryDto, History> 
 	public HistoryDto update(Integer id, HistoryDto dto) {
 		HistoryDto existingDto = read(id);
 		if (existingDto != null) {
-			if (dto.getExerciseId() != null) {
-				existingDto.setExerciseId(dto.getExerciseId());
+			if (dto.getExerciseName() != null) {
+				existingDto.setExerciseName(dto.getExerciseName());
 			}
 			if (dto.getWeight() != null) {
 				existingDto.setWeight(dto.getWeight());
@@ -56,8 +56,6 @@ public class HistoryCrudService extends GenericCrudService<HistoryDto, History> 
 			return existingDto;
 		}
 		return null;
-	}
-	
-	
+	}	
 
 }

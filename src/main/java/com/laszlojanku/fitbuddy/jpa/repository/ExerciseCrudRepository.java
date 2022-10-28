@@ -11,5 +11,8 @@ public interface ExerciseCrudRepository extends CrudRepository<Exercise, Integer
 	
 	@Query(value = "SELECT * FROM exercise WHERE app_user_id = ?1", nativeQuery = true)
 	List<Exercise> findAllByUserId(Integer userId);
+	
+	@Query(value = "SELECT id FROM exercise WHERE name = ?1 AND app_user_id = ?2", nativeQuery = true)
+	Integer findIdByNameAndUserId(String name, Integer userId);
 
 }

@@ -97,7 +97,7 @@ function refreshExerciseOptions() {
 				let add = "";		
 				
 				for (let i = 0; i < data.length; i++) {
-					add += "<option value='" + data[i].id + "'>" + data[i].name + "</option>"; 
+					add += "<option value='" + data[i].name + "'>" + data[i].name + "</option>"; 
 				}
 				
 				exerciseSelect.innerHTML += add;			
@@ -131,17 +131,17 @@ function deleteHistory(historyId) {
 }
 
 function onAddHistory() {
-	let exerciseId = document.getElementById("exercise-select").value;
+	let exerciseName = document.getElementById("exercise-select").value;
 	let weight = document.forms["new-history-form"]["weight"].value;
 	let reps = document.forms["new-history-form"]["reps"].value;	
 	let createdOn = document.getElementById("calendar").value;	
 	
-	exerciseId = exerciseId.trim();
+	exerciseName = exerciseName.trim();
 	weight = weight.trim();
 	reps = reps.trim();
 	createdOn = createdOn.trim();
 	
-	let data = { 	"exerciseId" : exerciseId,
+	let data = { 	"exerciseName" : exerciseName,
 					"weight" : weight,
 					"reps" : reps,
 					"createdOn" : createdOn };	
