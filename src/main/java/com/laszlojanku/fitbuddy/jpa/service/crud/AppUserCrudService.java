@@ -40,7 +40,15 @@ public class AppUserCrudService extends GenericCrudService<AppUserDto, AppUser> 
 			if (dto.getName() != null) {
 				existingDto.setName(dto.getName());
 			}
-			// TODO
+			if (dto.getPassword() != null) {
+				existingDto.setPassword(dto.getPassword());
+			}
+			if (dto.getRolename() != null) {
+				existingDto.setRolename(dto.getRolename());
+			}
+			AppUser appUser = converter.convertToEntity(existingDto);
+			userRepository.save(appUser);
+			return existingDto;
 		}
 		return null;
 	}
