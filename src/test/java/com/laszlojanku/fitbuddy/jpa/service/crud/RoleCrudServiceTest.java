@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
@@ -54,6 +55,32 @@ class RoleCrudServiceTest {
 		RoleDto actualRoleDto = instance.update(1, newDto);
 		
 		assertNull(actualRoleDto);
+	}
+	
+	@Test
+	void readByName_whenRoleNotFound_shouldReturnNull() {
+		when(roleCrudRepository.findByName(anyString())).thenReturn(Optional.empty());
+		
+		RoleDto actualRoleDto = instance.readByName("roleName");
+		
+		assertNull(actualRoleDto);
+	}
+	
+	@Test
+	void readByname_whenRoleFound_shouldReturnRoleDto() {
+		Role role = new Role();
+		role.setId(1);
+		role.setName("roleName");
+		
+		RoleDto roleDto = new RoleDto(1, "roleName");
+		
+		when(roleCrudRepository.findByName(anyString())).thenReturn(Optional.of(role));
+		when(roleConverterService.convertToDto(any(Role.class))).thenReturn(roleDto);
+		
+		RoleDto actualRoleDto = instance.readByName("roleName");
+		
+		assertEquals(roleDto.getId(), actualRoleDto.getId());
+		assertEquals(roleDto.getName(), actualRoleDto.getName());
 	}
 
 }
