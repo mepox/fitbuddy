@@ -52,7 +52,7 @@ public class LoginService {
 		List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
 		
 		// add the role name
-		grantList.add(new SimpleGrantedAuthority(appUserDto.getName()));				
+		grantList.add(new SimpleGrantedAuthority(appUserDto.getRolename()));				
 		
 		// create a new auth
 		Authentication auth = new UsernamePasswordAuthenticationToken(name, password, grantList);
