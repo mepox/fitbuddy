@@ -61,7 +61,7 @@ public class LoginService {
 		SecurityContext sc = SecurityContextHolder.getContext();
 		sc.setAuthentication(auth);
 		
-		logger.info("Logged in: " + appUserDto);
+		logger.info("Logged in: {}", appUserDto);
 	}
 
 }
