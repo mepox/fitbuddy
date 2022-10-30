@@ -2,7 +2,6 @@ package com.laszlojanku.fitbuddy.operation.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,9 +15,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.laszlojanku.fitbuddy.dto.AppUserDto;
 import com.laszlojanku.fitbuddy.exception.FitBuddyException;
-import com.laszlojanku.fitbuddy.jpa.entity.AppUser;
-import com.laszlojanku.fitbuddy.jpa.repository.AppUserCrudRepository;
+import com.laszlojanku.fitbuddy.jpa.service.crud.AppUserCrudService;
 
 /**
  * Provides a service to handle the login process.
@@ -27,25 +26,25 @@ import com.laszlojanku.fitbuddy.jpa.repository.AppUserCrudRepository;
 public class LoginService {	
 	
 	private final Logger logger;
-	private final AppUserCrudRepository userRepository;
+	private final AppUserCrudService appUserCrudService;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Autowired
-	public LoginService(AppUserCrudRepository userRepository) {
-		this.userRepository = userRepository;
+	public LoginService(AppUserCrudService appUserCrudService) {
+		this.appUserCrudService = appUserCrudService;
 		this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		this.logger = LoggerFactory.getLogger(LoginService.class);
 	}
 	
 	public void login(String name, String password) {		
 		// find the user
-		Optional<AppUser> optional = userRepository.findByName(name);
-		if (optional.isEmpty()) {
+		AppUserDto appUserDto = appUserCrudService.readByName(name);
+		if (appUserDto == null) {
 			throw new FitBuddyException("Username not found.");
 		}		
 		
 		// check the password
-		if (!bCryptPasswordEncoder.matches(password, optional.get().getPassword())) {
+		if (!bCryptPasswordEncoder.matches(password, appUserDto.getPassword())) {
 			throw new FitBuddyException("Incorrect password.");
 		}
 		
@@ -53,7 +52,7 @@ public class LoginService {
 		List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
 		
 		// add the role name
-		grantList.add(new SimpleGrantedAuthority(optional.get().getRole().getName()));				
+		grantList.add(new SimpleGrantedAuthority(appUserDto.getRolename()));				
 		
 		// create a new auth
 		Authentication auth = new UsernamePasswordAuthenticationToken(name, password, grantList);
@@ -62,7 +61,7 @@ public class LoginService {
 		SecurityContext sc = SecurityContextHolder.getContext();
 		sc.setAuthentication(auth);
 		
-		logger.info("Logged in: " + optional);
+		logger.info("Logged in: {}", appUserDto);
 	}
 
 }
