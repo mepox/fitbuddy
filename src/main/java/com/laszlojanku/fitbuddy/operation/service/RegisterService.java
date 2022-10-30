@@ -1,18 +1,16 @@
 package com.laszlojanku.fitbuddy.operation.service;
 
-import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.laszlojanku.fitbuddy.dto.AppUserDto;
+import com.laszlojanku.fitbuddy.dto.RoleDto;
 import com.laszlojanku.fitbuddy.exception.FitBuddyException;
-import com.laszlojanku.fitbuddy.jpa.entity.AppUser;
-import com.laszlojanku.fitbuddy.jpa.entity.Role;
-import com.laszlojanku.fitbuddy.jpa.repository.AppUserCrudRepository;
-import com.laszlojanku.fitbuddy.jpa.repository.RoleCrudRepository;
+import com.laszlojanku.fitbuddy.jpa.service.crud.AppUserCrudService;
+import com.laszlojanku.fitbuddy.jpa.service.crud.RoleCrudService;
 
 /**
  * Provides a service to handle the registration process.
@@ -21,40 +19,40 @@ import com.laszlojanku.fitbuddy.jpa.repository.RoleCrudRepository;
 public class RegisterService {
 	
 	private final Logger logger;
-	private final AppUserCrudRepository userRepository;
-	private final RoleCrudRepository roleRepository;
+	private final AppUserCrudService appUserCrudService;
+	private final RoleCrudService roleCrudService;
 	
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Autowired
-	public RegisterService(AppUserCrudRepository userRepository, RoleCrudRepository roleRepository) {
-		this.userRepository = userRepository;
-		this.roleRepository = roleRepository;		
+	public RegisterService(AppUserCrudService appUserCrudService, RoleCrudService roleCrudService) {
+		this.appUserCrudService = appUserCrudService;
+		this.roleCrudService = roleCrudService;				
 		this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		this.logger = LoggerFactory.getLogger(RegisterService.class);
 	}
 	
 	public Integer register(String name, String password) {
-		// check if already exists
-		Optional<AppUser> optional = userRepository.findByName(name);
-		if (optional.isPresent()) {
+		// check if name already exists
+		if (appUserCrudService.readByName(name) != null) {
 			throw new FitBuddyException("Username already exists.");			
 		}
 		
-		// add user - with default role
-		Optional<Role> userRole = roleRepository.findByName("USER");
-		if (userRole.isEmpty()) {
+		// check if default user role exists
+		RoleDto userRoleDto = roleCrudService.readByName("USER"); 
+		if (userRoleDto == null) {
 			throw new FitBuddyException("Internal server error - default role doesn't exists.");
 		}
-		AppUser appUser = new AppUser();
-		appUser.setName(name);		
-		appUser.setPassword(bCryptPasswordEncoder.encode(password));
-		appUser.setRole(userRole.get());
 		
-		AppUser newAppUser = userRepository.save(appUser);
-		logger.info("User registered: " + newAppUser);
+		// create new app user
+		AppUserDto appUserDto = new AppUserDto(null, name, 
+				bCryptPasswordEncoder.encode(password), userRoleDto.getName());
 		
-		return newAppUser.getId();
+		AppUserDto newAppUserDto = appUserCrudService.create(appUserDto);
+		
+		logger.info("User registered: " + newAppUserDto);
+		
+		return newAppUserDto.getId();
 	}
 
 }
