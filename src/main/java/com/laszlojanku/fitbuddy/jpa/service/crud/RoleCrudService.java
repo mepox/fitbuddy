@@ -1,5 +1,7 @@
 package com.laszlojanku.fitbuddy.jpa.service.crud;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,15 @@ public class RoleCrudService extends GenericCrudService<RoleDto, Role> {
 		super(roleCrudRepository, roleConverterService);
 		this.roleCrudRepository = roleCrudRepository;
 		this.roleConverterService = roleConverterService;
+	}
+	
+	public RoleDto readByName(String name) {
+		Optional<Role> role = roleCrudRepository.findByName(name);
+		if (role.isPresent()) {
+			return roleConverterService.convertToDto(role.get());			
+		} else {
+			return null;
+		}
 	}
 
 	@Override
