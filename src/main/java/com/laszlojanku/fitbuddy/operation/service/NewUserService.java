@@ -1,7 +1,6 @@
 package com.laszlojanku.fitbuddy.operation.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.laszlojanku.fitbuddy.dto.ExerciseDto;
@@ -15,6 +14,7 @@ public class NewUserService {
 	private final DefaultExerciseCrudRepository defaultExerciseRepository;
 	private final ExerciseCrudService exerciseCrudService;
 	
+	@Autowired
 	public NewUserService(DefaultExerciseCrudRepository defaultExerciseRepository, ExerciseCrudService exerciseCrudService) {
 		this.defaultExerciseRepository = defaultExerciseRepository;
 		this.exerciseCrudService = exerciseCrudService;
@@ -22,9 +22,6 @@ public class NewUserService {
 	
 	public void addDefaultExercises(Integer appUserId) {
 		Iterable<DefaultExercise> defaultExercises = defaultExerciseRepository.findAll();
-		
-		Logger logger = LoggerFactory.getLogger(NewUserService.class);
-		logger.info(defaultExercises.toString());
 		
 		for (DefaultExercise defaultExercise : defaultExercises) {
 			exerciseCrudService.create(new ExerciseDto(null, defaultExercise.getName(), appUserId));
