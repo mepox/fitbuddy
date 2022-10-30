@@ -50,7 +50,7 @@ public class RegisterService {
 		
 		AppUserDto newAppUserDto = appUserCrudService.create(appUserDto);
 		
-		logger.info("User registered: " + newAppUserDto);
+		logger.info("User registered: {}", newAppUserDto);
 		
 		return newAppUserDto.getId();
 	}
