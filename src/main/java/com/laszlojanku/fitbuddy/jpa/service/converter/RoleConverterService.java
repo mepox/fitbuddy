@@ -3,10 +3,13 @@ package com.laszlojanku.fitbuddy.jpa.service.converter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.laszlojanku.fitbuddy.dto.RoleDto;
 import com.laszlojanku.fitbuddy.jpa.entity.Role;
 import com.laszlojanku.fitbuddy.jpa.service.TwoWayConverterService;
 
+@Service
 public class RoleConverterService implements TwoWayConverterService<RoleDto, Role>{
 
 	@Override

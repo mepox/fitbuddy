@@ -19,8 +19,8 @@ public abstract class GenericCrudService<D, E> implements CrudService<D> {
 		if (dto != null) {
 			E entity = converter.convertToEntity(dto);
 			if (entity != null) {
-				repository.save(entity);
-				return dto;
+				E savedEntity = repository.save(entity);
+				return converter.convertToDto(savedEntity);
 			}
 		}
 		return null;
