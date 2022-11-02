@@ -58,3 +58,14 @@ password: user
 ## Live demo
 
 https://fitbuddy-demo.herokuapp.com/
+
+## Screenshots
+
+<div align="center">
+
+<img src="https://mepox.github.io/projects/fitbuddy/fitbuddy_login.jpg" width=200>
+<img src="https://mepox.github.io/projects/fitbuddy/fitbuddy_register.jpg" width=200>
+<img src="https://mepox.github.io/projects/fitbuddy/fitbuddy_history.jpg" width=200>
+<img src="https://mepox.github.io/projects/fitbuddy/fitbuddy_exercises.jpg" width=200>
+
+</div>
