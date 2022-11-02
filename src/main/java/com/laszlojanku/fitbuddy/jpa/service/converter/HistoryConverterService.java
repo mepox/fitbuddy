@@ -31,6 +31,7 @@ public class HistoryConverterService implements TwoWayConverterService<HistoryDt
 					
 			Exercise exercise = new Exercise();
 			exercise.setId(exerciseCrudRepository.findIdByNameAndUserId(dto.getExerciseName(), dto.getAppUserId()));
+			exercise.setName(dto.getExerciseName());
 			
 			History history = new History();
 			history.setId(dto.getId());
