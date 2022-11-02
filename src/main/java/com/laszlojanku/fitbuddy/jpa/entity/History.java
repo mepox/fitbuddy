@@ -30,10 +30,10 @@ public class History {
 	private Exercise exercise;
 	
 	@Column(name = "weight")
-	private int weight;
+	private Integer weight;
 	
 	@Column(name = "reps")
-	private int reps;
+	private Integer reps;
 	
 	@Column(name = "created_on")
 	private String createdOn;
