@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +40,7 @@ public class HistoryController {
 	}
 	
 	@PostMapping
-	public void create(Authentication auth, @RequestBody HistoryDto historyDto) {
+	public void create(Authentication auth, @Valid @RequestBody HistoryDto historyDto) {
 		if (auth != null) {
 			AppUserDto appUserDto = appUserCrudService.readByName(auth.getName());
 			if (appUserDto != null && appUserDto.getId() != null) {
@@ -70,7 +72,7 @@ public class HistoryController {
 	}
 	
 	@PutMapping("{id}")
-	public void update(@PathVariable("id") Integer historyId, Authentication auth, @RequestBody HistoryDto historyDto) {
+	public void update(@PathVariable("id") Integer historyId, Authentication auth, @Valid @RequestBody HistoryDto historyDto) {
 		if (auth != null && historyId != null) {
 			AppUserDto appUserDto = appUserCrudService.readByName(auth.getName());
 			if (appUserDto != null && appUserDto.getId() != null) {				

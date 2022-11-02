@@ -2,6 +2,8 @@ package com.laszlojanku.fitbuddy.operation.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +39,7 @@ public class ExerciseController {
 	}
 	
 	@PostMapping
-	public void create(Authentication auth, @RequestBody ExerciseDto exerciseDto) {		
+	public void create(Authentication auth, @Valid @RequestBody ExerciseDto exerciseDto) {		
 		if (auth != null) {
 			Integer userId = appUserCrudService.readByName(auth.getName()).getId();
 			if (userId != null) {
@@ -63,7 +65,7 @@ public class ExerciseController {
 	}
 	
 	@PutMapping("{id}")
-	public void update(@PathVariable("id") Integer exerciseId, Authentication auth, @RequestBody ExerciseDto exerciseDto) {
+	public void update(@PathVariable("id") Integer exerciseId, Authentication auth, @Valid @RequestBody ExerciseDto exerciseDto) {
 		if (auth != null && exerciseId != null) {
 			Integer userId = appUserCrudService.readByName(auth.getName()).getId();
 			if (userId != null) {				

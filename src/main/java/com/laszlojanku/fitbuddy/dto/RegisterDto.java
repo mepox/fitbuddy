@@ -12,7 +12,7 @@ public class RegisterDto {
 	@Size(min = 4, max = 15)
 	private final String name;
 	
-	@NotNull
+	@NotBlank
 	@Size(min = 4, max = 15)
 	private final String password;
 	
