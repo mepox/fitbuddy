@@ -37,13 +37,26 @@ class AppUserCrudServiceTest {
 	}
 	
 	@Test
-	void readByName_whenNameNotFound_shouldReturnNull() {
+	void readByName_whenAppUserNotFound_shouldReturnNull() {
 		when(appUserCrudRepository.findByName(anyString())).thenReturn(Optional.empty());
 		
 		AppUserDto actualAppUserDto = instance.readByName("name");
 		
 		assertNull(actualAppUserDto);
 	}
+	
+	@Test
+	void readByName_whenAppUserFound_shouldReturnAppUserDto() {
+		AppUser appUser = getMockAppUser(1, "name", "password");
+		AppUserDto appUserDto = new AppUserDto(1, "name", "password", "roleName");
+		
+		when(appUserCrudRepository.findByName(anyString())).thenReturn(Optional.of(appUser));
+		when(appUserConverterService.convertToDto(any(AppUser.class))).thenReturn(appUserDto);
+		
+		AppUserDto actualAppUserDto = instance.readByName("name");
+		
+		assertEquals(appUserDto, actualAppUserDto);
+	}	
 	
 	@Test
 	void update_whenIdIsNull_shouldReturnNull() {
@@ -60,7 +73,7 @@ class AppUserCrudServiceTest {
 	}
 	
 	@Test
-	void update_whenAppUserDtoNotFound_shouldReturnNull() {
+	void update_whenExistingAppUserNotFound_shouldReturnNull() {
 		when(appUserCrudRepository.findById(anyInt())).thenReturn(Optional.empty());
 		
 		AppUserDto actualAppUserDto = instance.update(1, new AppUserDto(1, "name", "password", "roleName"));
@@ -69,16 +82,8 @@ class AppUserCrudServiceTest {
 	}
 	
 	@Test
-	void update_whenAppUserDtoFound_shouldReturnTheUpdatedAppUserDto() {
-		Role role = new Role();
-		role.setName("roleName");
-		
-		AppUser appUser = new AppUser();
-		appUser.setId(1);
-		appUser.setName("name");
-		appUser.setPassword("password");
-		appUser.setRole(role);
-		
+	void update_whenExistingAppUserFound_shouldReturnTheUpdatedAppUserDto() {
+		AppUser appUser = getMockAppUser(1, "name", "password", getMockRole(1, "roleName"));		
 		AppUserDto appUserDto = new AppUserDto(1, "name", "password", "roleName");
 		
 		when(appUserCrudRepository.findById(anyInt())).thenReturn(Optional.of(appUser));
@@ -93,6 +98,35 @@ class AppUserCrudServiceTest {
 		assertEquals(newAppUserDto.getName(), actualAppUserDto.getName());
 		assertEquals(newAppUserDto.getPassword(), actualAppUserDto.getPassword());
 		assertEquals(newAppUserDto.getRolename(), actualAppUserDto.getRolename());
+	}
+	
+	// Helper methods
+	private AppUser getMockAppUser(Integer id, String name, String password, Role role) {		
+		AppUser appUser = new AppUser();
+		appUser.setId(id);
+		appUser.setName(name);
+		appUser.setPassword(password);
+		appUser.setRole(role);
+		
+		return appUser;
+	}
+	
+	private AppUser getMockAppUser(Integer id, String name, String password) {		
+		AppUser appUser = new AppUser();
+		appUser.setId(id);
+		appUser.setName(name);
+		appUser.setPassword(password);
+		appUser.setRole(getMockRole(1, "roleName"));
+		
+		return appUser;
+	}
+	
+	private Role getMockRole(Integer id, String name) {
+		Role role = new Role();
+		role.setId(id);
+		role.setName(name);
+		
+		return role;
 	}
 
 }
