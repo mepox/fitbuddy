@@ -8,7 +8,7 @@ function onLoaded() {
 }
 
 function onLogout() {	
-	window.location = API + "/logout";
+	window.location = "/logout";
 }
 
 function onExercises() {
