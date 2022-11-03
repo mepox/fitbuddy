@@ -1,6 +1,9 @@
 package com.laszlojanku.fitbuddy.jpa.service.crud;
 
+import java.util.Collections;
 import java.util.List;
+
+import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,20 +27,22 @@ public class ExerciseCrudService extends GenericCrudService<ExerciseDto, Exercis
 		this.converter = converter;		
 	}
 	
+	@NotNull	
 	public List<ExerciseDto> readMany(Integer userId) {
-		List<ExerciseDto> exerciseDtos = null;
+		List<ExerciseDto> exerciseDtos = Collections.emptyList();
 		List<Exercise> exercises = repository.findAllByUserId(userId);
 		
-		if (exercises != null) {
+		if (!exercises.isEmpty()) {
 			exerciseDtos = converter.convertAllEntity(exercises);
 		}
+	
 		return exerciseDtos;
 	}
 
 	@Override
 	public ExerciseDto update(Integer id, ExerciseDto dto) {
 		ExerciseDto existingDto = read(id);
-		if (existingDto != null) {
+		if (existingDto != null && dto != null) {
 			if (dto.getName() != null) {
 				existingDto.setName(dto.getName());
 			}
