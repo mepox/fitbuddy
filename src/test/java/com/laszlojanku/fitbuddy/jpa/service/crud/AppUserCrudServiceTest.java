@@ -18,9 +18,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.laszlojanku.fitbuddy.dto.AppUserDto;
 import com.laszlojanku.fitbuddy.jpa.entity.AppUser;
-import com.laszlojanku.fitbuddy.jpa.entity.Role;
 import com.laszlojanku.fitbuddy.jpa.repository.AppUserCrudRepository;
 import com.laszlojanku.fitbuddy.jpa.service.converter.AppUserConverterService;
+import com.laszlojanku.fitbuddy.testhelper.AppUserTestHelper;
+import com.laszlojanku.fitbuddy.testhelper.RoleTestHelper;
 
 @ExtendWith(MockitoExtension.class)
 class AppUserCrudServiceTest {
@@ -47,7 +48,7 @@ class AppUserCrudServiceTest {
 	
 	@Test
 	void readByName_whenAppUserFound_shouldReturnAppUserDto() {
-		AppUser appUser = getMockAppUser(1, "name", "password");
+		AppUser appUser = AppUserTestHelper.getMockAppUser(1, "name", "password");
 		AppUserDto appUserDto = new AppUserDto(1, "name", "password", "roleName");
 		
 		when(appUserCrudRepository.findByName(anyString())).thenReturn(Optional.of(appUser));
@@ -83,7 +84,7 @@ class AppUserCrudServiceTest {
 	
 	@Test
 	void update_whenExistingAppUserFound_shouldReturnTheUpdatedAppUserDto() {
-		AppUser appUser = getMockAppUser(1, "name", "password", getMockRole(1, "roleName"));		
+		AppUser appUser = AppUserTestHelper.getMockAppUser(1, "name", "password", RoleTestHelper.getMockRole(1, "roleName"));		
 		AppUserDto appUserDto = new AppUserDto(1, "name", "password", "roleName");
 		
 		when(appUserCrudRepository.findById(anyInt())).thenReturn(Optional.of(appUser));
@@ -98,35 +99,6 @@ class AppUserCrudServiceTest {
 		assertEquals(newAppUserDto.getName(), actualAppUserDto.getName());
 		assertEquals(newAppUserDto.getPassword(), actualAppUserDto.getPassword());
 		assertEquals(newAppUserDto.getRolename(), actualAppUserDto.getRolename());
-	}
-	
-	// Helper methods
-	private AppUser getMockAppUser(Integer id, String name, String password, Role role) {		
-		AppUser appUser = new AppUser();
-		appUser.setId(id);
-		appUser.setName(name);
-		appUser.setPassword(password);
-		appUser.setRole(role);
-		
-		return appUser;
-	}
-	
-	private AppUser getMockAppUser(Integer id, String name, String password) {		
-		AppUser appUser = new AppUser();
-		appUser.setId(id);
-		appUser.setName(name);
-		appUser.setPassword(password);
-		appUser.setRole(getMockRole(1, "roleName"));
-		
-		return appUser;
-	}
-	
-	private Role getMockRole(Integer id, String name) {
-		Role role = new Role();
-		role.setId(id);
-		role.setName(name);
-		
-		return role;
-	}
+	}	
 
 }

@@ -19,6 +19,7 @@ import com.laszlojanku.fitbuddy.dto.RoleDto;
 import com.laszlojanku.fitbuddy.jpa.entity.Role;
 import com.laszlojanku.fitbuddy.jpa.repository.RoleCrudRepository;
 import com.laszlojanku.fitbuddy.jpa.service.converter.RoleConverterService;
+import com.laszlojanku.fitbuddy.testhelper.RoleTestHelper;
 
 @ExtendWith(MockitoExtension.class)
 class RoleCrudServiceTest {
@@ -38,7 +39,7 @@ class RoleCrudServiceTest {
 	
 	@Test
 	void readByname_whenRoleFound_shouldReturnRoleDto() {
-		Role role = getMockRole(1, "roleName");		
+		Role role = RoleTestHelper.getMockRole(1, "roleName");		
 		RoleDto roleDto = new RoleDto(1, "roleName");
 		
 		when(roleCrudRepository.findByName(anyString())).thenReturn(Optional.of(role));
@@ -60,7 +61,7 @@ class RoleCrudServiceTest {
 	
 	@Test
 	void update_whenRoleDtoIsNull_shouldReturnNull() {
-		Role role = getMockRole(1, "roleName");
+		Role role = RoleTestHelper.getMockRole(1, "roleName");
 		RoleDto roleDto = new RoleDto(1, "roleName");
 		
 		when(roleCrudRepository.findById(anyInt())).thenReturn(Optional.of(role));
@@ -84,7 +85,7 @@ class RoleCrudServiceTest {
 	
 	@Test
 	void update_whenExistingRoleFound_shouldReturnUpdatedRoleDto() {
-		Role oldRole = getMockRole(1, "oldName");		
+		Role oldRole = RoleTestHelper.getMockRole(1, "oldName");		
 		RoleDto oldRoleDto = new RoleDto(1, "oldName");		
 		RoleDto newDto = new RoleDto(1, "newName");
 		
@@ -95,15 +96,6 @@ class RoleCrudServiceTest {
 		
 		assertEquals(newDto.getId(), actualRoleDto.getId());
 		assertEquals(newDto.getName(), actualRoleDto.getName());
-	}
-	
-	// Helper methods
-	
-	private Role getMockRole(Integer id, String name) {
-		Role role = new Role();
-		role.setId(id);
-		role.setName(name);
-		return role;
 	}
 
 }

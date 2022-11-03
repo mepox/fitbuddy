@@ -19,11 +19,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.laszlojanku.fitbuddy.dto.ExerciseDto;
-import com.laszlojanku.fitbuddy.jpa.entity.AppUser;
 import com.laszlojanku.fitbuddy.jpa.entity.Exercise;
-import com.laszlojanku.fitbuddy.jpa.entity.Role;
 import com.laszlojanku.fitbuddy.jpa.repository.ExerciseCrudRepository;
 import com.laszlojanku.fitbuddy.jpa.service.converter.ExerciseConverterService;
+import com.laszlojanku.fitbuddy.testhelper.ExerciseTestHelper;
 
 @ExtendWith(MockitoExtension.class)
 class ExerciseCrudServiceTest {
@@ -51,7 +50,7 @@ class ExerciseCrudServiceTest {
 	@Test
 	void readMany_whenExercisesFound_shouldReturnListOfExerciseDtos() {
 		List<Exercise> exercises = new ArrayList<>();		
-		Exercise exercise = getMockExercise(1, "exerciseName");
+		Exercise exercise = ExerciseTestHelper.getMockExercise(1, "exerciseName");
 		exercises.add(exercise);
 		
 		List<ExerciseDto> exerciseDtos = new ArrayList<>();
@@ -76,7 +75,7 @@ class ExerciseCrudServiceTest {
 	
 	@Test
 	void update_whenExerciseDtoIsNull_shouldReturnNull() {
-		Exercise exercise = getMockExercise(1, "exerciseName");
+		Exercise exercise = ExerciseTestHelper.getMockExercise(1, "exerciseName");
 		ExerciseDto exerciseDto = new ExerciseDto(1, "exerciseName", 11);
 		
 		when(exerciseCrudRepository.findById(anyInt())).thenReturn(Optional.of(exercise));
@@ -98,9 +97,9 @@ class ExerciseCrudServiceTest {
 	
 	@Test
 	void update_whenExerciseDtoIsFound_shouldReturnUpdatedExerciseDto() {
-		Exercise exercise = getMockExercise(1, "exerciseName");
+		Exercise exercise = ExerciseTestHelper.getMockExercise(1, "exerciseName");
 		ExerciseDto exerciseDto = new ExerciseDto(1, "exerciseName", 11);
-		Exercise updatedExercise = getMockExercise(1, "newExerciseName");
+		Exercise updatedExercise = ExerciseTestHelper.getMockExercise(1, "newExerciseName");
 		
 		when(exerciseCrudRepository.findById(anyInt())).thenReturn(Optional.of(exercise));
 		when(exerciseConverterService.convertToDto(any(Exercise.class))).thenReturn(exerciseDto);
@@ -110,27 +109,6 @@ class ExerciseCrudServiceTest {
 		
 		verify(exerciseCrudRepository).save(updatedExercise);
 		assertEquals("newExerciseName", actualExerciseDto.getName());		
-	}
-	
-	// Helper methods
-	
-	private Exercise getMockExercise(Integer id, String exerciseName) {
-		Role role = new Role();
-		role.setId(111);
-		role.setName("roleName");
-		
-		AppUser appUser = new AppUser();
-		appUser.setId(11);
-		appUser.setName("userName");
-		appUser.setPassword("password");
-		appUser.setRole(role);
-		
-		Exercise exercise = new Exercise();
-		exercise.setId(id);
-		exercise.setName(exerciseName);
-		exercise.setAppUser(appUser);
-		
-		return exercise;		
 	}
 
 }
