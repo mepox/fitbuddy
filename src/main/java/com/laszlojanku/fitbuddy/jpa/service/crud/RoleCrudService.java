@@ -36,7 +36,7 @@ public class RoleCrudService extends GenericCrudService<RoleDto, Role> {
 	@Override
 	public RoleDto update(Integer id, RoleDto dto) {
 		RoleDto existingDto = read(id);
-		if (existingDto != null) {
+		if (existingDto != null && dto != null) {
 			if (dto.getName() != null) {
 				existingDto.setName(dto.getName());
 			}
