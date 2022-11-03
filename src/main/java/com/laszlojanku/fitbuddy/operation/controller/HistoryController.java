@@ -47,7 +47,7 @@ public class HistoryController {
 				historyDto.setId(null);
 				historyDto.setAppUserId(appUserDto.getId());
 				historyCrudService.create(historyDto);
-				logger.info("Creating new history: " + historyDto);
+				logger.info("Creating new history: {}", historyDto);
 			}
 		}		
 	}
@@ -64,7 +64,8 @@ public class HistoryController {
 			AppUserDto appUserDto = appUserCrudService.readByName(auth.getName());
 			if (appUserDto != null && appUserDto.getId() != null) {
 				List<HistoryDto> historyDtos = historyCrudService.readMany(appUserDto.getId(), strDate);
-				logger.info("Sending a history for " + strDate);
+				logger.info("Sending a history for: {}", strDate);
+				
 				return historyDtos;
 			}
 		}
@@ -78,7 +79,8 @@ public class HistoryController {
 			if (appUserDto != null && appUserDto.getId() != null) {				
 				historyDto.setAppUserId(appUserDto.getId());
 				historyCrudService.update(historyId, historyDto);
-				logger.info("Updating history: " + historyDto);
+				logger.info("Updating history: {}", historyDto);
+				
 			}
 		}
 	}
@@ -91,7 +93,7 @@ public class HistoryController {
 				HistoryDto historyDto = historyCrudService.read(historyId);				
 				if (historyDto != null && historyDto.getAppUserId().equals(appUserDto.getId())) {
 					historyCrudService.delete(historyId);
-					logger.info("Deleting history: " + historyDto);
+					logger.info("Deleting history: {}", historyDto);
 				}
 			}
 		}	
