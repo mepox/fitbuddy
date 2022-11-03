@@ -1,7 +1,8 @@
-function showExercises() {	
-	let url = API + "/user/exercises";	
+const EXERCISES_API_PATH = "/user/exercises";
+ 
+function showExercises() {
     let xhr = new XMLHttpRequest();
-	xhr.open("GET", url);
+	xhr.open("GET", EXERCISES_API_PATH);
     xhr.send();
     
     xhr.onreadystatechange = function() {
@@ -38,10 +39,9 @@ function showExercises() {
     };
 }
 
-function deleteExercise(exerciseId) {	
-	let url = API + "/user/exercises/" + exerciseId;	
+function deleteExercise(exerciseId) {
     let xhr = new XMLHttpRequest();
-	xhr.open("DELETE", url);
+	xhr.open("DELETE", EXERCISES_API_PATH + "/" + exerciseId);
 	xhr.send();  
     
     xhr.onreadystatechange = function() {
@@ -65,9 +65,8 @@ function onAddExercise() {
 	
 	let data = { "name" : name };
 		
-	let url = API + "/user/exercises";	
 	let xhr = new XMLHttpRequest();		
-	xhr.open("POST", url);
+	xhr.open("POST", EXERCISES_API_PATH);
 	xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");		
 	xhr.send(JSON.stringify(data));
 	
@@ -110,9 +109,8 @@ function saveExercise(exerciseId) {
 	
 	let data = { "name" : exerciseName };
 	
-	let url = API + "/user/exercises/" + exerciseId;	
 	let xhr = new XMLHttpRequest();	
-	xhr.open("PUT", url);	
+	xhr.open("PUT", EXERCISES_API_PATH + "/" + exerciseId);	
 	xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
 	xhr.send(JSON.stringify(data));
 	

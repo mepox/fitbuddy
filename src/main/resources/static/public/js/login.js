@@ -14,8 +14,7 @@ function onLogin() {
 	name = name.trim();
 	password = password.trim();
 	
-	let url = API + "/login/perform_login";	
-	
+	let url = "/login/perform_login";		
 	let data = {	"name" : name,
 					"password" : password };
 											

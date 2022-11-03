@@ -1,3 +1,5 @@
+const HISTORY_API_PATH = "/user/history";
+
 /* CALENDAR functions */
 
 function resetCalendar() {
@@ -32,9 +34,8 @@ function showHistory() {
 	
 	let date = document.getElementById("calendar").value;
 	
-	let url = API + "/user/history/" + date;	
 	let xhr = new XMLHttpRequest();	
-	xhr.open("GET", url);
+	xhr.open("GET", HISTORY_API_PATH + "/" + date);
 	xhr.send();
 	
 	xhr.onreadystatechange = function() {
@@ -77,9 +78,8 @@ function showHistory() {
 }
 
 function refreshExerciseOptions() {
-	let url = API + "/user/exercises";	
     let xhr = new XMLHttpRequest();
-	xhr.open("GET", url);
+	xhr.open("GET", EXERCISES_API_PATH);
     xhr.send();
     
     xhr.onreadystatechange = function() {
@@ -110,9 +110,8 @@ function refreshExerciseOptions() {
 }
 
 function deleteHistory(historyId) {
-	let url = API + "/user/history/" + historyId;	
     let xhr = new XMLHttpRequest();
-	xhr.open("DELETE", url);
+	xhr.open("DELETE", HISTORY_API_PATH + "/" + historyId);
 	xhr.send();    
     
     xhr.onreadystatechange = function() {
@@ -146,9 +145,8 @@ function onAddHistory() {
 					"reps" : reps,
 					"createdOn" : createdOn };	
 	
-	let url = API + "/user/history";
 	let xhr = new XMLHttpRequest();
-	xhr.open("POST", url);
+	xhr.open("POST", HISTORY_API_PATH);
 	xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
 	xhr.send(JSON.stringify(data));
 	
@@ -204,9 +202,8 @@ function saveHistory(historyId) {
 					"reps" : reps,
 					"createdOn" : createdOn };
 					
-	let url = API + "/user/history/" + historyId;	
 	let xhr = new XMLHttpRequest();	
-	xhr.open("PUT", url);	
+	xhr.open("PUT", HISTORY_API_PATH + "/" + historyId);	
 	xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
 	xhr.send(JSON.stringify(data));
 	
