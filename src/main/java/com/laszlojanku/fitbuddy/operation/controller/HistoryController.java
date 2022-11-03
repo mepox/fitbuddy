@@ -65,7 +65,6 @@ public class HistoryController {
 			if (appUserDto != null && appUserDto.getId() != null) {
 				List<HistoryDto> historyDtos = historyCrudService.readMany(appUserDto.getId(), strDate);
 				logger.info("Sending a history for: {}", strDate);
-				
 				return historyDtos;
 			}
 		}
