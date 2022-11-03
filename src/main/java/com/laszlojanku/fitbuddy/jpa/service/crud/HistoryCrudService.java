@@ -1,6 +1,9 @@
 package com.laszlojanku.fitbuddy.jpa.service.crud;
 
+import java.util.Collections;
 import java.util.List;
+
+import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,20 +28,21 @@ public class HistoryCrudService extends GenericCrudService<HistoryDto, History> 
 		this.converter = converter;
 	}
 	
+	@NotNull
 	public List<HistoryDto> readMany(Integer userId, String date) {
-		List<HistoryDto> dtos = null;
-		List<History> historyList = repository.findAllByUserIdAndDate(userId, date);
+		List<HistoryDto> historyDto = Collections.emptyList();
+		List<History> histories = repository.findAllByUserIdAndDate(userId, date);
 		
-		if (historyList != null) {
-			dtos = converter.convertAllEntity(historyList);
+		if (!histories.isEmpty()) {
+			historyDto = converter.convertAllEntity(histories);
 		}
-		return dtos;
+		return historyDto;
 	}
 
 	@Override
 	public HistoryDto update(Integer id, HistoryDto dto) {
 		HistoryDto existingDto = read(id);
-		if (existingDto != null) {
+		if (existingDto != null && dto != null) {
 			if (dto.getExerciseName() != null) {
 				existingDto.setExerciseName(dto.getExerciseName());
 			}
