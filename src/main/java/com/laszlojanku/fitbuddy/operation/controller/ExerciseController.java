@@ -46,7 +46,7 @@ public class ExerciseController {
 				exerciseDto.setId(null);
 				exerciseDto.setAppUserId(userId);	
 				exerciseCrudService.create(exerciseDto);
-				logger.info("Creating new exercise: " + exerciseDto);
+				logger.info("Creating new exercise: {}", exerciseDto);
 			}			
 		}	
 	}
@@ -71,7 +71,8 @@ public class ExerciseController {
 			if (userId != null) {				
 				exerciseDto.setAppUserId(userId);
 				exerciseCrudService.update(exerciseId, exerciseDto);	
-				logger.info("Updating the exercise: " + exerciseDto);
+				logger.info("Updating the exercise: {}", exerciseDto);
+				
 			}
 		}
 	}
@@ -84,7 +85,7 @@ public class ExerciseController {
 				ExerciseDto exerciseDto = exerciseCrudService.read(exerciseId);				
 				if (exerciseDto != null && exerciseDto.getAppUserId().equals(appUserDto.getId())) {
 					exerciseCrudService.delete(exerciseId);
-					logger.info("Deleting exercise: " + exerciseDto);
+					logger.info("Deleting exercise: {}", exerciseDto);
 				}
 			}
 		}
