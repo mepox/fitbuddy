@@ -25,8 +25,7 @@ jobs:
         
     - name: SonarCloud Scan
       uses: sonarsource/sonarcloud-github-action@master
-      with:
-        projectBaseDir: my-custom-directory
+      with:        
         args: >
           -Dsonar.organization=fitbuddy
           -Dsonar.projectKey=fitbuddy-app
