@@ -48,4 +48,5 @@ jobs:
         mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
           -Dsonar.host.url=https://sonarcloud.io \
           -Dsonar.organization=fitbuddy \
-          -Dsonar.projectKey=fitbuddy-app
+          -Dsonar.projectKey=fitbuddy-app \
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
