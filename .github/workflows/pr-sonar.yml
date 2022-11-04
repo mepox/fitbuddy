@@ -1,0 +1,35 @@
+name: Sonar PR
+
+on:  
+  pull_request_target:
+    types: [labeled]
+    branches:
+      - main
+
+jobs:
+  sonarcloud:
+    if: ${{ github.event.label.name == 'sonar' }}
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+      with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          
+    - name: Cache SonarCloud packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.sonar/cache
+        key: ${{ runner.os }}-sonar
+        restore-keys: ${{ runner.os }}-sonar
+        
+    - name: SonarCloud Scan
+      uses: sonarsource/sonarcloud-github-action@master
+      with:
+        projectBaseDir: my-custom-directory
+        args: >
+          -Dsonar.organization=fitbuddy
+          -Dsonar.projectKey=fitbuddy-app
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}    
