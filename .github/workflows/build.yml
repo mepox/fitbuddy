@@ -3,7 +3,7 @@ on:
   push:
     branches: 
       - main
-  pull_request:
+  pull_request_target:
     types: [opened, synchronize, reopened]
     branches:
       - main
@@ -48,5 +48,4 @@ jobs:
         mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
           -Dsonar.host.url=https://sonarcloud.io \
           -Dsonar.organization=fitbuddy \
-          -Dsonar.projectKey=fitbuddy-app \
-          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          -Dsonar.projectKey=fitbuddy-app
