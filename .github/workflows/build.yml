@@ -3,14 +3,14 @@ on:
   push:
     branches: 
       - main
-  pull_request_target:
+  pull_request:
     types: [opened, synchronize, reopened]
     branches:
       - main
 
 jobs:
   build:
-    name: Build and analyze
+    name: Build and verify
     runs-on: ubuntu-latest
 
     steps:
@@ -24,13 +24,6 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
-        
-    - name: Cache SonarCloud packages
-      uses: actions/cache@v3
-      with:
-        path: ~/.sonar/cache
-        key: ${{ runner.os }}-sonar
-        restore-keys: ${{ runner.os }}-sonar
 
     - name: Cache local Maven repository
       uses: actions/cache@v3
@@ -40,12 +33,5 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-maven-
       
-    - name: Build and analyze
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      run: |
-        mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-          -Dsonar.host.url=https://sonarcloud.io \
-          -Dsonar.organization=fitbuddy \
-          -Dsonar.projectKey=fitbuddy-app
+    - name: Build and verify      
+      run: mvn -B verify
