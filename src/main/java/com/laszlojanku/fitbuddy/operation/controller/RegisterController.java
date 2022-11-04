@@ -29,7 +29,7 @@ public class RegisterController {
 	
 	@PostMapping("/register")
 	public void register(@Valid @RequestBody RegisterDto registerDto) {
-		logger.info("Trying to register with: " + registerDto);
+		logger.info("Trying to register with: {}", registerDto);
 		Integer appUserId =	registerService.register(registerDto.getName(), registerDto.getPassword());
 		newUserService.addDefaultExercises(appUserId);
 	}
