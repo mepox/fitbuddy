@@ -3,6 +3,7 @@ package com.laszlojanku.fitbuddy.jpa.service.converter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -102,7 +103,7 @@ class AppUserConverterServiceTest {
 		void whenInputIsNull_shouldReturnNull() {
 			List<AppUserDto> actualAppUserDtos = instance.convertAllEntity(null);
 			
-			assertNull(actualAppUserDtos);			
+			assertTrue(actualAppUserDtos.isEmpty());			
 		}
 		
 		@Test
