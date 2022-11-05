@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -46,20 +47,20 @@ class HistoryCrudServiceTest {
 	
 	@Test
 	void readMany_whenHistoriesFound_shouldReturnListOfHistoryDto() {
-		List<History> histories = new ArrayList<>();
-		History history = HistoryTestHelper.getMockHistory();
-		histories.add(history);
+		List<History> historiesMock = new ArrayList<>();
+		History historyMock = HistoryTestHelper.getMockHistory();
+		historiesMock.add(historyMock);
 		
-		List<HistoryDto> historyDtos = new ArrayList<>();
-		HistoryDto historyDto = new HistoryDto(1, 11, "exerciseName", 111, 1111, "01-01-2022");
-		historyDtos.add(historyDto);
+		List<HistoryDto> historyDtosMock = new ArrayList<>();
+		HistoryDto historyDtoMock = new HistoryDto(1, 11, "exerciseName", 111, 1111, "01-01-2022");
+		historyDtosMock.add(historyDtoMock);
 		
-		when(historyCrudRepository.findAllByUserIdAndDate(anyInt(), anyString())).thenReturn(histories);
-		when(historyConverterService.convertAllEntity(any())).thenReturn(historyDtos);		
+		when(historyCrudRepository.findAllByUserIdAndDate(anyInt(), anyString())).thenReturn(historiesMock);
+		when(historyConverterService.convertAllEntity(any())).thenReturn(historyDtosMock);		
 		
 		List<HistoryDto> actualHistoryDtos = instance.readMany(1, "01-01-2022");
 		
-		assertEquals(historyDtos.size(), actualHistoryDtos.size());
+		assertEquals(historyDtosMock.size(), actualHistoryDtos.size());
 	}
 	
 	@Test
@@ -77,7 +78,7 @@ class HistoryCrudServiceTest {
 	}
 	
 	@Test
-	void update_whenHistoryNotFound_shouldReturnNull() {		
+	void update_whenExistingHistoryNotFound_shouldReturnNull() {		
 		when(historyCrudRepository.findById(anyInt())).thenReturn(Optional.empty());
 		
 		HistoryDto actualHistoryDto = instance.update(1, new HistoryDto(1, 11, "exerciseName", 111, 1111, "01-01-2022"));
@@ -86,15 +87,17 @@ class HistoryCrudServiceTest {
 	}
 	
 	@Test
-	void update_whenHistoryFound_shouldReturnUpdatedHistoryDto() {
-		History history = HistoryTestHelper.getMockHistory();
-		HistoryDto historyDto = new HistoryDto(1, 11, "exerciseName", 111, 1111, "01-01-2022");
+	void update_whenExistingHistoryFound_shouldReturnUpdatedHistoryDto() {
+		History historyMock = HistoryTestHelper.getMockHistory();
+		HistoryDto historyDtoMock = new HistoryDto(1, 11, "exerciseName", 111, 1111, "01-01-2022");
 		
-		when(historyCrudRepository.findById(anyInt())).thenReturn(Optional.of(history));
-		when(historyConverterService.convertToDto(any(History.class))).thenReturn(historyDto);
+		when(historyCrudRepository.findById(anyInt())).thenReturn(Optional.of(historyMock));
+		when(historyConverterService.convertToDto(any(History.class))).thenReturn(historyDtoMock);
+		when(historyConverterService.convertToEntity(any(HistoryDto.class))).thenReturn(historyMock);
 		
 		HistoryDto actualHistoryDto = instance.update(1, new HistoryDto(1, 11, "newExerciseName", 222, 2222, "02-02-2022"));
 		
+		verify(historyCrudRepository).save(historyMock);
 		assertEquals("newExerciseName", actualHistoryDto.getExerciseName());
 		assertEquals(222, actualHistoryDto.getWeight());
 		assertEquals(2222, actualHistoryDto.getReps());

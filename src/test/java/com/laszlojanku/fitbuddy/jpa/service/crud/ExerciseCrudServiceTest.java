@@ -49,21 +49,21 @@ class ExerciseCrudServiceTest {
 	
 	@Test
 	void readMany_whenExercisesFound_shouldReturnListOfExerciseDtos() {
-		List<Exercise> exercises = new ArrayList<>();		
-		Exercise exercise = ExerciseTestHelper.getMockExercise(1, "exerciseName");
-		exercises.add(exercise);
+		List<Exercise> exercisesMock = new ArrayList<>();		
+		Exercise exerciseMock = ExerciseTestHelper.getMockExercise(1, "exerciseName");
+		exercisesMock.add(exerciseMock);
 		
-		List<ExerciseDto> exerciseDtos = new ArrayList<>();
-		ExerciseDto exerciseDto = new ExerciseDto(1, "exerciseName", 11);
-		exerciseDtos.add(exerciseDto);		
+		List<ExerciseDto> exerciseDtosMock = new ArrayList<>();
+		ExerciseDto exerciseDtoMock = new ExerciseDto(1, "exerciseName", 11);
+		exerciseDtosMock.add(exerciseDtoMock);		
 		
-		when(exerciseCrudRepository.findAllByUserId(anyInt())).thenReturn(exercises);
-		when(exerciseConverterService.convertAllEntity(any())).thenReturn(exerciseDtos);
+		when(exerciseCrudRepository.findAllByUserId(anyInt())).thenReturn(exercisesMock);
+		when(exerciseConverterService.convertAllEntity(any())).thenReturn(exerciseDtosMock);
 		
 		List<ExerciseDto> actualExerciseDtos = instance.readMany(1);
 		
-		assertEquals(exercises.size(), actualExerciseDtos.size());
-		assertEquals(exercises.get(0).getName(), actualExerciseDtos.get(0).getName());
+		assertEquals(exercisesMock.size(), actualExerciseDtos.size());
+		assertEquals(exercisesMock.get(0).getName(), actualExerciseDtos.get(0).getName());
 	}
 	
 	@Test
@@ -75,11 +75,11 @@ class ExerciseCrudServiceTest {
 	
 	@Test
 	void update_whenExerciseDtoIsNull_shouldReturnNull() {
-		Exercise exercise = ExerciseTestHelper.getMockExercise(1, "exerciseName");
-		ExerciseDto exerciseDto = new ExerciseDto(1, "exerciseName", 11);
+		Exercise exerciseMock = ExerciseTestHelper.getMockExercise(1, "exerciseName");
+		ExerciseDto exerciseDtoMock = new ExerciseDto(1, "exerciseName", 11);
 		
-		when(exerciseCrudRepository.findById(anyInt())).thenReturn(Optional.of(exercise));
-		when(exerciseConverterService.convertToDto(any(Exercise.class))).thenReturn(exerciseDto);
+		when(exerciseCrudRepository.findById(anyInt())).thenReturn(Optional.of(exerciseMock));
+		when(exerciseConverterService.convertToDto(any(Exercise.class))).thenReturn(exerciseDtoMock);
 		
 		ExerciseDto actualExerciseDto = instance.update(1, null);
 		
@@ -87,7 +87,7 @@ class ExerciseCrudServiceTest {
 	}
 	
 	@Test
-	void update_whenExerciseDtoIsNotFound_shouldReturnNull() {
+	void update_whenExistingExerciseIsNotFound_shouldReturnNull() {
 		when(exerciseCrudRepository.findById(anyInt())).thenReturn(Optional.empty());
 		
 		ExerciseDto actualExerciseDto = instance.update(1, new ExerciseDto(1, "exerciseName", 11));
@@ -96,19 +96,20 @@ class ExerciseCrudServiceTest {
 	}
 	
 	@Test
-	void update_whenExerciseDtoIsFound_shouldReturnUpdatedExerciseDto() {
-		Exercise exercise = ExerciseTestHelper.getMockExercise(1, "exerciseName");
-		ExerciseDto exerciseDto = new ExerciseDto(1, "exerciseName", 11);
-		Exercise updatedExercise = ExerciseTestHelper.getMockExercise(1, "newExerciseName");
+	void update_whenExistingExerciseIsFound_shouldReturnUpdatedExerciseDto() {
+		Exercise exerciseMock = ExerciseTestHelper.getMockExercise(1, "exerciseName");
+		ExerciseDto exerciseDtoMock = new ExerciseDto(1, "exerciseName", 11);
 		
-		when(exerciseCrudRepository.findById(anyInt())).thenReturn(Optional.of(exercise));
-		when(exerciseConverterService.convertToDto(any(Exercise.class))).thenReturn(exerciseDto);
-		when(exerciseConverterService.convertToEntity(any(ExerciseDto.class))).thenReturn(updatedExercise);
+		when(exerciseCrudRepository.findById(anyInt())).thenReturn(Optional.of(exerciseMock));
+		when(exerciseConverterService.convertToDto(any(Exercise.class))).thenReturn(exerciseDtoMock);
+		when(exerciseConverterService.convertToEntity(any(ExerciseDto.class))).thenReturn(exerciseMock);
 		
 		ExerciseDto actualExerciseDto = instance.update(1, new ExerciseDto(1, "newExerciseName", 11));
 		
-		verify(exerciseCrudRepository).save(updatedExercise);
-		assertEquals("newExerciseName", actualExerciseDto.getName());		
+		verify(exerciseCrudRepository).save(exerciseMock);
+		assertEquals(1, actualExerciseDto.getId());
+		assertEquals("newExerciseName", actualExerciseDto.getName());
+		assertEquals(11, actualExerciseDto.getAppUserId());
 	}
 
 }

@@ -48,15 +48,15 @@ class AppUserCrudServiceTest {
 	
 	@Test
 	void readByName_whenAppUserFound_shouldReturnAppUserDto() {
-		AppUser appUser = AppUserTestHelper.getMockAppUser(1, "name", "password");
-		AppUserDto appUserDto = new AppUserDto(1, "name", "password", "roleName");
+		AppUser appUserMock = AppUserTestHelper.getMockAppUser(1, "name", "password");
+		AppUserDto appUserDtoMock = new AppUserDto(1, "name", "password", "roleName");
 		
-		when(appUserCrudRepository.findByName(anyString())).thenReturn(Optional.of(appUser));
-		when(appUserConverterService.convertToDto(any(AppUser.class))).thenReturn(appUserDto);
+		when(appUserCrudRepository.findByName(anyString())).thenReturn(Optional.of(appUserMock));
+		when(appUserConverterService.convertToDto(any(AppUser.class))).thenReturn(appUserDtoMock);
 		
 		AppUserDto actualAppUserDto = instance.readByName("name");
 		
-		assertEquals(appUserDto, actualAppUserDto);
+		assertEquals(appUserDtoMock, actualAppUserDto);
 	}	
 	
 	@Test
@@ -83,22 +83,21 @@ class AppUserCrudServiceTest {
 	}
 	
 	@Test
-	void update_whenExistingAppUserFound_shouldReturnTheUpdatedAppUserDto() {
-		AppUser appUser = AppUserTestHelper.getMockAppUser(1, "name", "password", RoleTestHelper.getMockRole(1, "roleName"));		
-		AppUserDto appUserDto = new AppUserDto(1, "name", "password", "roleName");
+	void update_whenExistingAppUserFound_shouldReturnUpdatedAppUserDto() {
+		AppUser appUserMock = AppUserTestHelper.getMockAppUser(1, "name", "password", RoleTestHelper.getMockRole(1, "roleName"));		
+		AppUserDto appUserDtoMock = new AppUserDto(1, "name", "password", "roleName");
 		
-		when(appUserCrudRepository.findById(anyInt())).thenReturn(Optional.of(appUser));
-		when(appUserConverterService.convertToDto(appUser)).thenReturn(appUserDto);
-		when(appUserConverterService.convertToEntity(appUserDto)).thenReturn(appUser);
+		when(appUserCrudRepository.findById(anyInt())).thenReturn(Optional.of(appUserMock));
+		when(appUserConverterService.convertToDto(any(AppUser.class))).thenReturn(appUserDtoMock);
+		when(appUserConverterService.convertToEntity(any(AppUserDto.class))).thenReturn(appUserMock);
 		
-		AppUserDto newAppUserDto = new AppUserDto(1, "newName", "newPassword", "newRoleName");		
-		AppUserDto actualAppUserDto = instance.update(1, newAppUserDto);
+		AppUserDto actualAppUserDto = instance.update(1, new AppUserDto(1, "newName", "newPassword", "newRoleName"));
 		
-		verify(appUserCrudRepository).save(any(AppUser.class));		
-		assertEquals(newAppUserDto.getId(), actualAppUserDto.getId());
-		assertEquals(newAppUserDto.getName(), actualAppUserDto.getName());
-		assertEquals(newAppUserDto.getPassword(), actualAppUserDto.getPassword());
-		assertEquals(newAppUserDto.getRolename(), actualAppUserDto.getRolename());
+		verify(appUserCrudRepository).save(appUserMock);		
+		assertEquals(1, actualAppUserDto.getId());
+		assertEquals("newName", actualAppUserDto.getName());
+		assertEquals("newPassword", actualAppUserDto.getPassword());
+		assertEquals("newRoleName", actualAppUserDto.getRolename());
 	}	
 
 }

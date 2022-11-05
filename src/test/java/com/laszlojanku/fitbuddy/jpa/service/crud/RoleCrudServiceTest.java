@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
@@ -39,16 +40,16 @@ class RoleCrudServiceTest {
 	
 	@Test
 	void readByname_whenRoleFound_shouldReturnRoleDto() {
-		Role role = RoleTestHelper.getMockRole(1, "roleName");		
-		RoleDto roleDto = new RoleDto(1, "roleName");
+		Role roleMock = RoleTestHelper.getMockRole(1, "roleName");		
+		RoleDto roleDtoMock = new RoleDto(1, "roleName");
 		
-		when(roleCrudRepository.findByName(anyString())).thenReturn(Optional.of(role));
-		when(roleConverterService.convertToDto(any(Role.class))).thenReturn(roleDto);
+		when(roleCrudRepository.findByName(anyString())).thenReturn(Optional.of(roleMock));
+		when(roleConverterService.convertToDto(any(Role.class))).thenReturn(roleDtoMock);
 		
 		RoleDto actualRoleDto = instance.readByName("roleName");
 		
-		assertEquals(roleDto.getId(), actualRoleDto.getId());
-		assertEquals(roleDto.getName(), actualRoleDto.getName());
+		assertEquals(roleDtoMock.getId(), actualRoleDto.getId());
+		assertEquals(roleDtoMock.getName(), actualRoleDto.getName());
 	}
 	
 	@Test 
@@ -61,11 +62,11 @@ class RoleCrudServiceTest {
 	
 	@Test
 	void update_whenRoleDtoIsNull_shouldReturnNull() {
-		Role role = RoleTestHelper.getMockRole(1, "roleName");
-		RoleDto roleDto = new RoleDto(1, "roleName");
+		Role roleMock = RoleTestHelper.getMockRole(1, "roleName");
+		RoleDto roleDtoMock = new RoleDto(1, "roleName");
 		
-		when(roleCrudRepository.findById(anyInt())).thenReturn(Optional.of(role));
-		when(roleConverterService.convertToDto(any(Role.class))).thenReturn(roleDto);		
+		when(roleCrudRepository.findById(anyInt())).thenReturn(Optional.of(roleMock));
+		when(roleConverterService.convertToDto(any(Role.class))).thenReturn(roleDtoMock);		
 		
 		RoleDto actualRoleDto = instance.update(1, null);
 		
@@ -74,28 +75,29 @@ class RoleCrudServiceTest {
 	
 	@Test
 	void update_whenExistingRoleNotFound_shouldReturnNull() {
-		RoleDto newDto = new RoleDto(1, "newName");
+		RoleDto newRoleDtoMock = new RoleDto(1, "newName");
 		
 		when(roleCrudRepository.findById(anyInt())).thenReturn(Optional.empty());
 		
-		RoleDto actualRoleDto = instance.update(1, newDto);
+		RoleDto actualRoleDto = instance.update(1, newRoleDtoMock);
 		
 		assertNull(actualRoleDto);
 	}
 	
 	@Test
 	void update_whenExistingRoleFound_shouldReturnUpdatedRoleDto() {
-		Role oldRole = RoleTestHelper.getMockRole(1, "oldName");		
-		RoleDto oldRoleDto = new RoleDto(1, "oldName");		
-		RoleDto newDto = new RoleDto(1, "newName");
+		Role roleMock = RoleTestHelper.getMockRole(1, "oldName");		
+		RoleDto roleDtoMock = new RoleDto(1, "oldName");
 		
-		when(roleCrudRepository.findById(anyInt())).thenReturn(Optional.of(oldRole));
-		when(roleConverterService.convertToDto(any(Role.class))).thenReturn(oldRoleDto);
+		when(roleCrudRepository.findById(anyInt())).thenReturn(Optional.of(roleMock));
+		when(roleConverterService.convertToDto(any(Role.class))).thenReturn(roleDtoMock);
+		when(roleConverterService.convertToEntity(any(RoleDto.class))).thenReturn(roleMock);
 		
-		RoleDto actualRoleDto = instance.update(1, newDto);
+		RoleDto actualRoleDto = instance.update(1, new RoleDto(1, "newRoleName"));
 		
-		assertEquals(newDto.getId(), actualRoleDto.getId());
-		assertEquals(newDto.getName(), actualRoleDto.getName());
+		verify(roleCrudRepository).save(roleMock);		
+		assertEquals(1, actualRoleDto.getId());
+		assertEquals("newRoleName", actualRoleDto.getName());
 	}
 
 }
