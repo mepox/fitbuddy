@@ -6,15 +6,15 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=fitbuddy-app&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=fitbuddy-app)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=fitbuddy-app&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=fitbuddy-app)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=fitbuddy-app&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=fitbuddy-app)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=fitbuddy-app&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=fitbuddy-app)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=fitbuddy-app&metric=sqale_rating)](https://sonarcloud.io/summary/overall?id=fitbuddy-app)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=fitbuddy-app&metric=reliability_rating)](https://sonarcloud.io/summary/overall?id=fitbuddy-app)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=fitbuddy-app&metric=security_rating)](https://sonarcloud.io/summary/overall?id=fitbuddy-app)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=fitbuddy-app&metric=alert_status)](https://sonarcloud.io/summary/overall?id=fitbuddy-app)
 
-[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=fitbuddy-app&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=fitbuddy-app)
-[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=fitbuddy-app&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=fitbuddy-app)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=fitbuddy-app&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=fitbuddy-app)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=fitbuddy-app&metric=coverage)](https://sonarcloud.io/summary/new_code?id=fitbuddy-app)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=fitbuddy-app&metric=ncloc)](https://sonarcloud.io/summary/overall?id=fitbuddy-app)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=fitbuddy-app&metric=duplicated_lines_density)](https://sonarcloud.io/summary/overall?id=fitbuddy-app)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=fitbuddy-app&metric=code_smells)](https://sonarcloud.io/summary/overall?id=fitbuddy-app)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=fitbuddy-app&metric=coverage)](https://sonarcloud.io/summary/overall?id=fitbuddy-app)
 
 ![Build](https://github.com/mepox/fitbuddy/actions/workflows/build.yml/badge.svg)
 
