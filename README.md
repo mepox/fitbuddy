@@ -87,6 +87,7 @@ https://fitbuddy-demo.herokuapp.com/
       <td align="center"><a href="https://mepox.github.io/"><img src="https://avatars.githubusercontent.com/u/21198248?v=4?s=100" width="100px;" alt="mepox"/><br /><sub><b>mepox</b></sub></a><br /><a href="https://github.com/mepox/fitbuddy/commits?author=mepox" title="Code">💻</a></td>
       <td align="center"><a href="https://www.linkedin.com/in/haseebansari/"><img src="https://avatars.githubusercontent.com/u/47222685?v=4?s=100" width="100px;" alt="Haseeb Ansari"/><br /><sub><b>Haseeb Ansari</b></sub></a><br /><a href="https://github.com/mepox/fitbuddy/commits?author=haseeb-xd" title="Code">💻</a></td>
       <td align="center"><a href="https://github.com/isKaled"><img src="https://avatars.githubusercontent.com/u/99230637?v=4?s=100" width="100px;" alt="isKaled"/><br /><sub><b>isKaled</b></sub></a><br /><a href="https://github.com/mepox/fitbuddy/commits?author=isKaled" title="Code">💻</a></td>
+      <td align="center"><a href="https://github.com/ujwalkumar1995"><img src="https://avatars.githubusercontent.com/u/20976813?v=4?s=100" width="100px;" alt="Ujwal Kumar"/><br /><sub><b>Ujwal Kumar</b></sub></a><br /><a href="https://github.com/mepox/fitbuddy/commits?author=ujwalkumar1995" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
