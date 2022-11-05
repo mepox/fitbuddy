@@ -71,3 +71,14 @@ https://fitbuddy-demo.herokuapp.com/
 <img src="https://mepox.github.io/projects/fitbuddy/fitbuddy_exercises.jpg" width=200>
 
 </div>
+
+## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
