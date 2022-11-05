@@ -27,7 +27,7 @@ import com.laszlojanku.fitbuddy.jpa.service.crud.ExerciseCrudService;
 public class ExerciseController {
 	
 	private final Logger logger;
-	private final ExerciseCrudService exerciseCrudService;;
+	private final ExerciseCrudService exerciseCrudService;
 	private final AppUserCrudService appUserCrudService;
 	
 	@Autowired
