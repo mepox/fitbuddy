@@ -1,8 +1,11 @@
 package com.laszlojanku.fitbuddy.jpa.service.converter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
+import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,19 +53,19 @@ public class AppUserConverterService implements TwoWayConverterService<AppUserDt
 		}
 		return null;
 	}
-
+	
+	@NotNull
 	@Override
 	public List<AppUserDto> convertAllEntity(List<AppUser> entities) {
-		List<AppUserDto> dtos = null;
+		List<AppUserDto> dtos = Collections.emptyList();
 		if (entities != null) {
 			dtos = new ArrayList<>();
 			for (AppUser appUser : entities) {
 				AppUserDto dto = convertToDto(appUser);
 				dtos.add(dto);
-			}
-			return dtos;
+			}			
 		}
-		return null;
+		return dtos;
 	}
 	
 }
