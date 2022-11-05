@@ -1,9 +1,10 @@
 <h1 align="center">FitBuddy</h1>
+
+<div align="center">
+
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
-
-<div align="center">
 
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=fitbuddy-app&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=fitbuddy-app)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=fitbuddy-app&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=fitbuddy-app)
