@@ -1,5 +1,6 @@
 package com.laszlojanku.fitbuddy.testhelper;
 
+import com.laszlojanku.fitbuddy.dto.ExerciseDto;
 import com.laszlojanku.fitbuddy.jpa.entity.AppUser;
 import com.laszlojanku.fitbuddy.jpa.entity.Exercise;
 
@@ -22,6 +23,16 @@ public class ExerciseTestHelper {
 		exercise.setName(name);
 		exercise.setAppUser(appUser);
 		return exercise;
+	}
+	
+	public static boolean isEqual(ExerciseDto exerciseDto, Exercise exercise) {
+		return (exerciseDto.getId().equals(exercise.getId()) &&
+				exerciseDto.getName().equals(exercise.getName()) &&
+				exerciseDto.getAppUserId().equals(exercise.getAppUser().getId()));
+	}
+	
+	public static boolean isEqual(Exercise exercise, ExerciseDto exerciseDto) {
+		return isEqual(exerciseDto, exercise);
 	}
 
 }

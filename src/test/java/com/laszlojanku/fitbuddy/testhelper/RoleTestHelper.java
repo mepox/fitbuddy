@@ -1,5 +1,6 @@
 package com.laszlojanku.fitbuddy.testhelper;
 
+import com.laszlojanku.fitbuddy.dto.RoleDto;
 import com.laszlojanku.fitbuddy.jpa.entity.Role;
 
 public class RoleTestHelper {
@@ -16,6 +17,15 @@ public class RoleTestHelper {
 		role.setId(id);
 		role.setName(name);
 		return role;
+	}
+	
+	public static boolean isEqual(RoleDto roleDto, Role role) {
+		return (roleDto.getId().equals(role.getId()) &&
+				roleDto.getName().equals(role.getName()));
+	}
+	
+	public static boolean isEqual(Role role, RoleDto roleDto) {
+		return isEqual(roleDto, role);
 	}
 
 }
