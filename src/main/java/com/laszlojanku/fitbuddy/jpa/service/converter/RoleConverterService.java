@@ -1,6 +1,7 @@
 package com.laszlojanku.fitbuddy.jpa.service.converter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class RoleConverterService implements TwoWayConverterService<RoleDto, Rol
 
 	@Override
 	public List<RoleDto> convertAllEntity(List<Role> entities) {
-		List<RoleDto> dtos = null;
+		List<RoleDto> dtos = Collections.emptyList();
 		if (entities != null) {
 			dtos = new ArrayList<>();
 			for (Role entity : entities) {

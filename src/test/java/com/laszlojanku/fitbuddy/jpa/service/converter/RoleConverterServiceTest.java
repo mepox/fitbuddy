@@ -2,10 +2,11 @@ package com.laszlojanku.fitbuddy.jpa.service.converter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Arrays;
 import java.util.List;
 
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,74 +14,76 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.laszlojanku.fitbuddy.dto.RoleDto;
 import com.laszlojanku.fitbuddy.jpa.entity.Role;
+import com.laszlojanku.fitbuddy.testhelper.RoleTestHelper;
 
 @ExtendWith(MockitoExtension.class)
 class RoleConverterServiceTest {
 	
 	@InjectMocks	RoleConverterService instance;
 	
+	@Nested
+	class ConvertToEntity {
+		
+		@Test
+		void whenInputIsNull_shouldReturnNull() {
+			Role actualRole = instance.convertToEntity(null);
+			
+			assertNull(actualRole);
+		}
 	
-	@Test
-	void convertToEntity_shouldReturnCorrectEntity() {
-		RoleDto roleDto = new RoleDto(1, "roleName");
-		
-		Role actualRole = instance.convertToEntity(roleDto);
-		
-		assertEquals(roleDto.getId(), actualRole.getId());
-		assertEquals(roleDto.getName(), actualRole.getName());
+		@Test
+		void whenInputIsCorrect_shouldReturnCorrectEntity() {
+			RoleDto roleDtoMock = new RoleDto(1, "roleName");
+			
+			Role actualRole = instance.convertToEntity(roleDtoMock);
+			
+			assertTrue(RoleTestHelper.isEqual(roleDtoMock, actualRole));
+		}
 	}
 	
-	@Test
-	void convertToEntity_whenInputIsNull_shouldReturnNull() {
-		Role actualRole = instance.convertToEntity(null);
+	@Nested
+	class ConvertToDto {
 		
-		assertNull(actualRole);
+		@Test
+		void whenInputIsNull_shouldReturnNull() {
+			RoleDto actualRoleDto = instance.convertToDto(null);
+			
+			assertNull(actualRoleDto);
+		}	
+	
+		@Test
+		void whenInputIsCorrect_shouldReturnCorrectDto() {
+			Role roleMock = RoleTestHelper.getMockRole();
+			
+			RoleDto actualRoleDto = instance.convertToDto(roleMock);
+			
+			assertTrue(RoleTestHelper.isEqual(roleMock, actualRoleDto));
+		}
 	}
 	
-	@Test
-	void convertToDto_shouldReturnCorrectDto() {
-		Role role = new Role();
-		role.setId(1);
-		role.setName("roleName");
+	@Nested
+	class ConvertAllEntity {
 		
-		RoleDto actualRoleDto = instance.convertToDto(role);
-		
-		assertEquals(role.getId(), actualRoleDto.getId());
-		assertEquals(role.getName(), actualRoleDto.getName());
-	}
+		@Test
+		void whenInputIsNull_shouldReturnEmptyList() {
+			List<RoleDto> actualRoleDtos = instance.convertAllEntity(null);
+			
+			assertTrue(actualRoleDtos.isEmpty());	
+		}
 	
-	@Test
-	void convertToDto_whenInputIsNull_shouldReturnNull() {
-		RoleDto actualRoleDto = instance.convertToDto(null);
-		
-		assertNull(actualRoleDto);
-	}
+		@Test
+		void whenInputIsCorrect_shouldReturnCorrectDtos() {
+			Role role1Mock = RoleTestHelper.getMockRole(1, "roleName1");
+			Role role2Mock = RoleTestHelper.getMockRole(2, "roleName2");			
+			List<Role> rolesMock = List.of(role1Mock, role2Mock);
+			
+			List<RoleDto> actualRoleDtos = instance.convertAllEntity(rolesMock);
+			
+			assertEquals(rolesMock.size(), actualRoleDtos.size());
+			assertTrue(RoleTestHelper.isEqual(rolesMock.get(0), actualRoleDtos.get(0)));
+			assertTrue(RoleTestHelper.isEqual(rolesMock.get(1), actualRoleDtos.get(1)));
+		}
 	
-	@Test
-	void convertAllEntities_shouldReturnCorrectDtos() {
-		Role role1 = new Role();
-		role1.setId(1);
-		role1.setName("roleName1");
-		Role role2 = new Role();
-		role2.setId(2);
-		role2.setName("roleName2");
-		
-		List<Role> roles = Arrays.asList(role1, role2);
-		
-		List<RoleDto> actualRoleDtos = instance.convertAllEntity(roles);
-		
-		assertEquals(roles.size(), actualRoleDtos.size());
-		assertEquals(roles.get(0).getId(), actualRoleDtos.get(0).getId());
-		assertEquals(roles.get(0).getName(), actualRoleDtos.get(0).getName());
-		assertEquals(roles.get(1).getId(), actualRoleDtos.get(1).getId());
-		assertEquals(roles.get(1).getName(), actualRoleDtos.get(1).getName());		
-	}
-	
-	@Test
-	void convertAllEntities_whenInputIsNull_shouldReturnNull() {
-		List<RoleDto> actualRoleDtos = instance.convertAllEntity(null);
-		
-		assertNull(actualRoleDtos);		
-	}
 
+	}
 }
