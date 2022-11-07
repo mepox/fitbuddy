@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +22,8 @@ import com.laszlojanku.fitbuddy.exception.FitBuddyException;
 import com.laszlojanku.fitbuddy.jpa.entity.AppUser;
 import com.laszlojanku.fitbuddy.jpa.entity.Role;
 import com.laszlojanku.fitbuddy.jpa.repository.RoleCrudRepository;
+import com.laszlojanku.fitbuddy.testhelper.AppUserTestHelper;
+import com.laszlojanku.fitbuddy.testhelper.RoleTestHelper;
 
 @ExtendWith(MockitoExtension.class)
 class AppUserConverterServiceTest {
@@ -32,6 +33,7 @@ class AppUserConverterServiceTest {
 	
 	@Nested
 	class ConvertToEntity {
+		
 		@Test
 		void whenInputIsNull_shouldReturnNull() {
 			AppUser actualAppUser = instance.convertToEntity(null);
@@ -49,26 +51,21 @@ class AppUserConverterServiceTest {
 		}
 		
 		@Test
-		void whenInputIsCorrect_shouldReturnCorrectOutput() {
-			AppUserDto appUserDtoMock = new AppUserDto(1, "name", "password", "roleName");
-			
-			Role roleMock = new Role();
-			roleMock.setId(1);
-			roleMock.setName("roleName");
+		void whenInputIsCorrect_shouldReturnCorrectEntity() {
+			AppUserDto appUserDtoMock = new AppUserDto(1, "name", "password", "roleName");			
+			Role roleMock = RoleTestHelper.getMockRole(1, "roleName");
 			
 			when(roleCrudRepository.findByName(anyString())).thenReturn(Optional.of(roleMock));
 			
 			AppUser actualAppUser = instance.convertToEntity(appUserDtoMock);
 			
-			assertEquals(appUserDtoMock.getId(), actualAppUser.getId());
-			assertEquals(appUserDtoMock.getName(), actualAppUser.getName());
-			assertEquals(appUserDtoMock.getPassword(), actualAppUser.getPassword());
-			assertEquals(appUserDtoMock.getRolename(), actualAppUser.getRole().getName());
+			assertTrue(AppUserTestHelper.isEqual(appUserDtoMock, actualAppUser));
 		}
 	}
 	
 	@Nested
 	class ConvertToDto {
+		
 		@Test
 		void whenInputIsNull_shouldReturnNull() {
 			AppUserDto actualAppUserDto = instance.convertToDto(null);
@@ -77,58 +74,36 @@ class AppUserConverterServiceTest {
 		}
 		
 		@Test
-		void whenInputIsCorrect_shouldReturnCorrectOutput() {
-			Role roleMock = new Role();
-			roleMock.setId(1);
-			roleMock.setName("roleName");
-			
-			AppUser appUserMock = new AppUser();
-			appUserMock.setId(1);
-			appUserMock.setName("name");
-			appUserMock.setPassword("password");
-			appUserMock.setRole(roleMock);
+		void whenInputIsCorrect_shouldReturnCorrectDto() {
+			Role roleMock = RoleTestHelper.getMockRole(1, "roleName");			
+			AppUser appUserMock = AppUserTestHelper.getMockAppUser(1, "name", "password", roleMock);
 			
 			AppUserDto actualAppUserDto = instance.convertToDto(appUserMock);
 			
-			assertEquals(appUserMock.getId(), actualAppUserDto.getId());
-			assertEquals(appUserMock.getName(), actualAppUserDto.getName());
-			assertEquals(appUserMock.getPassword(), actualAppUserDto.getPassword());
-			assertEquals(appUserMock.getRole().getName(), actualAppUserDto.getRolename());
+			assertTrue(AppUserTestHelper.isEqual(appUserMock, actualAppUserDto));
 		}
 	}
 	
 	@Nested
 	class ConvertAllEntity {
+		
 		@Test
-		void whenInputIsNull_shouldReturnNull() {
+		void whenInputIsNull_shouldReturnEmptyList() {
 			List<AppUserDto> actualAppUserDtos = instance.convertAllEntity(null);
 			
 			assertTrue(actualAppUserDtos.isEmpty());			
 		}
 		
 		@Test
-		void whenInputIsCorrect_shouldReturnCorrectOutput() {
-			Role roleMock = new Role();
-			roleMock.setId(1);
-			roleMock.setName("roleName");
-			
-			AppUser appUserMock = new AppUser();
-			appUserMock.setId(1);
-			appUserMock.setName("name");
-			appUserMock.setPassword("password");
-			appUserMock.setRole(roleMock);
-			
-			List<AppUser> appUserListMock = new ArrayList<>();
-			appUserListMock.add(appUserMock);
+		void whenInputIsCorrect_shouldReturnCorrectEntityList() {
+			Role roleMock = RoleTestHelper.getMockRole(1, "roleName");			
+			AppUser appUserMock = AppUserTestHelper.getMockAppUser(1, "name", "password", roleMock);			
+			List<AppUser> appUserListMock = List.of(appUserMock);
 			
 			List<AppUserDto> actualAppUserDtoListMock = instance.convertAllEntity(appUserListMock);
 			
 			assertEquals(appUserListMock.size(), actualAppUserDtoListMock.size());
-			assertEquals(appUserListMock.get(0).getId(), actualAppUserDtoListMock.get(0).getId());
-			assertEquals(appUserListMock.get(0).getName(), actualAppUserDtoListMock.get(0).getName());
-			assertEquals(appUserListMock.get(0).getPassword(), actualAppUserDtoListMock.get(0).getPassword());
-			assertEquals(appUserListMock.get(0).getRole().getName(), actualAppUserDtoListMock.get(0).getRolename());
+			assertTrue(AppUserTestHelper.isEqual(appUserListMock.get(0), actualAppUserDtoListMock.get(0)));
 		}
 	}
-
 }

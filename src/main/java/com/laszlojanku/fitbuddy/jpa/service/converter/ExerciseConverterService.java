@@ -1,6 +1,7 @@
 package com.laszlojanku.fitbuddy.jpa.service.converter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +38,7 @@ public class ExerciseConverterService implements TwoWayConverterService<Exercise
 
 	@Override
 	public List<ExerciseDto> convertAllEntity(List<Exercise> entities) {
-		List<ExerciseDto> dtos = null;
+		List<ExerciseDto> dtos = Collections.emptyList();
 		if (entities != null) {
 			dtos = new ArrayList<>();
 			for (Exercise entity : entities) {

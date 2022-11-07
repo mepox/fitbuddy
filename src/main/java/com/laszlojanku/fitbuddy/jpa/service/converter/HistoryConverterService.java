@@ -1,6 +1,7 @@
 package com.laszlojanku.fitbuddy.jpa.service.converter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +59,7 @@ public class HistoryConverterService implements TwoWayConverterService<HistoryDt
 
 	@Override
 	public List<HistoryDto> convertAllEntity(List<History> entities) {
-		List<HistoryDto> dtos = null;
+		List<HistoryDto> dtos = Collections.emptyList();
 		if (entities != null) {
 			dtos = new ArrayList<>();
 			for (History entity : entities) {

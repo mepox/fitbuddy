@@ -1,5 +1,6 @@
 package com.laszlojanku.fitbuddy.testhelper;
 
+import com.laszlojanku.fitbuddy.dto.AppUserDto;
 import com.laszlojanku.fitbuddy.jpa.entity.AppUser;
 import com.laszlojanku.fitbuddy.jpa.entity.Role;
 
@@ -24,6 +25,17 @@ public class AppUserTestHelper {
 		appUser.setPassword(password);
 		appUser.setRole(role);
 		return appUser;
+	}
+	
+	public static boolean isEqual(AppUserDto appUserDto, AppUser appUser) {
+		return (appUserDto.getId().equals(appUser.getId()) &&
+				appUserDto.getName().equals(appUser.getName()) &&
+				appUserDto.getPassword().equals(appUser.getPassword()) &&
+				appUserDto.getRolename().equals(appUser.getRole().getName()));
+	}
+	
+	public static boolean isEqual(AppUser appUser, AppUserDto appUserDto) {
+		return isEqual(appUserDto, appUser);
 	}
 	
 }
