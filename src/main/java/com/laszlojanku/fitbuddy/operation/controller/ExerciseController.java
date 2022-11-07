@@ -7,7 +7,9 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +26,7 @@ import com.laszlojanku.fitbuddy.jpa.service.crud.ExerciseCrudService;
 
 @RestController
 @RequestMapping("/user/exercises")
+@PreAuthorize("authenticated")
 public class ExerciseController {
 	
 	private final Logger logger;
@@ -39,7 +42,8 @@ public class ExerciseController {
 	}
 	
 	@PostMapping
-	public void create(Authentication auth, @Valid @RequestBody ExerciseDto exerciseDto) {		
+	public void create(@Valid @RequestBody ExerciseDto exerciseDto) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null) {
 			Integer userId = appUserCrudService.readByName(auth.getName()).getId();
 			if (userId != null) {
@@ -52,7 +56,8 @@ public class ExerciseController {
 	}
 	
 	@GetMapping	
-	public List<ExerciseDto> readAll(Authentication auth) {
+	public List<ExerciseDto> readAll() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null) {			
 			AppUserDto appUserDto =  appUserCrudService.readByName(auth.getName());						
 			if (appUserDto != null && appUserDto.getId() != null) {
@@ -65,7 +70,8 @@ public class ExerciseController {
 	}
 	
 	@PutMapping("{id}")
-	public void update(@PathVariable("id") Integer exerciseId, Authentication auth, @Valid @RequestBody ExerciseDto exerciseDto) {
+	public void update(@PathVariable("id") Integer exerciseId, @Valid @RequestBody ExerciseDto exerciseDto) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null && exerciseId != null) {
 			Integer userId = appUserCrudService.readByName(auth.getName()).getId();
 			if (userId != null) {				
@@ -78,7 +84,8 @@ public class ExerciseController {
 	}
 	
 	@DeleteMapping("{id}")
-	public void delete(@PathVariable("id") Integer exerciseId, Authentication auth) {
+	public void delete(@PathVariable("id") Integer exerciseId) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null && exerciseId != null) {
 			AppUserDto appUserDto =  appUserCrudService.readByName(auth.getName());
 			if (appUserDto != null && appUserDto.getId() != null) {

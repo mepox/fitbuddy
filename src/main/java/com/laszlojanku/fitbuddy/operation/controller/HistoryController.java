@@ -9,7 +9,9 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +28,7 @@ import com.laszlojanku.fitbuddy.jpa.service.crud.HistoryCrudService;
 
 @RestController
 @RequestMapping("/user/history")
+@PreAuthorize("authenticated")
 public class HistoryController {
 	
 	private final Logger logger;
@@ -40,7 +43,8 @@ public class HistoryController {
 	}
 	
 	@PostMapping
-	public void create(Authentication auth, @Valid @RequestBody HistoryDto historyDto) {
+	public void create(@Valid @RequestBody HistoryDto historyDto) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null) {
 			AppUserDto appUserDto = appUserCrudService.readByName(auth.getName());
 			if (appUserDto != null && appUserDto.getId() != null) {
@@ -53,7 +57,8 @@ public class HistoryController {
 	}
 	
 	@GetMapping("{date}")
-	public List<HistoryDto> readAll(@PathVariable("date") String strDate, Authentication auth) {
+	public List<HistoryDto> readAll(@PathVariable("date") String strDate) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null && strDate != null) {			
 			try {
 				LocalDate.parse(strDate);
@@ -73,7 +78,8 @@ public class HistoryController {
 	}
 	
 	@PutMapping("{id}")
-	public void update(@PathVariable("id") Integer historyId, Authentication auth, @Valid @RequestBody HistoryDto historyDto) {
+	public void update(@PathVariable("id") Integer historyId, @Valid @RequestBody HistoryDto historyDto) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null && historyId != null) {
 			AppUserDto appUserDto = appUserCrudService.readByName(auth.getName());
 			if (appUserDto != null && appUserDto.getId() != null) {				
@@ -86,7 +92,8 @@ public class HistoryController {
 	}
 	
 	@DeleteMapping("{id}")
-	public void delete(@PathVariable("id") Integer historyId, Authentication auth) {
+	public void delete(@PathVariable("id") Integer historyId) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null && historyId != null) {
 			AppUserDto appUserDto = appUserCrudService.readByName(auth.getName());
 			if (appUserDto != null && appUserDto.getId() != null) {
