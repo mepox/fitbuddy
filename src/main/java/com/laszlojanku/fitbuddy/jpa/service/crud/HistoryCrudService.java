@@ -28,6 +28,38 @@ public class HistoryCrudService extends GenericCrudService<HistoryDto, History> 
 		this.converter = converter;
 	}
 	
+	@Override
+	public HistoryDto create(HistoryDto historyDto) {
+		if (historyDto != null) {
+			historyDto.setId(null); // to make sure we are creating and not updating
+			History savedHistory = repository.save(converter.convertToEntity(historyDto));
+			return converter.convertToDto(savedHistory);			
+		}
+		return null;
+	}
+	
+	@Override
+	public HistoryDto update(Integer id, HistoryDto historyDto) {
+		HistoryDto existingHistoryDto = read(id);
+		if (existingHistoryDto != null && historyDto != null) {
+			if (historyDto.getExerciseName() != null) {
+				existingHistoryDto.setExerciseName(historyDto.getExerciseName());
+			}
+			if (historyDto.getWeight() != null) {
+				existingHistoryDto.setWeight(historyDto.getWeight());
+			}
+			if (historyDto.getReps() != null) {
+				existingHistoryDto.setReps(historyDto.getReps());
+			}
+			if (historyDto.getCreatedOn() != null) {
+				existingHistoryDto.setCreatedOn(historyDto.getCreatedOn());
+			}			
+			History savedHistory = repository.save(converter.convertToEntity(existingHistoryDto));
+			return converter.convertToDto(savedHistory);
+		}
+		return null;
+	}	
+
 	@NotNull
 	public List<HistoryDto> readMany(Integer userId, String date) {
 		List<HistoryDto> historyDto = Collections.emptyList();
@@ -38,28 +70,5 @@ public class HistoryCrudService extends GenericCrudService<HistoryDto, History> 
 		}
 		return historyDto;
 	}
-
-	@Override
-	public HistoryDto update(Integer id, HistoryDto dto) {
-		HistoryDto existingDto = read(id);
-		if (existingDto != null && dto != null) {
-			if (dto.getExerciseName() != null) {
-				existingDto.setExerciseName(dto.getExerciseName());
-			}
-			if (dto.getWeight() != null) {
-				existingDto.setWeight(dto.getWeight());
-			}
-			if (dto.getReps() != null) {
-				existingDto.setReps(dto.getReps());
-			}
-			if (dto.getCreatedOn() != null) {
-				existingDto.setCreatedOn(dto.getCreatedOn());
-			}
-			History entity = converter.convertToEntity(existingDto);			
-			repository.save(entity);
-			return existingDto;
-		}
-		return null;
-	}	
 
 }

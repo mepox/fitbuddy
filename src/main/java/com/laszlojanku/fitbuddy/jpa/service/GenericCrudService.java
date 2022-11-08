@@ -12,18 +12,6 @@ public abstract class GenericCrudService<D, E> implements CrudService<D> {
 	public GenericCrudService(CrudRepository<E, Integer> repository, TwoWayConverterService<D, E> converter) {
 		this.repository = repository;
 		this.converter = converter;
-	}	
-
-	@Override
-	public D create(D dto) {
-		if (dto != null) {
-			E entity = converter.convertToEntity(dto);
-			if (entity != null) {
-				E savedEntity = repository.save(entity);
-				return converter.convertToDto(savedEntity);
-			}
-		}
-		return null;
 	}
 
 	@Override

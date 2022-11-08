@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -98,18 +99,15 @@ class ExerciseCrudServiceTest {
 	@Test
 	void update_whenExistingExerciseIsFound_shouldReturnUpdatedExerciseDto() {
 		Exercise exerciseMock = ExerciseTestHelper.getMockExercise(1, "exerciseName");
-		ExerciseDto exerciseDtoMock = new ExerciseDto(1, "exerciseName", 11);
+		ExerciseDto exerciseDto = spy(new ExerciseDto(1, "exerciseName", 11));
 		
 		when(exerciseCrudRepository.findById(anyInt())).thenReturn(Optional.of(exerciseMock));
-		when(exerciseConverterService.convertToDto(any(Exercise.class))).thenReturn(exerciseDtoMock);
-		when(exerciseConverterService.convertToEntity(any(ExerciseDto.class))).thenReturn(exerciseMock);
+		when(exerciseConverterService.convertToDto(any(Exercise.class))).thenReturn(exerciseDto);
 		
-		ExerciseDto actualExerciseDto = instance.update(1, new ExerciseDto(1, "newExerciseName", 11));
+		instance.update(1, new ExerciseDto(1, "newExerciseName", 11));
 		
-		verify(exerciseCrudRepository).save(exerciseMock);
-		assertEquals(1, actualExerciseDto.getId());
-		assertEquals("newExerciseName", actualExerciseDto.getName());
-		assertEquals(11, actualExerciseDto.getAppUserId());
+		verify(exerciseCrudRepository).save(any());		
+		verify(exerciseDto).setName("newExerciseName");
 	}
 
 }

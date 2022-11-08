@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -84,20 +85,18 @@ class AppUserCrudServiceTest {
 	
 	@Test
 	void update_whenExistingAppUserFound_shouldReturnUpdatedAppUserDto() {
-		AppUser appUserMock = AppUserTestHelper.getMockAppUser(1, "name", "password", RoleTestHelper.getMockRole(1, "roleName"));		
-		AppUserDto appUserDtoMock = new AppUserDto(1, "name", "password", "roleName");
+		AppUser existingAppUserMock = AppUserTestHelper.getMockAppUser(1, "name", "password", RoleTestHelper.getMockRole(1, "roleName"));		
+		AppUserDto existingAppUserDto = spy(new AppUserDto(1, "name", "password", "roleName"));
 		
-		when(appUserCrudRepository.findById(anyInt())).thenReturn(Optional.of(appUserMock));
-		when(appUserConverterService.convertToDto(any(AppUser.class))).thenReturn(appUserDtoMock);
-		when(appUserConverterService.convertToEntity(any(AppUserDto.class))).thenReturn(appUserMock);
+		when(appUserCrudRepository.findById(anyInt())).thenReturn(Optional.of(existingAppUserMock));
+		when(appUserConverterService.convertToDto(any(AppUser.class))).thenReturn(existingAppUserDto);		
 		
-		AppUserDto actualAppUserDto = instance.update(1, new AppUserDto(1, "newName", "newPassword", "newRoleName"));
+		instance.update(1, new AppUserDto(1, "newName", "newPassword", "newRoleName"));
 		
-		verify(appUserCrudRepository).save(appUserMock);		
-		assertEquals(1, actualAppUserDto.getId());
-		assertEquals("newName", actualAppUserDto.getName());
-		assertEquals("newPassword", actualAppUserDto.getPassword());
-		assertEquals("newRoleName", actualAppUserDto.getRolename());
+		verify(appUserCrudRepository).save(any());		
+		verify(existingAppUserDto).setName("newName");
+		verify(existingAppUserDto).setPassword("newPassword");
+		verify(existingAppUserDto).setRolename("newRoleName");
 	}	
 
 }

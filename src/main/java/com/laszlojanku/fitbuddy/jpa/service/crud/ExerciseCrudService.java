@@ -27,6 +27,29 @@ public class ExerciseCrudService extends GenericCrudService<ExerciseDto, Exercis
 		this.converter = converter;		
 	}
 	
+	@Override
+	public ExerciseDto create(ExerciseDto exerciseDto) {
+		if (exerciseDto != null && repository.findByName(exerciseDto.getName()).isEmpty()) {
+			exerciseDto.setId(null); // to make sure we are creating and not updating
+			Exercise savedExercise = repository.save(converter.convertToEntity(exerciseDto));
+			return converter.convertToDto(savedExercise);
+		}
+		return null;
+	}
+	
+	@Override
+	public ExerciseDto update(Integer id, ExerciseDto exerciseDto) {
+		ExerciseDto existingDto = read(id);
+		if (existingDto != null && exerciseDto != null && repository.findByName(exerciseDto.getName()).isEmpty()) {
+			if (exerciseDto.getName() != null) {
+				existingDto.setName(exerciseDto.getName());
+			}
+			Exercise savedExercise = repository.save(converter.convertToEntity(existingDto));
+			return converter.convertToDto(savedExercise);
+		}
+		return null;
+	}
+
 	@NotNull	
 	public List<ExerciseDto> readMany(Integer userId) {
 		List<ExerciseDto> exerciseDtos = Collections.emptyList();
@@ -38,19 +61,5 @@ public class ExerciseCrudService extends GenericCrudService<ExerciseDto, Exercis
 	
 		return exerciseDtos;
 	}
-
-	@Override
-	public ExerciseDto update(Integer id, ExerciseDto dto) {
-		ExerciseDto existingDto = read(id);
-		if (existingDto != null && dto != null) {
-			if (dto.getName() != null) {
-				existingDto.setName(dto.getName());
-			}
-			Exercise entity = converter.convertToEntity(existingDto);
-			repository.save(entity);
-			return existingDto;
-		}
-		return null;
-	}
-
+	
 }

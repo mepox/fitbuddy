@@ -14,37 +14,46 @@ import com.laszlojanku.fitbuddy.jpa.service.converter.RoleConverterService;
 @Service
 public class RoleCrudService extends GenericCrudService<RoleDto, Role> {
 	
-	private final RoleCrudRepository roleCrudRepository;
-	private final RoleConverterService roleConverterService;
+	private final RoleCrudRepository repository;
+	private final RoleConverterService converter;
 	
 	@Autowired
-	public RoleCrudService(RoleCrudRepository roleCrudRepository, RoleConverterService roleConverterService) {
-		super(roleCrudRepository, roleConverterService);
-		this.roleCrudRepository = roleCrudRepository;
-		this.roleConverterService = roleConverterService;
+	public RoleCrudService(RoleCrudRepository repository, RoleConverterService converter) {
+		super(repository, converter);
+		this.repository = repository;
+		this.converter = converter;
 	}
 	
+	@Override
+	public RoleDto create(RoleDto roleDto) {
+		if (roleDto != null && repository.findByName(roleDto.getName()).isEmpty()) {
+			roleDto.setId(null); // to make sure we are creating and not updating
+			Role savedRole = repository.save(converter.convertToEntity(roleDto));
+			return converter.convertToDto(savedRole);			
+		}
+		return null;
+	}
+	
+	@Override
+	public RoleDto update(Integer id, RoleDto roleDto) {
+		RoleDto existingRoleDto = read(id);
+		if (existingRoleDto != null && roleDto != null && repository.findByName(roleDto.getName()).isEmpty()) {
+			if (roleDto.getName() != null) {
+				existingRoleDto.setName(roleDto.getName());
+			}			
+			Role savedRole = repository.save(converter.convertToEntity(existingRoleDto));
+			return converter.convertToDto(savedRole);
+		}
+		return null;
+	}
+
 	public RoleDto readByName(String name) {
-		Optional<Role> role = roleCrudRepository.findByName(name);
+		Optional<Role> role = repository.findByName(name);
 		if (role.isPresent()) {
-			return roleConverterService.convertToDto(role.get());			
+			return converter.convertToDto(role.get());			
 		} else {
 			return null;
 		}
-	}
-
-	@Override
-	public RoleDto update(Integer id, RoleDto dto) {
-		RoleDto existingDto = read(id);
-		if (existingDto != null && dto != null) {
-			if (dto.getName() != null) {
-				existingDto.setName(dto.getName());
-			}
-			Role role = roleConverterService.convertToEntity(existingDto);
-			roleCrudRepository.save(role);
-			return existingDto;
-		}
-		return null;
 	}
 
 }
