@@ -61,6 +61,10 @@ username: user
 password: user
 ```
 
+## Contributing
+
+Please view the [Contributing guidelines](https://github.com/mepox/fitbuddy/blob/main/CONTRIBUTING.md) how can you contribute to this project.
+
 ## Live demo
 
 https://fitbuddy-demo.herokuapp.com/
