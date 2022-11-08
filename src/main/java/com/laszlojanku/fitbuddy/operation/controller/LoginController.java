@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.laszlojanku.fitbuddy.dto.LoginDto;
 import com.laszlojanku.fitbuddy.operation.service.LoginService;
 
+import javax.validation.Valid;
+
 /**
  * Handles the client's REST API requests that are related to logging in.
  */
@@ -26,7 +28,7 @@ public class LoginController {
 	}
 		
 	@PostMapping("/login/perform_login")
-	public void login(@RequestBody LoginDto loginDto) {
+	public void login(@Valid @RequestBody LoginDto loginDto) {
 		logger.info("Trying to log in: {}", loginDto);
 		loginService.login(loginDto.getName(), loginDto.getPassword());
 	}
