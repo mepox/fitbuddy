@@ -14,43 +14,51 @@ import com.laszlojanku.fitbuddy.jpa.service.converter.AppUserConverterService;
 @Service
 public class AppUserCrudService extends GenericCrudService<AppUserDto, AppUser> {
 	
-	private final AppUserCrudRepository userRepository;
+	private final AppUserCrudRepository repository;
 	private final AppUserConverterService converter;
 	
 	@Autowired
-	public AppUserCrudService(AppUserCrudRepository userRepository, AppUserConverterService converter) {
-		super(userRepository, converter);
-		this.userRepository = userRepository;
+	public AppUserCrudService(AppUserCrudRepository repository, AppUserConverterService converter) {
+		super(repository, converter);
+		this.repository = repository;
 		this.converter = converter;
 	}
 	
+	@Override
+	public AppUserDto create(AppUserDto appUserDto) {
+		if (appUserDto != null && repository.findByName(appUserDto.getName()).isEmpty()) {			
+			AppUser savedAppUser = repository.save(converter.convertToEntity(appUserDto));
+			return converter.convertToDto(savedAppUser);			
+		}
+		return null;
+	}
+	
+	@Override
+	public AppUserDto update(Integer id, AppUserDto appUserDto) {
+		AppUserDto existingAppUserDto = read(id);
+		if (existingAppUserDto != null && appUserDto != null && repository.findByName(appUserDto.getName()).isEmpty()) {
+			if (appUserDto.getName() != null) {
+				existingAppUserDto.setName(appUserDto.getName());
+			}
+			if (appUserDto.getPassword() != null) {
+				existingAppUserDto.setPassword(appUserDto.getPassword());
+			}
+			if (appUserDto.getRolename() != null) {
+				existingAppUserDto.setRolename(appUserDto.getRolename());
+			}			
+			AppUser savedAppUser = repository.save(converter.convertToEntity(existingAppUserDto));
+			return converter.convertToDto(savedAppUser);
+		}
+		return null;
+	}
+
 	public AppUserDto readByName(String name) {
-		Optional<AppUser> appUser =	userRepository.findByName(name);
+		Optional<AppUser> appUser =	repository.findByName(name);
 		if (appUser.isPresent()) {
 			return converter.convertToDto(appUser.get());			
 		} else {
 			return null;
 		}
-	}
-
-	@Override
-	public AppUserDto update(Integer id, AppUserDto dto) {
-		AppUserDto existingDto = read(id);
-		if (existingDto != null && dto != null) {
-			if (dto.getName() != null) {
-				existingDto.setName(dto.getName());
-			}
-			if (dto.getPassword() != null) {
-				existingDto.setPassword(dto.getPassword());
-			}
-			if (dto.getRolename() != null) {
-				existingDto.setRolename(dto.getRolename());
-			}
-			AppUser appUser = converter.convertToEntity(existingDto);
-			userRepository.save(appUser);
-			return existingDto;
-		}
-		return null;
 	}
 	
 }
