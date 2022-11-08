@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -89,19 +90,16 @@ class HistoryCrudServiceTest {
 	@Test
 	void update_whenExistingHistoryFound_shouldReturnUpdatedHistoryDto() {
 		History historyMock = HistoryTestHelper.getMockHistory();
-		HistoryDto historyDtoMock = new HistoryDto(1, 11, "exerciseName", 111, 1111, "01-01-2022");
+		HistoryDto historyDto = spy(new HistoryDto(1, 11, "exerciseName", 111, 1111, "01-01-2022"));
 		
 		when(historyCrudRepository.findById(anyInt())).thenReturn(Optional.of(historyMock));
-		when(historyConverterService.convertToDto(any(History.class))).thenReturn(historyDtoMock);
-		when(historyConverterService.convertToEntity(any(HistoryDto.class))).thenReturn(historyMock);
+		when(historyConverterService.convertToDto(any(History.class))).thenReturn(historyDto);
 		
-		HistoryDto actualHistoryDto = instance.update(1, new HistoryDto(1, 11, "newExerciseName", 222, 2222, "02-02-2022"));
+		instance.update(1, new HistoryDto(1, 11, "newExerciseName", 222, 2222, "02-02-2022"));
 		
-		verify(historyCrudRepository).save(historyMock);
-		assertEquals("newExerciseName", actualHistoryDto.getExerciseName());
-		assertEquals(222, actualHistoryDto.getWeight());
-		assertEquals(2222, actualHistoryDto.getReps());
-		assertEquals("02-02-2022", actualHistoryDto.getCreatedOn());
+		verify(historyCrudRepository).save(any());		
+		verify(historyDto).setWeight(222);
+		verify(historyDto).setReps(2222);
+		verify(historyDto).setCreatedOn("02-02-2022");		
 	}
-
 }

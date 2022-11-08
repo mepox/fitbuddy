@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -87,17 +88,14 @@ class RoleCrudServiceTest {
 	@Test
 	void update_whenExistingRoleFound_shouldReturnUpdatedRoleDto() {
 		Role roleMock = RoleTestHelper.getMockRole(1, "oldName");		
-		RoleDto roleDtoMock = new RoleDto(1, "oldName");
+		RoleDto roleDto = spy(new RoleDto(1, "oldName"));
 		
 		when(roleCrudRepository.findById(anyInt())).thenReturn(Optional.of(roleMock));
-		when(roleConverterService.convertToDto(any(Role.class))).thenReturn(roleDtoMock);
-		when(roleConverterService.convertToEntity(any(RoleDto.class))).thenReturn(roleMock);
+		when(roleConverterService.convertToDto(any(Role.class))).thenReturn(roleDto);		
 		
-		RoleDto actualRoleDto = instance.update(1, new RoleDto(1, "newRoleName"));
+		instance.update(1, new RoleDto(1, "newRoleName"));
 		
-		verify(roleCrudRepository).save(roleMock);		
-		assertEquals(1, actualRoleDto.getId());
-		assertEquals("newRoleName", actualRoleDto.getName());
+		verify(roleCrudRepository).save(any());
+		verify(roleDto).setName("newRoleName");
 	}
-
 }

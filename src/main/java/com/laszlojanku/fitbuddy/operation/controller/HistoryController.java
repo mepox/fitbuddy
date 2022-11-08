@@ -45,11 +45,10 @@ public class HistoryController {
 	@PostMapping
 	public void create(@Valid @RequestBody HistoryDto historyDto) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (auth != null) {
-			AppUserDto appUserDto = appUserCrudService.readByName(auth.getName());
-			if (appUserDto != null && appUserDto.getId() != null) {
-				historyDto.setId(null);
-				historyDto.setAppUserId(appUserDto.getId());
+		if (auth != null) {			
+			Integer userId = appUserCrudService.readByName(auth.getName()).getId();
+			if (userId != null) {				
+				historyDto.setAppUserId(userId);
 				historyCrudService.create(historyDto);
 				logger.info("Creating new history: {}", historyDto);
 			}
