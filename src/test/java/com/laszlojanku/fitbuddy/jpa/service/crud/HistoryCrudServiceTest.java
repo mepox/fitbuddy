@@ -97,8 +97,7 @@ class HistoryCrudServiceTest {
 		
 		instance.update(1, new HistoryDto(1, 11, "newExerciseName", 222, 2222, "02-02-2022"));
 		
-		verify(historyCrudRepository).save(any());
-		verify(historyDto).setExerciseName("newExerciseName");
+		verify(historyCrudRepository).save(any());		
 		verify(historyDto).setWeight(222);
 		verify(historyDto).setReps(2222);
 		verify(historyDto).setCreatedOn("02-02-2022");		
