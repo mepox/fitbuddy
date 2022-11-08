@@ -46,8 +46,7 @@ public class ExerciseController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null) {
 			Integer userId = appUserCrudService.readByName(auth.getName()).getId();
-			if (userId != null) {
-				exerciseDto.setId(null);
+			if (userId != null) {				
 				exerciseDto.setAppUserId(userId);	
 				exerciseCrudService.create(exerciseDto);
 				logger.info("Creating new exercise: {}", exerciseDto);

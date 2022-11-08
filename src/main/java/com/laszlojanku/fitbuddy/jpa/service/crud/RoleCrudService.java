@@ -26,7 +26,8 @@ public class RoleCrudService extends GenericCrudService<RoleDto, Role> {
 	
 	@Override
 	public RoleDto create(RoleDto roleDto) {
-		if (roleDto != null && repository.findByName(roleDto.getName()).isEmpty()) {			
+		if (roleDto != null && repository.findByName(roleDto.getName()).isEmpty()) {
+			roleDto.setId(null); // to make sure we are creating and not updating
 			Role savedRole = repository.save(converter.convertToEntity(roleDto));
 			return converter.convertToDto(savedRole);			
 		}

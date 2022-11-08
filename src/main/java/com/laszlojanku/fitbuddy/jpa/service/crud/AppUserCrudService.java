@@ -26,7 +26,8 @@ public class AppUserCrudService extends GenericCrudService<AppUserDto, AppUser> 
 	
 	@Override
 	public AppUserDto create(AppUserDto appUserDto) {
-		if (appUserDto != null && repository.findByName(appUserDto.getName()).isEmpty()) {			
+		if (appUserDto != null && repository.findByName(appUserDto.getName()).isEmpty()) {	
+			appUserDto.setId(null); // to make sure we are creating and not updating
 			AppUser savedAppUser = repository.save(converter.convertToEntity(appUserDto));
 			return converter.convertToDto(savedAppUser);			
 		}

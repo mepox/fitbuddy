@@ -30,7 +30,8 @@ public class HistoryCrudService extends GenericCrudService<HistoryDto, History> 
 	
 	@Override
 	public HistoryDto create(HistoryDto historyDto) {
-		if (historyDto != null) {			
+		if (historyDto != null) {
+			historyDto.setId(null); // to make sure we are creating and not updating
 			History savedHistory = repository.save(converter.convertToEntity(historyDto));
 			return converter.convertToDto(savedHistory);			
 		}

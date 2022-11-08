@@ -29,7 +29,8 @@ public class ExerciseCrudService extends GenericCrudService<ExerciseDto, Exercis
 	
 	@Override
 	public ExerciseDto create(ExerciseDto exerciseDto) {
-		if (exerciseDto != null && repository.findByName(exerciseDto.getName()).isEmpty()) {			
+		if (exerciseDto != null && repository.findByName(exerciseDto.getName()).isEmpty()) {
+			exerciseDto.setId(null); // to make sure we are creating and not updating
 			Exercise savedExercise = repository.save(converter.convertToEntity(exerciseDto));
 			return converter.convertToDto(savedExercise);
 		}
