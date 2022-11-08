@@ -41,10 +41,7 @@ public class HistoryCrudService extends GenericCrudService<HistoryDto, History> 
 	@Override
 	public HistoryDto update(Integer id, HistoryDto historyDto) {
 		HistoryDto existingHistoryDto = read(id);
-		if (existingHistoryDto != null && historyDto != null) {
-			if (historyDto.getExerciseName() != null) {
-				existingHistoryDto.setExerciseName(historyDto.getExerciseName());
-			}
+		if (existingHistoryDto != null && historyDto != null) {			
 			if (historyDto.getWeight() != null) {
 				existingHistoryDto.setWeight(historyDto.getWeight());
 			}
