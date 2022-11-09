@@ -45,40 +45,35 @@ public class ExerciseController {
 	@PostMapping
 	public void create(@Valid @RequestBody ExerciseDto exerciseDto) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (auth != null) {
 			Integer userId = appUserCrudService.readByName(auth.getName()).getId();
 			if (userId != null) {				
 				exerciseDto.setAppUserId(userId);	
 				exerciseCrudService.create(exerciseDto);
 				logger.info("Creating new exercise: {}", exerciseDto);
 			}			
-		}	
 	}
 	
 	@GetMapping	
 	public List<ExerciseDto> readAll() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (auth != null) {			
-			AppUserDto appUserDto =  appUserCrudService.readByName(auth.getName());						
+			AppUserDto appUserDto =  appUserCrudService.readByName(auth.getName());
 			if (appUserDto != null && appUserDto.getId() != null) {
 				List<ExerciseDto> dtos = exerciseCrudService.readMany(appUserDto.getId());
 				logger.info("Sending a list of exercises.");
 				return dtos;
 			}
-		}
 		return null;
 	}
 	
 	@PutMapping("{id}")
 	public void update(@PathVariable("id") Integer exerciseId, @Valid @RequestBody ExerciseDto exerciseDto) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (auth != null && exerciseId != null) {
+		if (exerciseId != null) {
 			Integer userId = appUserCrudService.readByName(auth.getName()).getId();
 			if (userId != null) {				
 				exerciseDto.setAppUserId(userId);
 				exerciseCrudService.update(exerciseId, exerciseDto);	
 				logger.info("Updating the exercise: {}", exerciseDto);
-				
 			}
 		}
 	}
@@ -86,7 +81,7 @@ public class ExerciseController {
 	@DeleteMapping("{id}")
 	public void delete(@PathVariable("id") Integer exerciseId) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (auth != null && exerciseId != null) {
+		if (exerciseId != null) {
 			AppUserDto appUserDto =  appUserCrudService.readByName(auth.getName());
 			if (appUserDto != null && appUserDto.getId() != null) {
 				ExerciseDto exerciseDto = exerciseCrudService.read(exerciseId);				
