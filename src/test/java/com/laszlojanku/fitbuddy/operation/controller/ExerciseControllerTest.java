@@ -190,14 +190,14 @@ class ExerciseControllerTest {
 		
 		@Test
 		@WithMockUser(authorities = {"USER", "ADMIN"})
-		void whenAppUserIdDoesntMatch_shouldShouldntDelete() throws Exception {
+		void whenAppUserIdDoesntMatch_shouldReturnBadRequest() throws Exception {
 			AppUserDto appUserDtoMock = new AppUserDto(11, "name", "password", "roleName");
 			ExerciseDto exerciseDtoMock = new ExerciseDto(1, "exerciseName", 22);
 			
 			when(appUserCrudService.readByName(anyString())).thenReturn(appUserDtoMock);
 			when(exerciseCrudService.read(anyInt())).thenReturn(exerciseDtoMock);
 			
-			mockMvc.perform(delete(API_PATH + "/1")).andExpect(status().isOk());
+			mockMvc.perform(delete(API_PATH + "/1")).andExpect(status().isBadRequest());
 			
 			verify(exerciseCrudService, times(0)).delete(anyInt());
 		}
