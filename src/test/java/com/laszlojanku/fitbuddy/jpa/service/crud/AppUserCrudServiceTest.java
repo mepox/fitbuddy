@@ -33,6 +33,40 @@ class AppUserCrudServiceTest {
 	@Mock	AppUserConverterService appUserConverterService;
 	
 	@Nested
+	class Create {
+		
+		@Test
+		void whenAppUserDtoIsNull_shouldReturnNull() {
+			AppUserDto actualAppUserDto = instance.create(null);
+			
+			assertNull(actualAppUserDto);
+		}
+		
+		@Test
+		void whenNameAlreadyExists_shouldReturnNull() {
+			AppUser appUserMock = AppUserTestHelper.getMockAppUser();
+			
+			when(appUserCrudRepository.findByName(anyString())).thenReturn(Optional.of(appUserMock));
+			
+			AppUserDto actualAppUserDto = instance.create(new AppUserDto(1, "name", "password", "roleName"));
+			
+			assertNull(actualAppUserDto);
+		}
+		
+		@Test
+		void whenCorrectInput_shouldCallSave() {
+			AppUserDto appUserDtoSpy = spy(new AppUserDto(1, "name", "password", "roleName"));
+			
+			when(appUserCrudRepository.findByName(anyString())).thenReturn(Optional.empty());
+			
+			instance.create(appUserDtoSpy);
+			
+			verify(appUserDtoSpy).setId(null);
+			verify(appUserCrudRepository).save(any());
+		}
+	}
+	
+	@Nested
 	class Update {
 		
 		@Test

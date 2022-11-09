@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -31,7 +32,41 @@ class ExerciseCrudServiceTest {
 	
 	@InjectMocks	ExerciseCrudService instance;
 	@Mock	ExerciseCrudRepository exerciseCrudRepository;
-	@Mock	ExerciseConverterService exerciseConverterService; 
+	@Mock	ExerciseConverterService exerciseConverterService;
+	
+	@Nested
+	class Create {
+		
+		@Test
+		void whenExerciseDtoIsNull_shouldReturnNull() {
+			ExerciseDto actualExerciseDto = instance.create(null);
+			
+			assertNull(actualExerciseDto);
+		}
+		
+		@Test
+		void whenExerciseNameAlreadyExists_shouldReturnNull() {
+			Exercise exerciseMock = ExerciseTestHelper.getMockExercise();
+			
+			when(exerciseCrudRepository.findByName(anyString())).thenReturn(Optional.of(exerciseMock));
+			
+			ExerciseDto actualExerciseDto = instance.create(new ExerciseDto(1, "exerciseName", 11));
+			
+			assertNull(actualExerciseDto);
+		}
+		
+		@Test
+		void whenCorrectInput_shouldCallSave() {
+			ExerciseDto exerciseDtoSpy = spy(new ExerciseDto(1, "exerciseName", 11));
+			
+			when(exerciseCrudRepository.findByName(anyString())).thenReturn(Optional.empty());
+			
+			instance.create(exerciseDtoSpy);
+			
+			verify(exerciseDtoSpy).setId(null);
+			verify(exerciseCrudRepository).save(any());
+		}
+	}
 	
 	@Nested
 	class Update {

@@ -34,6 +34,27 @@ class HistoryCrudServiceTest {
 	@Mock	HistoryConverterService historyConverterService;
 	
 	@Nested
+	class Create {
+		
+		@Test
+		void whenHistoryDtoIsNull_shouldReturnNull() {
+			HistoryDto actualHistoryDto = instance.create(null);
+			
+			assertNull(actualHistoryDto);
+		}
+		
+		@Test
+		void whenCorrectInput_shouldCallSave() {
+			HistoryDto historyDtoSpy = spy(new HistoryDto(1, 11, "exerciseName", 111, 1111, "01-01-2022"));
+			
+			instance.create(historyDtoSpy);
+			
+			verify(historyDtoSpy).setId(null);
+			verify(historyCrudRepository).save(any());
+		}
+	}
+	
+	@Nested
 	class Update {
 		
 		@Test

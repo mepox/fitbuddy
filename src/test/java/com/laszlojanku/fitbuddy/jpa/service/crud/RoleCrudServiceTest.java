@@ -32,6 +32,40 @@ class RoleCrudServiceTest {
 	@Mock	RoleConverterService roleConverterService;
 	
 	@Nested
+	class Create {
+		
+		@Test
+		void whenRoleDtoIsNull_shouldReturnNull() {
+			RoleDto actualRoleDto = instance.create(null);
+			
+			assertNull(actualRoleDto);
+		}
+		
+		@Test
+		void whenRoleNameAlreadyExists_shouldReturnNull() {
+			Role roleMock = RoleTestHelper.getMockRole();
+			
+			when(roleCrudRepository.findByName(anyString())).thenReturn(Optional.of(roleMock));
+			
+			RoleDto actualRoleDto = instance.create(new RoleDto(1, "roleName"));
+			
+			assertNull(actualRoleDto);			
+		}
+		
+		@Test
+		void whenCorrectInput_shouldCallSave() {
+			RoleDto roleDtoSpy = spy(new RoleDto(1, "roleName"));
+			
+			when(roleCrudRepository.findByName(anyString())).thenReturn(Optional.empty());
+			
+			instance.create(roleDtoSpy);
+			
+			verify(roleDtoSpy).setId(null);
+			verify(roleCrudRepository).save(any());
+		}
+	}
+	
+	@Nested
 	class Update {
 		
 		@Test 
