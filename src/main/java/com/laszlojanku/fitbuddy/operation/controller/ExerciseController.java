@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.laszlojanku.fitbuddy.dto.AppUserDto;
 import com.laszlojanku.fitbuddy.dto.ExerciseDto;
+import com.laszlojanku.fitbuddy.exception.FitBuddyException;
 import com.laszlojanku.fitbuddy.jpa.service.crud.AppUserCrudService;
 import com.laszlojanku.fitbuddy.jpa.service.crud.ExerciseCrudService;
 
@@ -92,6 +93,8 @@ public class ExerciseController {
 				if (exerciseDto != null && exerciseDto.getAppUserId().equals(appUserDto.getId())) {
 					exerciseCrudService.delete(exerciseId);
 					logger.info("Deleting exercise: {}", exerciseDto);
+				} else {
+					throw new FitBuddyException("UserIds doesn't match. Cannot delete others History.");
 				}
 			}
 		}
