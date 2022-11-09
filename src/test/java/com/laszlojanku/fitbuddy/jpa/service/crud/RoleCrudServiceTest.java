@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,72 +31,80 @@ class RoleCrudServiceTest {
 	@Mock	RoleCrudRepository roleCrudRepository;
 	@Mock	RoleConverterService roleConverterService;
 	
-	@Test
-	void readByName_whenRoleNotFound_shouldReturnNull() {
-		when(roleCrudRepository.findByName(anyString())).thenReturn(Optional.empty());
+	@Nested
+	class Update {
 		
-		RoleDto actualRoleDto = instance.readByName("roleName");
+		@Test 
+		void update_whenIdIsNull_shouldReturnNull() {
+			RoleDto actualRoleDto = instance.update(null, new RoleDto(1, "roleName"));
+			
+			assertNull(actualRoleDto);
+		}
 		
-		assertNull(actualRoleDto);
+		
+		@Test
+		void update_whenRoleDtoIsNull_shouldReturnNull() {
+			Role roleMock = RoleTestHelper.getMockRole(1, "roleName");
+			RoleDto roleDtoMock = new RoleDto(1, "roleName");
+			
+			when(roleCrudRepository.findById(anyInt())).thenReturn(Optional.of(roleMock));
+			when(roleConverterService.convertToDto(any(Role.class))).thenReturn(roleDtoMock);		
+			
+			RoleDto actualRoleDto = instance.update(1, null);
+			
+			assertNull(actualRoleDto);
+		}
+		
+		@Test
+		void update_whenExistingRoleNotFound_shouldReturnNull() {
+			RoleDto newRoleDtoMock = new RoleDto(1, "newName");
+			
+			when(roleCrudRepository.findById(anyInt())).thenReturn(Optional.empty());
+			
+			RoleDto actualRoleDto = instance.update(1, newRoleDtoMock);
+			
+			assertNull(actualRoleDto);
+		}
+		
+		@Test
+		void update_whenExistingRoleFound_shouldReturnUpdatedRoleDto() {
+			Role roleMock = RoleTestHelper.getMockRole(1, "oldName");		
+			RoleDto roleDto = spy(new RoleDto(1, "oldName"));
+			
+			when(roleCrudRepository.findById(anyInt())).thenReturn(Optional.of(roleMock));
+			when(roleConverterService.convertToDto(any(Role.class))).thenReturn(roleDto);		
+			
+			instance.update(1, new RoleDto(1, "newRoleName"));
+			
+			verify(roleCrudRepository).save(any());
+			verify(roleDto).setName("newRoleName");
+		}		
 	}
 	
-	@Test
-	void readByname_whenRoleFound_shouldReturnRoleDto() {
-		Role roleMock = RoleTestHelper.getMockRole(1, "roleName");		
-		RoleDto roleDtoMock = new RoleDto(1, "roleName");
+	@Nested
+	class ReadByName {
 		
-		when(roleCrudRepository.findByName(anyString())).thenReturn(Optional.of(roleMock));
-		when(roleConverterService.convertToDto(any(Role.class))).thenReturn(roleDtoMock);
+		@Test
+		void readByName_whenRoleNotFound_shouldReturnNull() {
+			when(roleCrudRepository.findByName(anyString())).thenReturn(Optional.empty());
+			
+			RoleDto actualRoleDto = instance.readByName("roleName");
+			
+			assertNull(actualRoleDto);
+		}
 		
-		RoleDto actualRoleDto = instance.readByName("roleName");
-		
-		assertEquals(roleDtoMock.getId(), actualRoleDto.getId());
-		assertEquals(roleDtoMock.getName(), actualRoleDto.getName());
-	}
-	
-	@Test 
-	void update_whenIdIsNull_shouldReturnNull() {
-		RoleDto actualRoleDto = instance.update(null, new RoleDto(1, "roleName"));
-		
-		assertNull(actualRoleDto);
-	}
-	
-	
-	@Test
-	void update_whenRoleDtoIsNull_shouldReturnNull() {
-		Role roleMock = RoleTestHelper.getMockRole(1, "roleName");
-		RoleDto roleDtoMock = new RoleDto(1, "roleName");
-		
-		when(roleCrudRepository.findById(anyInt())).thenReturn(Optional.of(roleMock));
-		when(roleConverterService.convertToDto(any(Role.class))).thenReturn(roleDtoMock);		
-		
-		RoleDto actualRoleDto = instance.update(1, null);
-		
-		assertNull(actualRoleDto);
-	}
-	
-	@Test
-	void update_whenExistingRoleNotFound_shouldReturnNull() {
-		RoleDto newRoleDtoMock = new RoleDto(1, "newName");
-		
-		when(roleCrudRepository.findById(anyInt())).thenReturn(Optional.empty());
-		
-		RoleDto actualRoleDto = instance.update(1, newRoleDtoMock);
-		
-		assertNull(actualRoleDto);
-	}
-	
-	@Test
-	void update_whenExistingRoleFound_shouldReturnUpdatedRoleDto() {
-		Role roleMock = RoleTestHelper.getMockRole(1, "oldName");		
-		RoleDto roleDto = spy(new RoleDto(1, "oldName"));
-		
-		when(roleCrudRepository.findById(anyInt())).thenReturn(Optional.of(roleMock));
-		when(roleConverterService.convertToDto(any(Role.class))).thenReturn(roleDto);		
-		
-		instance.update(1, new RoleDto(1, "newRoleName"));
-		
-		verify(roleCrudRepository).save(any());
-		verify(roleDto).setName("newRoleName");
+		@Test
+		void readByname_whenRoleFound_shouldReturnRoleDto() {
+			Role roleMock = RoleTestHelper.getMockRole(1, "roleName");		
+			RoleDto roleDtoMock = new RoleDto(1, "roleName");
+			
+			when(roleCrudRepository.findByName(anyString())).thenReturn(Optional.of(roleMock));
+			when(roleConverterService.convertToDto(any(Role.class))).thenReturn(roleDtoMock);
+			
+			RoleDto actualRoleDto = instance.readByName("roleName");
+			
+			assertEquals(roleDtoMock.getId(), actualRoleDto.getId());
+			assertEquals(roleDtoMock.getName(), actualRoleDto.getName());
+		}		
 	}
 }

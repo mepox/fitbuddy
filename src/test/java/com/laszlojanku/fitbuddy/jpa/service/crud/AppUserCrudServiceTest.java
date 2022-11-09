@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,72 +32,79 @@ class AppUserCrudServiceTest {
 	@Mock	AppUserCrudRepository appUserCrudRepository;
 	@Mock	AppUserConverterService appUserConverterService;
 	
-	@Test
-	void readByName_whenNameIsNull_shouldReturnNull() {
-		AppUserDto actualAppUserDto = instance.readByName(null);
+	@Nested
+	class Update {
 		
-		assertNull(actualAppUserDto);		
+		@Test
+		void update_whenIdIsNull_shouldReturnNull() {
+			AppUserDto actualAppUserDto = instance.update(null, new AppUserDto(1, "name", "password", "roleName"));
+			
+			assertNull(actualAppUserDto);
+		}
+		
+		@Test
+		void update_whenAppUserDtoIsNull_shouldReturnNull() {
+			AppUserDto actualAppUserDto = instance.update(1, null);
+			
+			assertNull(actualAppUserDto);
+		}
+		
+		@Test
+		void update_whenExistingAppUserNotFound_shouldReturnNull() {
+			when(appUserCrudRepository.findById(anyInt())).thenReturn(Optional.empty());
+			
+			AppUserDto actualAppUserDto = instance.update(1, new AppUserDto(1, "name", "password", "roleName"));
+			
+			assertNull(actualAppUserDto);
+		}
+		
+		@Test
+		void update_whenExistingAppUserFound_shouldReturnUpdatedAppUserDto() {
+			AppUser existingAppUserMock = AppUserTestHelper.getMockAppUser(1, "name", "password", RoleTestHelper.getMockRole(1, "roleName"));		
+			AppUserDto existingAppUserDto = spy(new AppUserDto(1, "name", "password", "roleName"));
+			
+			when(appUserCrudRepository.findById(anyInt())).thenReturn(Optional.of(existingAppUserMock));
+			when(appUserConverterService.convertToDto(any(AppUser.class))).thenReturn(existingAppUserDto);		
+			
+			instance.update(1, new AppUserDto(1, "newName", "newPassword", "newRoleName"));
+			
+			verify(appUserCrudRepository).save(any());		
+			verify(existingAppUserDto).setName("newName");
+			verify(existingAppUserDto).setPassword("newPassword");
+			verify(existingAppUserDto).setRolename("newRoleName");
+		}		
 	}
 	
-	@Test
-	void readByName_whenAppUserNotFound_shouldReturnNull() {
-		when(appUserCrudRepository.findByName(anyString())).thenReturn(Optional.empty());
+	@Nested
+	class ReadByName {
 		
-		AppUserDto actualAppUserDto = instance.readByName("name");
+		@Test
+		void readByName_whenNameIsNull_shouldReturnNull() {
+			AppUserDto actualAppUserDto = instance.readByName(null);
+			
+			assertNull(actualAppUserDto);		
+		}
 		
-		assertNull(actualAppUserDto);
+		@Test
+		void readByName_whenAppUserNotFound_shouldReturnNull() {
+			when(appUserCrudRepository.findByName(anyString())).thenReturn(Optional.empty());
+			
+			AppUserDto actualAppUserDto = instance.readByName("name");
+			
+			assertNull(actualAppUserDto);
+		}
+		
+		@Test
+		void readByName_whenAppUserFound_shouldReturnAppUserDto() {
+			AppUser appUserMock = AppUserTestHelper.getMockAppUser(1, "name", "password");
+			AppUserDto appUserDtoMock = new AppUserDto(1, "name", "password", "roleName");
+			
+			when(appUserCrudRepository.findByName(anyString())).thenReturn(Optional.of(appUserMock));
+			when(appUserConverterService.convertToDto(any(AppUser.class))).thenReturn(appUserDtoMock);
+			
+			AppUserDto actualAppUserDto = instance.readByName("name");
+			
+			assertEquals(appUserDtoMock, actualAppUserDto);
+		}
 	}
-	
-	@Test
-	void readByName_whenAppUserFound_shouldReturnAppUserDto() {
-		AppUser appUserMock = AppUserTestHelper.getMockAppUser(1, "name", "password");
-		AppUserDto appUserDtoMock = new AppUserDto(1, "name", "password", "roleName");
-		
-		when(appUserCrudRepository.findByName(anyString())).thenReturn(Optional.of(appUserMock));
-		when(appUserConverterService.convertToDto(any(AppUser.class))).thenReturn(appUserDtoMock);
-		
-		AppUserDto actualAppUserDto = instance.readByName("name");
-		
-		assertEquals(appUserDtoMock, actualAppUserDto);
-	}	
-	
-	@Test
-	void update_whenIdIsNull_shouldReturnNull() {
-		AppUserDto actualAppUserDto = instance.update(null, new AppUserDto(1, "name", "password", "roleName"));
-		
-		assertNull(actualAppUserDto);
-	}
-	
-	@Test
-	void update_whenAppUserDtoIsNull_shouldReturnNull() {
-		AppUserDto actualAppUserDto = instance.update(1, null);
-		
-		assertNull(actualAppUserDto);
-	}
-	
-	@Test
-	void update_whenExistingAppUserNotFound_shouldReturnNull() {
-		when(appUserCrudRepository.findById(anyInt())).thenReturn(Optional.empty());
-		
-		AppUserDto actualAppUserDto = instance.update(1, new AppUserDto(1, "name", "password", "roleName"));
-		
-		assertNull(actualAppUserDto);
-	}
-	
-	@Test
-	void update_whenExistingAppUserFound_shouldReturnUpdatedAppUserDto() {
-		AppUser existingAppUserMock = AppUserTestHelper.getMockAppUser(1, "name", "password", RoleTestHelper.getMockRole(1, "roleName"));		
-		AppUserDto existingAppUserDto = spy(new AppUserDto(1, "name", "password", "roleName"));
-		
-		when(appUserCrudRepository.findById(anyInt())).thenReturn(Optional.of(existingAppUserMock));
-		when(appUserConverterService.convertToDto(any(AppUser.class))).thenReturn(existingAppUserDto);		
-		
-		instance.update(1, new AppUserDto(1, "newName", "newPassword", "newRoleName"));
-		
-		verify(appUserCrudRepository).save(any());		
-		verify(existingAppUserDto).setName("newName");
-		verify(existingAppUserDto).setPassword("newPassword");
-		verify(existingAppUserDto).setRolename("newRoleName");
-	}	
-
 }
