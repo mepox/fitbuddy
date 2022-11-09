@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.laszlojanku.fitbuddy.dto.AppUserDto;
 import com.laszlojanku.fitbuddy.dto.HistoryDto;
+import com.laszlojanku.fitbuddy.exception.FitBuddyException;
 import com.laszlojanku.fitbuddy.jpa.service.crud.AppUserCrudService;
 import com.laszlojanku.fitbuddy.jpa.service.crud.HistoryCrudService;
 
@@ -34,6 +35,7 @@ public class HistoryController {
 	private final Logger logger;
 	private final HistoryCrudService historyCrudService;
 	private final AppUserCrudService appUserCrudService;
+	private final String DATE_NOT_VALID = "Date is not valid";
 	
 	@Autowired
 	public HistoryController(HistoryCrudService historyCrudService, AppUserCrudService appUserCrudService) {
@@ -45,7 +47,12 @@ public class HistoryController {
 	@PostMapping
 	public void create(@Valid @RequestBody HistoryDto historyDto) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (auth != null) {			
+		if (auth != null) {		
+			try {
+				LocalDate.parse(historyDto.getCreatedOn());
+			} catch (DateTimeParseException e) {
+				throw new FitBuddyException(DATE_NOT_VALID);
+			}
 			Integer userId = appUserCrudService.readByName(auth.getName()).getId();
 			if (userId != null) {				
 				historyDto.setAppUserId(userId);
@@ -62,9 +69,8 @@ public class HistoryController {
 			try {
 				LocalDate.parse(strDate);
 			} catch (DateTimeParseException e) {
-				return null;
-			}
-			
+				throw new FitBuddyException(DATE_NOT_VALID);
+			}			
 			AppUserDto appUserDto = appUserCrudService.readByName(auth.getName());
 			if (appUserDto != null && appUserDto.getId() != null) {
 				List<HistoryDto> historyDtos = historyCrudService.readMany(appUserDto.getId(), strDate);
@@ -80,12 +86,16 @@ public class HistoryController {
 	public void update(@PathVariable("id") Integer historyId, @Valid @RequestBody HistoryDto historyDto) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null && historyId != null) {
+			try {
+				LocalDate.parse(historyDto.getCreatedOn());
+			} catch (DateTimeParseException e) {
+				throw new FitBuddyException(DATE_NOT_VALID);
+			}
 			AppUserDto appUserDto = appUserCrudService.readByName(auth.getName());
 			if (appUserDto != null && appUserDto.getId() != null) {				
 				historyDto.setAppUserId(appUserDto.getId());
 				historyCrudService.update(historyId, historyDto);
-				logger.info("Updating history: {}", historyDto);
-				
+				logger.info("Updating history: {}", historyDto);				
 			}
 		}
 	}
@@ -100,6 +110,8 @@ public class HistoryController {
 				if (historyDto != null && historyDto.getAppUserId().equals(appUserDto.getId())) {
 					historyCrudService.delete(historyId);
 					logger.info("Deleting history: {}", historyDto);
+				} else {
+					throw new FitBuddyException("UserIds doesn't match. Cannot delete others History.");
 				}
 			}
 		}	
