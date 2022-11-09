@@ -35,6 +35,7 @@ public class HistoryController {
 	private final Logger logger;
 	private final HistoryCrudService historyCrudService;
 	private final AppUserCrudService appUserCrudService;
+	private final String DATE_NOT_VALID = "Date is not valid";
 	
 	@Autowired
 	public HistoryController(HistoryCrudService historyCrudService, AppUserCrudService appUserCrudService) {
@@ -50,7 +51,7 @@ public class HistoryController {
 			try {
 				LocalDate.parse(historyDto.getCreatedOn());
 			} catch (DateTimeParseException e) {
-				throw new FitBuddyException("Date is not valid");
+				throw new FitBuddyException(DATE_NOT_VALID);
 			}
 			Integer userId = appUserCrudService.readByName(auth.getName()).getId();
 			if (userId != null) {				
@@ -68,7 +69,7 @@ public class HistoryController {
 			try {
 				LocalDate.parse(strDate);
 			} catch (DateTimeParseException e) {
-				throw new FitBuddyException("Date is not valid");
+				throw new FitBuddyException(DATE_NOT_VALID);
 			}			
 			AppUserDto appUserDto = appUserCrudService.readByName(auth.getName());
 			if (appUserDto != null && appUserDto.getId() != null) {
@@ -88,7 +89,7 @@ public class HistoryController {
 			try {
 				LocalDate.parse(historyDto.getCreatedOn());
 			} catch (DateTimeParseException e) {
-				throw new FitBuddyException("Date is not valid");
+				throw new FitBuddyException(DATE_NOT_VALID);
 			}
 			AppUserDto appUserDto = appUserCrudService.readByName(auth.getName());
 			if (appUserDto != null && appUserDto.getId() != null) {				
