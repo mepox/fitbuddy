@@ -29,70 +29,70 @@ import com.laszlojanku.fitbuddy.jpa.service.crud.ExerciseCrudService;
 @RequestMapping("/user/exercises")
 @PreAuthorize("authenticated")
 public class ExerciseController {
-	
-	private final Logger logger;
-	private final ExerciseCrudService exerciseCrudService;
-	private final AppUserCrudService appUserCrudService;
-	
-	@Autowired
-	public ExerciseController(ExerciseCrudService exerciseCrudService, 
-								AppUserCrudService appUserCrudService) {
-		this.exerciseCrudService = exerciseCrudService;
-		this.appUserCrudService = appUserCrudService;
-		this.logger = LoggerFactory.getLogger(ExerciseController.class);
-	}
-	
-	@PostMapping
-	public void create(@Valid @RequestBody ExerciseDto exerciseDto) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			Integer userId = appUserCrudService.readByName(auth.getName()).getId();
-			if (userId != null) {				
-				exerciseDto.setAppUserId(userId);	
-				exerciseCrudService.create(exerciseDto);
-				logger.info("Creating new exercise: {}", exerciseDto);
-			}			
-	}
-	
-	@GetMapping	
-	public List<ExerciseDto> readAll() {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			AppUserDto appUserDto =  appUserCrudService.readByName(auth.getName());
-			if (appUserDto != null && appUserDto.getId() != null) {
-				List<ExerciseDto> dtos = exerciseCrudService.readMany(appUserDto.getId());
-				logger.info("Sending a list of exercises.");
-				return dtos;
-			}
-		return null;
-	}
-	
-	@PutMapping("{id}")
-	public void update(@PathVariable("id") Integer exerciseId, @Valid @RequestBody ExerciseDto exerciseDto) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (exerciseId != null) {
-			Integer userId = appUserCrudService.readByName(auth.getName()).getId();
-			if (userId != null) {				
-				exerciseDto.setAppUserId(userId);
-				exerciseCrudService.update(exerciseId, exerciseDto);	
-				logger.info("Updating the exercise: {}", exerciseDto);
-			}
-		}
-	}
-	
-	@DeleteMapping("{id}")
-	public void delete(@PathVariable("id") Integer exerciseId) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (exerciseId != null) {
-			AppUserDto appUserDto =  appUserCrudService.readByName(auth.getName());
-			if (appUserDto != null && appUserDto.getId() != null) {
-				ExerciseDto exerciseDto = exerciseCrudService.read(exerciseId);				
-				if (exerciseDto != null && exerciseDto.getAppUserId().equals(appUserDto.getId())) {
-					exerciseCrudService.delete(exerciseId);
-					logger.info("Deleting exercise: {}", exerciseDto);
-				} else {
-					throw new FitBuddyException("UserIds doesn't match. Cannot delete others History.");
-				}
-			}
-		}
-	}
+
+  private final Logger logger;
+  private final ExerciseCrudService exerciseCrudService;
+  private final AppUserCrudService appUserCrudService;
+
+  @Autowired
+  public ExerciseController(ExerciseCrudService exerciseCrudService,
+                            AppUserCrudService appUserCrudService) {
+    this.exerciseCrudService = exerciseCrudService;
+    this.appUserCrudService = appUserCrudService;
+    this.logger = LoggerFactory.getLogger(ExerciseController.class);
+  }
+
+  @PostMapping
+  public void create(@Valid @RequestBody ExerciseDto exerciseDto) {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    Integer userId = appUserCrudService.readByName(auth.getName()).getId();
+    if (userId != null) {
+      exerciseDto.setAppUserId(userId);
+      exerciseCrudService.create(exerciseDto);
+      logger.info("Creating new exercise: {}", exerciseDto);
+    }
+  }
+
+  @GetMapping
+  public List<ExerciseDto> readAll() {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    AppUserDto appUserDto = appUserCrudService.readByName(auth.getName());
+    if (appUserDto != null && appUserDto.getId() != null) {
+      List<ExerciseDto> dtos = exerciseCrudService.readMany(appUserDto.getId());
+      logger.info("Sending a list of exercises.");
+      return dtos;
+    }
+    return null;
+  }
+
+  @PutMapping("{id}")
+  public void update(@PathVariable("id") Integer exerciseId, @Valid @RequestBody ExerciseDto exerciseDto) {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    if (exerciseId != null) {
+      Integer userId = appUserCrudService.readByName(auth.getName()).getId();
+      if (userId != null) {
+        exerciseDto.setAppUserId(userId);
+        exerciseCrudService.update(exerciseId, exerciseDto);
+        logger.info("Updating the exercise: {}", exerciseDto);
+      }
+    }
+  }
+
+  @DeleteMapping("{id}")
+  public void delete(@PathVariable("id") Integer exerciseId) {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    if (exerciseId != null) {
+      AppUserDto appUserDto = appUserCrudService.readByName(auth.getName());
+      if (appUserDto != null && appUserDto.getId() != null) {
+        ExerciseDto exerciseDto = exerciseCrudService.read(exerciseId);
+        if (exerciseDto != null && exerciseDto.getAppUserId().equals(appUserDto.getId())) {
+          exerciseCrudService.delete(exerciseId);
+          logger.info("Deleting exercise: {}", exerciseDto);
+        } else {
+          throw new FitBuddyException("UserIds doesn't match. Cannot delete others History.");
+        }
+      }
+    }
+  }
 
 }
