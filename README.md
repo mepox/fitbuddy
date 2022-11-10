@@ -3,7 +3,7 @@
 <div align="center">
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=fitbuddy-app&metric=sqale_rating)](https://sonarcloud.io/summary/overall?id=fitbuddy-app)
@@ -94,6 +94,7 @@ https://fitbuddy-demo.herokuapp.com/
       <td align="center"><a href="https://github.com/ujwalkumar1995"><img src="https://avatars.githubusercontent.com/u/20976813?v=4?s=100" width="100px;" alt="Ujwal Kumar"/><br /><sub><b>Ujwal Kumar</b></sub></a><br /><a href="https://github.com/mepox/fitbuddy/commits?author=ujwalkumar1995" title="Code">💻</a></td>
       <td align="center"><a href="https://github.com/keer-0"><img src="https://avatars.githubusercontent.com/u/54258313?v=4?s=100" width="100px;" alt="Keerthi Sai Maganti"/><br /><sub><b>Keerthi Sai Maganti</b></sub></a><br /><a href="https://github.com/mepox/fitbuddy/commits?author=keer-0" title="Code">💻</a></td>
       <td align="center"><a href="https://github.com/SwethaTamatam"><img src="https://avatars.githubusercontent.com/u/109732475?v=4?s=100" width="100px;" alt="SwethaTamatam"/><br /><sub><b>SwethaTamatam</b></sub></a><br /><a href="https://github.com/mepox/fitbuddy/commits?author=SwethaTamatam" title="Code">💻</a></td>
+      <td align="center"><a href="https://github.com/dmitriydb"><img src="https://avatars.githubusercontent.com/u/77714869?v=4?s=100" width="100px;" alt="dmitriydb"/><br /><sub><b>dmitriydb</b></sub></a><br /><a href="https://github.com/mepox/fitbuddy/commits?author=dmitriydb" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
