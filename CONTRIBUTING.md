@@ -6,27 +6,30 @@ Please follow the guide described below how can you contribute to this project.
 
 ## Submitting Issues
 
-- Before submitting any new issues, please make sure there are no similar issues has been opened already. [See all issues](https://github.com/mepox/fitbuddy/issues)
+- Before submitting any new issues, please make sure there are no similar issues has been opened already. [See all issues in the project](https://github.com/mepox/fitbuddy/issues)
 - Please use the GitHub web interface to create and submit a new issue. [Submit a new issue here](https://github.com/mepox/fitbuddy/issues/new)
 - The following issue types are welcome (for now): 
   - 🐛 bugs: Have you found bugs in the project that no one noticed yet? 
   - ✍️ typos: Have you noticed a typo in the project? 
   - 📰 docs: Documents are never enough and can be always improved.
   - 💼 code: The code is still WIP, but if you have found something that could be done better then feel free to report it. Feedbacks are always welcome!
-  - 🔆 ideas: Ideas are welcome, just please note the project still in WIP. 
+  - 🔆 ideas: Ideas are welcome, just please note the project still in WIP.
+  - ❓ question: Have a question? Feel free to open a new issue.
 
 ## Working on Issues
 
-- Issues open for contributions are usually labelled with `help wanted`. [See help wanted issues](https://github.com/mepox/fitbuddy/labels/help%20wanted)
+- Issues open for contributions are usually labelled with `help wanted`. [See all help wanted issues in the project](https://github.com/mepox/fitbuddy/labels/help%20wanted)
 - Before you start working on an issue, please make sure you did one of the following:
   - Ask to get assigned first. When someone got assigned to an issue then it's very clear for everyone who is working on it!
   - Ask or at least let everyone know in the comments that you are working on the issue.
 
-*By not following these simple rules could lead to confusion and disappointment!* ❗
+❗ *By not following these simple rules could lead to confusion and disappointment!* ❗
 
 ## Submitting Pull Requests
 
-- When you are ready with your work, please use the GitHub web interface to submit your PR:
+- Before you submit your PR, it's highly encouraged to run `mvn test` to make sure all tests are green.
+- When you are ready with your work, please use the GitHub web interface to submit your PR.
+- For a better workflow, please submit one PR for each issue. (You should only really work on one issue at a time)
   - PR title: Usually it's the same or similar to the issue title.
   - PR description: 
     - Summary: Please fill in a brief summary.
@@ -35,6 +38,16 @@ Please follow the guide described below how can you contribute to this project.
 - Then a project member will review your PR.
 - If your PR got approved then congratulations 🎉 your PR will be merged soon! You will be also added to the hall of fame 🚀
 - If changes are requested don't panic. Complete the required changes and re-submit your PR.
+
+❗ *By not following these simple rules could lead to confusion and disappointment!* ❗
+
+## Project uses the following styles
+
+- Commits: Moved away from conventional commits, so use standard commit messages:
+  - The subject line must not exceed 50 characters
+  - The subject line should be capitalized and must not end in a period
+  - The subject line must be written in imperative mood (Fix, not Fixed / Fixes etc.)
+- Indentation: Size 4 with Tabs only policy.
 
 ## Thank you ♥️
 
