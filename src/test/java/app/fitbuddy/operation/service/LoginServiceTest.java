@@ -15,7 +15,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import app.fitbuddy.dto.AppUserDto;
 import app.fitbuddy.exception.FitBuddyException;
 import app.fitbuddy.jpa.service.crud.AppUserCrudService;
-import app.fitbuddy.operation.service.LoginService;
 
 @ExtendWith(MockitoExtension.class)
 class LoginServiceTest {

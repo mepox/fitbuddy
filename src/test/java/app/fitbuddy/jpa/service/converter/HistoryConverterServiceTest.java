@@ -19,7 +19,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import app.fitbuddy.dto.HistoryDto;
 import app.fitbuddy.jpa.entity.History;
 import app.fitbuddy.jpa.repository.ExerciseCrudRepository;
-import app.fitbuddy.jpa.service.converter.HistoryConverterService;
 import app.fitbuddy.testhelper.AppUserTestHelper;
 import app.fitbuddy.testhelper.ExerciseTestHelper;
 import app.fitbuddy.testhelper.HistoryTestHelper;

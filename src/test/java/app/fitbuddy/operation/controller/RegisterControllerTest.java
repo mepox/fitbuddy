@@ -23,7 +23,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import app.fitbuddy.FitBuddyApplication;
 import app.fitbuddy.config.SecurityConfig;
 import app.fitbuddy.dto.RegisterDto;
-import app.fitbuddy.operation.controller.RegisterController;
 import app.fitbuddy.operation.service.NewUserService;
 import app.fitbuddy.operation.service.RegisterService;
 

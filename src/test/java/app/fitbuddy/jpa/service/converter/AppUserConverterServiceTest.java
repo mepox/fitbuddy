@@ -22,7 +22,6 @@ import app.fitbuddy.exception.FitBuddyException;
 import app.fitbuddy.jpa.entity.AppUser;
 import app.fitbuddy.jpa.entity.Role;
 import app.fitbuddy.jpa.repository.RoleCrudRepository;
-import app.fitbuddy.jpa.service.converter.AppUserConverterService;
 import app.fitbuddy.testhelper.AppUserTestHelper;
 import app.fitbuddy.testhelper.RoleTestHelper;
 

@@ -24,7 +24,6 @@ import app.fitbuddy.dto.HistoryDto;
 import app.fitbuddy.jpa.entity.History;
 import app.fitbuddy.jpa.repository.HistoryCrudRepository;
 import app.fitbuddy.jpa.service.converter.HistoryConverterService;
-import app.fitbuddy.jpa.service.crud.HistoryCrudService;
 import app.fitbuddy.testhelper.HistoryTestHelper;
 
 @ExtendWith(MockitoExtension.class)

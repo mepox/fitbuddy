@@ -22,7 +22,6 @@ import app.fitbuddy.dto.AppUserDto;
 import app.fitbuddy.jpa.entity.AppUser;
 import app.fitbuddy.jpa.repository.AppUserCrudRepository;
 import app.fitbuddy.jpa.service.converter.AppUserConverterService;
-import app.fitbuddy.jpa.service.crud.AppUserCrudService;
 import app.fitbuddy.testhelper.AppUserTestHelper;
 import app.fitbuddy.testhelper.RoleTestHelper;
 

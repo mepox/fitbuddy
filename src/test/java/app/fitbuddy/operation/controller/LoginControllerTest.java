@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import app.fitbuddy.FitBuddyApplication;
 import app.fitbuddy.config.SecurityConfig;
 import app.fitbuddy.dto.LoginDto;
-import app.fitbuddy.operation.controller.LoginController;
 import app.fitbuddy.operation.service.LoginService;
 
 @WebMvcTest(LoginController.class)

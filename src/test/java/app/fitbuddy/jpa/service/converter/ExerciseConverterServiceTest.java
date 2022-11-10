@@ -15,7 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import app.fitbuddy.dto.ExerciseDto;
 import app.fitbuddy.jpa.entity.AppUser;
 import app.fitbuddy.jpa.entity.Exercise;
-import app.fitbuddy.jpa.service.converter.ExerciseConverterService;
 import app.fitbuddy.testhelper.AppUserTestHelper;
 import app.fitbuddy.testhelper.ExerciseTestHelper;
 

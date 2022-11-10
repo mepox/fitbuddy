@@ -22,7 +22,6 @@ import app.fitbuddy.dto.RoleDto;
 import app.fitbuddy.jpa.entity.Role;
 import app.fitbuddy.jpa.repository.RoleCrudRepository;
 import app.fitbuddy.jpa.service.converter.RoleConverterService;
-import app.fitbuddy.jpa.service.crud.RoleCrudService;
 import app.fitbuddy.testhelper.RoleTestHelper;
 
 @ExtendWith(MockitoExtension.class)

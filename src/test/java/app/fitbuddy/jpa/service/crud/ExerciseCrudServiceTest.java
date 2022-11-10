@@ -25,7 +25,6 @@ import app.fitbuddy.dto.ExerciseDto;
 import app.fitbuddy.jpa.entity.Exercise;
 import app.fitbuddy.jpa.repository.ExerciseCrudRepository;
 import app.fitbuddy.jpa.service.converter.ExerciseConverterService;
-import app.fitbuddy.jpa.service.crud.ExerciseCrudService;
 import app.fitbuddy.testhelper.ExerciseTestHelper;
 
 @ExtendWith(MockitoExtension.class)

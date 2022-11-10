@@ -38,7 +38,6 @@ import app.fitbuddy.dto.AppUserDto;
 import app.fitbuddy.dto.HistoryDto;
 import app.fitbuddy.jpa.service.crud.AppUserCrudService;
 import app.fitbuddy.jpa.service.crud.HistoryCrudService;
-import app.fitbuddy.operation.controller.HistoryController;
 
 @WebMvcTest(HistoryController.class)
 @ContextConfiguration(classes = {FitBuddyApplication.class, SecurityConfig.class})

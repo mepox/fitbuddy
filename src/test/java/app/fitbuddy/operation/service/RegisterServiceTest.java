@@ -17,7 +17,6 @@ import app.fitbuddy.dto.RoleDto;
 import app.fitbuddy.exception.FitBuddyException;
 import app.fitbuddy.jpa.service.crud.AppUserCrudService;
 import app.fitbuddy.jpa.service.crud.RoleCrudService;
-import app.fitbuddy.operation.service.RegisterService;
 
 @ExtendWith(MockitoExtension.class)
 class RegisterServiceTest {

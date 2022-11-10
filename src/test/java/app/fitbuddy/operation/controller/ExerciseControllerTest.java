@@ -39,7 +39,6 @@ import app.fitbuddy.dto.AppUserDto;
 import app.fitbuddy.dto.ExerciseDto;
 import app.fitbuddy.jpa.service.crud.AppUserCrudService;
 import app.fitbuddy.jpa.service.crud.ExerciseCrudService;
-import app.fitbuddy.operation.controller.ExerciseController;
 
 @WebMvcTest(ExerciseController.class)
 @ContextConfiguration(classes = {FitBuddyApplication.class, SecurityConfig.class})
