@@ -47,7 +47,22 @@ Please follow the guide described below how can you contribute to this project.
   - The subject line must not exceed 50 characters
   - The subject line should be capitalized and must not end in a period
   - The subject line must be written in imperative mood (Fix, not Fixed / Fixes etc.)
+ 
 - Indentation: Size 4 with Tabs only policy.
+
+## Lombok
+
+The project uses Lombok. If you see lots of `method is undefined` errors in your freshly forked project that means you might need to install Lombok plugin to your IDE.
+
+#### Instructions how to install the Lombok plugin to your IDE:
+
+Eclipse: https://projectlombok.org/setup/eclipse
+
+IntelliJ IDEA: https://projectlombok.org/setup/intellij
+
+Netbeans: https://projectlombok.org/setup/netbeans
+
+Visual Studio Code: https://projectlombok.org/setup/vscode
 
 ## Thank you ♥️
 
