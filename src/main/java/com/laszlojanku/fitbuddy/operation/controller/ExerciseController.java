@@ -41,27 +41,27 @@ public class ExerciseController {
 		this.appUserCrudService = appUserCrudService;
 		this.logger = LoggerFactory.getLogger(ExerciseController.class);
 	}
-	
+
 	@PostMapping
 	public void create(@Valid @RequestBody ExerciseDto exerciseDto) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			Integer userId = appUserCrudService.readByName(auth.getName()).getId();
-			if (userId != null) {				
-				exerciseDto.setAppUserId(userId);	
-				exerciseCrudService.create(exerciseDto);
-				logger.info("Creating new exercise: {}", exerciseDto);
-			}			
+		Integer userId = appUserCrudService.readByName(auth.getName()).getId();
+		if (userId != null) {
+			exerciseDto.setAppUserId(userId);
+			exerciseCrudService.create(exerciseDto);
+			logger.info("Creating new exercise: {}", exerciseDto);
+		}
 	}
-	
-	@GetMapping	
+
+	@GetMapping
 	public List<ExerciseDto> readAll() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			AppUserDto appUserDto =  appUserCrudService.readByName(auth.getName());
-			if (appUserDto != null && appUserDto.getId() != null) {
-				List<ExerciseDto> dtos = exerciseCrudService.readMany(appUserDto.getId());
-				logger.info("Sending a list of exercises.");
-				return dtos;
-			}
+		AppUserDto appUserDto = appUserCrudService.readByName(auth.getName());
+		if (appUserDto != null && appUserDto.getId() != null) {
+			List<ExerciseDto> dtos = exerciseCrudService.readMany(appUserDto.getId());
+			logger.info("Sending a list of exercises.");
+			return dtos;
+		}
 		return null;
 	}
 	
