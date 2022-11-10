@@ -8,8 +8,8 @@ public abstract class GenericCrudService<D, E> implements CrudService<D> {
 	
 	private final CrudRepository<E, Integer> repository;
 	private final TwoWayConverterService<D, E> converter;
-	
-	public GenericCrudService(CrudRepository<E, Integer> repository, TwoWayConverterService<D, E> converter) {
+
+	protected GenericCrudService(CrudRepository<E, Integer> repository, TwoWayConverterService<D, E> converter) {
 		this.repository = repository;
 		this.converter = converter;
 	}

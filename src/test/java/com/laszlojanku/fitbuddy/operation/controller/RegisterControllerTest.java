@@ -27,7 +27,7 @@ import com.laszlojanku.fitbuddy.operation.service.RegisterService;
 
 @WebMvcTest(RegisterController.class)
 @ContextConfiguration(classes = {FitBuddyApplication.class, SecurityConfig.class})
-public class RegisterControllerTest {
+class RegisterControllerTest {
 	
 	@Autowired	MockMvc mockMvc;
 	@Autowired	ObjectMapper objectMapper;
@@ -35,7 +35,7 @@ public class RegisterControllerTest {
 	@MockBean	NewUserService newUserService;
 	
 	@Test
-	public void register_whenInputIsCorrect_shouldReturnOk() throws Exception {
+	void register_whenInputIsCorrect_shouldReturnOk() throws Exception {
 		RegisterDto registerDtoMock = new RegisterDto("name", "password");
 		
 		when(registerService.register(anyString(), anyString())).thenReturn(1);
@@ -51,7 +51,7 @@ public class RegisterControllerTest {
 	
 	@ParameterizedTest
 	@ValueSource(strings = {"nam", "namenamenamename"}) // 3 and 16 characters
-	public void register_whenNameSizeNotCorrect_shouldReturnBadRequest(String name) throws Exception {
+	void register_whenNameSizeNotCorrect_shouldReturnBadRequest(String name) throws Exception {
 		RegisterDto registerDtoMock = new RegisterDto(name, "password");
 		
 		mockMvc.perform(post("/register")
@@ -62,7 +62,7 @@ public class RegisterControllerTest {
 	
 	@ParameterizedTest
 	@ValueSource(strings = {"pas", "passwordpassword"}) // 3 and 16 characters
-	public void register_whenPasswordSizeNotCorrect_shouldReturnBadRequest(String password) throws Exception {
+	void register_whenPasswordSizeNotCorrect_shouldReturnBadRequest(String password) throws Exception {
 		RegisterDto registerDtoMock = new RegisterDto("name", password);
 		
 		mockMvc.perform(post("/register")
