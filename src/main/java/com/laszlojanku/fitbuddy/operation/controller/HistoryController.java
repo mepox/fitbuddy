@@ -47,25 +47,23 @@ public class HistoryController {
 	@PostMapping
 	public void create(@Valid @RequestBody HistoryDto historyDto) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (auth != null) {		
-			try {
-				LocalDate.parse(historyDto.getCreatedOn());
-			} catch (DateTimeParseException e) {
-				throw new FitBuddyException(DATE_NOT_VALID);
-			}
-			Integer userId = appUserCrudService.readByName(auth.getName()).getId();
-			if (userId != null) {				
-				historyDto.setAppUserId(userId);
-				historyCrudService.create(historyDto);
-				logger.info("Creating new history: {}", historyDto);
-			}
-		}		
+		try {
+			LocalDate.parse(historyDto.getCreatedOn());
+		} catch (DateTimeParseException e) {
+			throw new FitBuddyException(DATE_NOT_VALID);
+		}
+		Integer userId = appUserCrudService.readByName(auth.getName()).getId();
+		if (userId != null) {
+			historyDto.setAppUserId(userId);
+			historyCrudService.create(historyDto);
+			logger.info("Creating new history: {}", historyDto);
+		}
 	}
 	
 	@GetMapping("{date}")
 	public List<HistoryDto> readAll(@PathVariable("date") String strDate) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (auth != null && strDate != null) {			
+		if (strDate != null) {
 			try {
 				LocalDate.parse(strDate);
 			} catch (DateTimeParseException e) {
@@ -85,7 +83,7 @@ public class HistoryController {
 	@PutMapping("{id}")
 	public void update(@PathVariable("id") Integer historyId, @Valid @RequestBody HistoryDto historyDto) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (auth != null && historyId != null) {
+		if (historyId != null) {
 			try {
 				LocalDate.parse(historyDto.getCreatedOn());
 			} catch (DateTimeParseException e) {
@@ -103,7 +101,7 @@ public class HistoryController {
 	@DeleteMapping("{id}")
 	public void delete(@PathVariable("id") Integer historyId) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (auth != null && historyId != null) {
+		if (historyId != null) {
 			AppUserDto appUserDto = appUserCrudService.readByName(auth.getName());
 			if (appUserDto != null && appUserDto.getId() != null) {
 				HistoryDto historyDto = historyCrudService.read(historyId);				
