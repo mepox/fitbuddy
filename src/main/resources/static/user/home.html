@@ -10,28 +10,34 @@
   </head>
   <body>
   	<div class="text-center">
-  		<h1 class="display-1 mt-5">FitBuddy</h1>
+  		<h1 class="display-1 mt-2 mb-3">FitBuddy</h1>
   	</div> 
     
     <!-- MENU -->
-    <nav class="navbar navbar-expand-lg mb-3">
-    	<div class="container-fluid justify-content-center">
-	    	<div class="navbar-nav">
-	    		<button type="button" class="btn btn-primary me-3" onclick="onHistory()">History</button>
-		  		<button type="button" class="btn btn-primary me-3" onclick="onExercises()">Exercises</button>
-		  		<button type="button" class="btn btn-primary me-3" onclick="onLogout()">Logout</button>
-	    	</div>
-    	</div>
-	</nav>
+    <div class="row justify-content-center">
+    	<div class="col-xl-5">    
+		    <nav class="navbar navbar-expand-lg mb-3 navbar-dark bg-primary pl-0">
+		    	<div class="container-fluid">
+		    		<span class="navbar-text" id="logged-in-name">Logged in as: </span>		    		
+			    	<div class="navbar-nav abs">			    		
+			    		<button type="button" class="btn btn-primary me-3" onclick="onHistory()">History</button>			    		
+				  		<button type="button" class="btn btn-primary me-3" onclick="onExercises()">Exercises</button>
+				  		<button type="button" class="btn btn-primary me-3" onclick="onAccount()">Account</button>				  		
+				  	</div>
+				  	<div class="navbar-nav">			    		
+			    		<button type="button" class="btn btn-primary me-3" onclick="onLogout()">Logout</button>	
+			    	</div>
+		    	</div>
+			</nav>	
+		</div>
+	</div>
 	
 	<!-- EXERCISES -->
 	<div id="Exercises" class="container-fluid">
 		<div class="row justify-content-center text-center">
 			<div class="col-xl-5">
 				<div class="card">
-					<div class="card-header">
-			    		Exercises
-			    	</div>
+					<div class="card-header">Exercises</div>
 			    	<div class="card-body">
 			    		<form id="new-exercise-form" class="d-flex" action="javascript:onAddExercise()">			    			
 							<input type="text" class="form-control" placeholder="Add new exercise..." id="name" name="name" required>										
@@ -60,17 +66,13 @@
     	<div class="row justify-content-center text-center">
     		<div class="col-xl-5">
 				<div class="card">
-					<div class="card-header">
-			    		History
-			    	</div>
+					<div class="card-header">History</div>
 			    	<div class="card-body">
 			    		<div id="calendar-box" class="d-flex justify-content-center align-items-center">							
 							<a href="#"><i class="bi bi-arrow-left-square-fill fs-2 me-3 icon-orange" onclick="stepDownCalendar()"></i></a>
 							<input type="date" id="calendar" onchange="onCalendarChange()">
 							<a href="#"><i class="bi bi-arrow-right-square-fill fs-2 ms-3 icon-orange" onclick="stepUpCalendar()"></i></a>
-						</div>
-			    	
-			    		
+						</div>			    		
 			    	
 			    		<form id="new-history-form" action="javascript:onAddHistory()">
 			    			<div class="d-flex align-items-center">
@@ -104,11 +106,45 @@
 				</div>
 			</div>
 		</div>
-    </div> 
+    </div>
+    
+    <!-- ACCOUNT -->    
+    <div id="Account" class="container-fluid">
+		<div class="row justify-content-center text-center">
+			<div class="col-xl-5">
+				<div class="card">
+					<div class="card-header">Account</div>
+			    	<div class="card-body">
+			    		<form id="account-form" action="">
+		    				<div class="row mb-3 justify-content-center">			    						    					
+	    						<label class="col-sm-2 col-form-label" for="username">Username:</label>
+	    						<div class="col-sm-5">
+		    						<input type="text" class="form-control" id="username" name="username" disabled>
+		    					</div>
+		    				</div>
+		    				<div class="row mb-3 justify-content-center">			    					
+		    					<label class="col-sm-2 col-form-label" for="password">Password:</label>
+		    					<div class="col-sm-5">
+		    						<input type="password" class="form-control" id="password" name="password" disabled>
+		    					</div>
+		    				</div>
+		    				<div class="row mb-3 justify-content-center">			    					
+		    					<label class="col-sm-2 col-form-label" for="rolename">Role:</label>
+		    					<div class="col-sm-5">
+		    						<input type="text" class="form-control" id="rolename" name="rolename" disabled>
+		    					</div>
+		    				</div>						    			
+			    		</form>			    		
+					</div>			
+				</div>	
+			</div>
+		</div>
+    </div>
 	
 	<!-- SCRIPTS -->
     <script src="/public/js/bootstrap.bundle.min.js"></script>
     <script src="/public/js/commons.js"></script>
+    <script src="/user/js/account.js"></script>
     <script src="/user/js/exercise.js"></script>
     <script src="/user/js/history.js"></script>
     <script src="/user/js/home.js"></script>    
