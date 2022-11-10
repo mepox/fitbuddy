@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function onLoaded() {
 	console.log("Page loaded.");
+	showUserName();
 }
 
 function onLogout() {	
@@ -13,13 +14,22 @@ function onLogout() {
 
 function onExercises() {
 	hideDiv("History");
+	hideDiv("Account");
 	showDiv("Exercises");
 	showExercises();
 }
 
 function onHistory() {
 	hideDiv("Exercises");
+	hideDiv("Account");
 	showDiv("History");
 	resetCalendar();
 	showHistory();
+}
+
+function onAccount() {
+	hideDiv("History");
+	hideDiv("Exercises");
+	showDiv("Account");
+	showAccount();
 }
