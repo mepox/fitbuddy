@@ -73,10 +73,10 @@ https://fitbuddy-demo.herokuapp.com/
 
 <div align="center">
 
-<img src="https://mepox.github.io/projects/fitbuddy/fitbuddy_login.jpg" width=200>
-<img src="https://mepox.github.io/projects/fitbuddy/fitbuddy_register.jpg" width=200>
-<img src="https://mepox.github.io/projects/fitbuddy/fitbuddy_history.jpg" width=200>
-<img src="https://mepox.github.io/projects/fitbuddy/fitbuddy_exercises.jpg" width=200>
+<img src="https://mepox.github.io/projects/fitbuddy/fitbuddy_login.png" width=200>
+<img src="https://mepox.github.io/projects/fitbuddy/fitbuddy_register.png" width=200>
+<img src="https://mepox.github.io/projects/fitbuddy/fitbuddy_history.png" width=200>
+<img src="https://mepox.github.io/projects/fitbuddy/fitbuddy_exercises.png" width=200>
 
 </div>
 
