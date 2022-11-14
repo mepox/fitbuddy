@@ -4,6 +4,7 @@ import app.fitbuddy.dto.ExerciseDto;
 import app.fitbuddy.jpa.entity.DefaultExercise;
 import app.fitbuddy.jpa.repository.DefaultExerciseCrudRepository;
 import app.fitbuddy.jpa.service.crud.ExerciseCrudService;
+import app.fitbuddy.testhelper.DefaultExerciseTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -72,16 +73,10 @@ public class NewUserServiceTest {
 
 	private List<DefaultExercise> dummyDefaultExercises() {
 		return List.of(
-				defaultExercise(17, "walk out and squats"),
-				defaultExercise(88, "plank"),
-				defaultExercise(7, "push ups")
+				DefaultExerciseTestHelper.getMockDefaultExercise(17, "walk out and squats"),
+				DefaultExerciseTestHelper.getMockDefaultExercise(88, "plank"),
+				DefaultExerciseTestHelper.getMockDefaultExercise(7, "push ups")
 		);
 	}
 
-	private DefaultExercise defaultExercise(int id, String name) {
-		DefaultExercise defaultExercise = new DefaultExercise();
-		defaultExercise.setId(id);
-		defaultExercise.setName(name);
-		return defaultExercise;
-	}
 }
