@@ -9,6 +9,9 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Nested;
@@ -139,6 +142,35 @@ class AppUserCrudServiceTest {
 			AppUserDto actualAppUserDto = instance.readByName("name");
 			
 			assertEquals(appUserDtoMock, actualAppUserDto);
+		}
+	}
+	@Nested
+	class ReadMany {
+		@Test
+		void readMany_whenNoExercisesFound_shouldReturnEmptyList() {
+			when(appUserCrudRepository.findAll()).thenReturn(Collections.emptyList());
+
+			List<AppUserDto> actualAppUserDtos = instance.readMany();
+
+			assertEquals(0, actualAppUserDtos.size());
+		}
+
+		@Test
+		void readMany_whenUsersFound_shouldReturnListOfAppUserDtos() {
+			List<AppUser> appUsersMock = new ArrayList<>();
+			AppUser appUserMock = AppUserTestHelper.getMockAppUser(1, "name", "password");
+			appUsersMock.add(appUserMock);
+
+			List<AppUserDto> appUserDtosMock = new ArrayList<>();
+			AppUserDto appUserDtoMock = new AppUserDto(1, "name", "password", "roleName");
+			appUserDtosMock.add(appUserDtoMock);
+
+			when(appUserCrudRepository.findAll()).thenReturn(appUsersMock);
+			when(appUserConverterService.convertToDto(any(AppUser.class))).thenReturn(appUserDtoMock);
+
+			List<AppUserDto> actualAppUserDtos = instance.readMany();
+
+			assertEquals(appUserDtosMock, actualAppUserDtos);
 		}
 	}
 }
