@@ -147,7 +147,7 @@ class AppUserCrudServiceTest {
 	@Nested
 	class ReadMany {
 		@Test
-		void readMany_whenNoExercisesFound_shouldReturnEmptyList() {
+		void readMany_whenNoUsersFound_shouldReturnEmptyList() {
 			when(appUserCrudRepository.findAll()).thenReturn(Collections.emptyList());
 
 			List<AppUserDto> actualAppUserDtos = instance.readMany();
