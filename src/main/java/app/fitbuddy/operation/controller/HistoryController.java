@@ -3,6 +3,7 @@ package app.fitbuddy.operation.controller;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.Collections;
 
 import javax.validation.Valid;
 
@@ -77,7 +78,7 @@ public class HistoryController {
 				return historyDtos;
 			}
 		}
-		return null;
+		return Collections.emptyList();
 	}
 	
 	@PutMapping("{id}")
