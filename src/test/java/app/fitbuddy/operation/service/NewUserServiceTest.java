@@ -66,7 +66,7 @@ public class NewUserServiceTest {
 										DefaultExercise defaultExercise) {
 		return capturedExerciseDto.stream()
 				.anyMatch(dto -> {
-					return dto.getName().equals(defaultExercise.getName()) &&
+					return DefaultExerciseTestHelper.isEqual(dto, defaultExercise) &&
 							dto.getAppUserId().equals(DUMMY_USER_ID);
 				});
 	}
