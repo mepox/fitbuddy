@@ -4,7 +4,6 @@ import app.fitbuddy.dto.ExerciseDto;
 import app.fitbuddy.jpa.entity.DefaultExercise;
 import app.fitbuddy.jpa.repository.DefaultExerciseCrudRepository;
 import app.fitbuddy.jpa.service.crud.ExerciseCrudService;
-import app.fitbuddy.operation.service.NewUserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
