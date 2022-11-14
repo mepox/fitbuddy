@@ -1,6 +1,7 @@
 package app.fitbuddy.operation.service;
 
 import app.fitbuddy.dto.ExerciseDto;
+import app.fitbuddy.exception.FitBuddyException;
 import app.fitbuddy.jpa.entity.DefaultExercise;
 import app.fitbuddy.jpa.repository.DefaultExerciseCrudRepository;
 import app.fitbuddy.jpa.service.crud.ExerciseCrudService;
@@ -15,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
@@ -25,13 +27,10 @@ public class NewUserServiceTest {
 	@Mock	DefaultExerciseCrudRepository defaultExerciseCrudRepository;
 	@Mock	ExerciseCrudService exerciseCrudService;
 
-	@BeforeEach
-	public void setUp() {
-		when(defaultExerciseCrudRepository.findAll()).thenReturn(dummyDefaultExercises());
-	}
-
 	@Test
 	public void newUser_whenAddsDefaultExercises_shouldFindAllDefaultExercises() {
+		when(defaultExerciseCrudRepository.findAll()).thenReturn(dummyDefaultExercises());
+
 		newUserService.addDefaultExercises(DUMMY_USER_ID);
 
 		verify(defaultExerciseCrudRepository).findAll();
@@ -39,6 +38,8 @@ public class NewUserServiceTest {
 
 	@Test
 	public void newUser_whenAddsDefaultExercises_shouldCreateDtoForEachDefaultExercise() {
+		when(defaultExerciseCrudRepository.findAll()).thenReturn(dummyDefaultExercises());
+
 		newUserService.addDefaultExercises(DUMMY_USER_ID);
 
 		verify(exerciseCrudService, times(dummyDefaultExercises().size())).create(any());
@@ -46,6 +47,7 @@ public class NewUserServiceTest {
 
 	@Test
 	public void newUser_whenAddsDefaultExercises_shouldCreateCorrespondingExerciseDtoFromDefaultExercises() {
+		when(defaultExerciseCrudRepository.findAll()).thenReturn(dummyDefaultExercises());
 		ArgumentCaptor<ExerciseDto> exerciseDtoCaptor = ArgumentCaptor.forClass(ExerciseDto.class);
 
 		newUserService.addDefaultExercises(DUMMY_USER_ID);
@@ -57,6 +59,20 @@ public class NewUserServiceTest {
 					assertTrue(hasCorrespondingDto(capturedExerciseDto, dummyDefaultExercise));
 				}
 		);
+	}
+
+	@Test
+	public void newUser_whenAppUserIsNull_shouldThrowException() {
+		assertThrows(FitBuddyException.class, () -> {
+			newUserService.addDefaultExercises(null);
+		});
+	}
+
+	@Test
+	public void newUser_whenAppUserIsNegative_shouldThrowException() {
+		assertThrows(FitBuddyException.class, () -> {
+			newUserService.addDefaultExercises(-7);
+		});
 	}
 
 	/**
