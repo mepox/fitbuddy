@@ -2,7 +2,6 @@ package app.fitbuddy.testhelper;
 
 import app.fitbuddy.dto.ExerciseDto;
 import app.fitbuddy.jpa.entity.DefaultExercise;
-import app.fitbuddy.jpa.entity.Exercise;
 
 public class DefaultExerciseTestHelper {
 	

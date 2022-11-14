@@ -6,13 +6,16 @@ import app.fitbuddy.jpa.entity.DefaultExercise;
 import app.fitbuddy.jpa.repository.DefaultExerciseCrudRepository;
 import app.fitbuddy.jpa.service.crud.ExerciseCrudService;
 import app.fitbuddy.testhelper.DefaultExerciseTestHelper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 
@@ -61,17 +64,12 @@ public class NewUserServiceTest {
 		);
 	}
 
-	@Test
-	public void newUser_whenAppUserIsNull_shouldThrowException() {
+	@ParameterizedTest
+	@NullSource
+	@ValueSource(ints = {-7, -1, -1000001})
+	public void newUser_whenAppUserIsNullOrNegative_shouldThrowException(Integer appUserId) {
 		assertThrows(FitBuddyException.class, () -> {
-			newUserService.addDefaultExercises(null);
-		});
-	}
-
-	@Test
-	public void newUser_whenAppUserIsNegative_shouldThrowException() {
-		assertThrows(FitBuddyException.class, () -> {
-			newUserService.addDefaultExercises(-7);
+			newUserService.addDefaultExercises(appUserId);
 		});
 	}
 
@@ -81,10 +79,8 @@ public class NewUserServiceTest {
 	private boolean hasCorrespondingDto(List<ExerciseDto> capturedExerciseDto,
 										DefaultExercise defaultExercise) {
 		return capturedExerciseDto.stream()
-				.anyMatch(dto -> {
-					return DefaultExerciseTestHelper.isEqual(dto, defaultExercise) &&
-							dto.getAppUserId().equals(DUMMY_USER_ID);
-				});
+				.anyMatch(dto -> DefaultExerciseTestHelper.isEqual(dto, defaultExercise) &&
+						dto.getAppUserId().equals(DUMMY_USER_ID));
 	}
 
 	private List<DefaultExercise> dummyDefaultExercises() {
