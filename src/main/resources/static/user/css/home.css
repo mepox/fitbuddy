@@ -14,13 +14,9 @@
 	color: orange;
 }
 
-@media (min-width: 1080px) {
-.abs
-    {
-        position: absolute;
-        width: auto;
-        left: 50%;
-        transform: translateX(-50%);
+@media (max-width: 1080px) {
+.navbar-collapse
+    {        
         text-align: center;
     }
 }
