@@ -6,16 +6,17 @@ import app.fitbuddy.jpa.entity.DefaultExercise;
 import app.fitbuddy.jpa.repository.DefaultExerciseCrudRepository;
 import app.fitbuddy.jpa.service.crud.ExerciseCrudService;
 import app.fitbuddy.testhelper.DefaultExerciseTestHelper;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
+
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 
