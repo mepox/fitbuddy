@@ -1,5 +1,6 @@
 package app.fitbuddy.operation.service;
 
+import app.fitbuddy.exception.FitBuddyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +22,11 @@ public class NewUserService {
 	}
 	
 	public void addDefaultExercises(Integer appUserId) {
+		if (appUserId == null || appUserId < 0) {
+			throw new FitBuddyException("Internal server error - appUserId is not correct");
+		}
 		Iterable<DefaultExercise> defaultExercises = defaultExerciseRepository.findAll();
-		
+
 		for (DefaultExercise defaultExercise : defaultExercises) {
 			exerciseCrudService.create(new ExerciseDto(null, defaultExercise.getName(), appUserId));
 		}
