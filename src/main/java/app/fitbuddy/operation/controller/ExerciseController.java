@@ -62,7 +62,7 @@ public class ExerciseController {
 			logger.info("Sending a list of exercises.");
 			return dtos;
 		}
-		return null;
+		return Collections.emptyList();
 	}
 	
 	@PutMapping("{id}")
