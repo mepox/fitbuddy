@@ -18,15 +18,18 @@
     	<div class="col-xl-5">    
 		    <nav class="navbar navbar-expand-lg mb-3 navbar-dark bg-primary pl-0">
 		    	<div class="container-fluid">
-		    		<span class="navbar-text" id="logged-in-name">Logged in as: </span>		    		
-			    	<div class="navbar-nav abs">			    		
-			    		<button type="button" class="btn btn-primary me-3" onclick="onHistory()">History</button>			    		
-				  		<button type="button" class="btn btn-primary me-3" onclick="onExercises()">Exercises</button>
-				  		<button type="button" class="btn btn-primary me-3" onclick="onAccount()">Account</button>				  		
+		    		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      					<span class="navbar-toggler-icon"></span>
+    				</button>		    		
+		    		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+	  					<span class="navbar-text" id="logged-in-name">Logged in as: </span>
+				    	<div class="navbar-nav ms-auto">
+				    		<button type="button" class="btn btn-primary me-3" onclick="onHistory()">History</button>			    		
+					  		<button type="button" class="btn btn-primary me-3" onclick="onExercises()">Exercises</button>
+					  		<button type="button" class="btn btn-primary me-3" onclick="onAccount()">Account</button>
+					  		<button type="button" class="btn btn-primary me-3" onclick="onLogout()">Logout</button>			  		
+					  	</div>
 				  	</div>
-				  	<div class="navbar-nav">			    		
-			    		<button type="button" class="btn btn-primary me-3" onclick="onLogout()">Logout</button>	
-			    	</div>
 		    	</div>
 			</nav>	
 		</div>
