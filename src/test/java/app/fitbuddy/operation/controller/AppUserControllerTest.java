@@ -1,10 +1,7 @@
 package app.fitbuddy.operation.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -14,6 +11,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -194,72 +192,22 @@ class AppUserControllerTest {
 		@WithMockUser(authorities = {"USER", "ADMIN"})
 		void whenPathVariableNotInteger_shouldReturnBadRequest() throws Exception {
 			mockMvc.perform(put(API_PATH + "/abc")).andExpect(status().isBadRequest());
-		}
-		
-		@ParameterizedTest
-		@ValueSource(strings = {"nam", "namenamenamename"}) // <4 and >15 characters
-		@WithMockUser(authorities = {"USER", "ADMIN"})
-		void whenNameSizeNotCorrect_shouldReturnBadRequest(String name) throws Exception {
-			AppUserDto appUserDtoMock = new AppUserDto(1, name, "password", "roleName");
-			
-			mockMvc.perform(put(API_PATH + "/1")
-					.contentType(MediaType.APPLICATION_JSON)
-					.content(objectMapper.writeValueAsString(appUserDtoMock)))
-			.andExpect(status().isBadRequest());
-		}
-		
-		@ParameterizedTest
-		@ValueSource(strings = {"pas", "passwordpassword"}) // <4 and >15 characters
-		@WithMockUser(authorities = {"USER", "ADMIN"})
-		void whenPasswordSizeNotCorrect_shouldReturnBadRequest(String password) throws Exception {
-			AppUserDto appUserDtoMock = new AppUserDto(1, "name", password, "roleName");
-			
-			mockMvc.perform(put(API_PATH + "/1")
-					.contentType(MediaType.APPLICATION_JSON)
-					.content(objectMapper.writeValueAsString(appUserDtoMock)))
-			.andExpect(status().isBadRequest());
-		}
-		
-		@ParameterizedTest
-		@ValueSource(strings = {"rol", "roleNameroleNamer"}) // <4 and >16 characters
-		@WithMockUser(authorities = {"USER", "ADMIN"})
-		void whenRoleNameSizeNotCorrect_shouldReturnBadRequest(String roleName) throws Exception {
-			AppUserDto appUserDtoMock = new AppUserDto(1, "name", "password", roleName);
-			
-			mockMvc.perform(put(API_PATH + "/1")
-					.contentType(MediaType.APPLICATION_JSON)
-					.content(objectMapper.writeValueAsString(appUserDtoMock)))
-			.andExpect(status().isBadRequest());
-		}
-		
-		@Test
-		@WithMockUser(authorities = {"USER", "ADMIN"})
-		void whenAppUserIdDoesntMatch_shouldReturnBadRequest() throws Exception {
-			AppUserDto appUserDtoMock = new AppUserDto(2, "name", "password", "roleName");
-			
-			when(appUserCrudService.readByName(anyString())).thenReturn(appUserDtoMock);
-			
-			mockMvc.perform(put(API_PATH + "/1")
-					.contentType(MediaType.APPLICATION_JSON)
-					.content(objectMapper.writeValueAsString(appUserDtoMock)))
-			.andExpect(status().isBadRequest());
-			
-			verify(appUserCrudService, times(0)).update(anyInt(), any(AppUserDto.class));
-		}
+		}		
 		
 		@Test
 		@WithMockUser(authorities = {"USER", "ADMIN"})
 		void whenInputIsCorrect_shouldReturnOk() throws Exception {
 			AppUserDto appUserDtoMock = new AppUserDto(1, "name", "password", "roleName");
+			Map<String, String> changesMock = Map.of("name", "newName");
 			
 			when(appUserCrudService.readByName(anyString())).thenReturn(appUserDtoMock);
 			
 			mockMvc.perform(put(API_PATH + "/1")
 					.contentType(MediaType.APPLICATION_JSON)
-					.content(objectMapper.writeValueAsString(appUserDtoMock)))
+					.content(objectMapper.writeValueAsString(changesMock)))
 			.andExpect(status().isOk());
 			
-			verify(appUserCrudService).update(1, appUserDtoMock);
+			verify(appUserCrudService).update(1, changesMock);
 		}
 	}
 	

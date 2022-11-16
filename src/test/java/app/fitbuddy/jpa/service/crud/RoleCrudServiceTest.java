@@ -9,6 +9,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Map;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Nested;
@@ -70,14 +71,14 @@ class RoleCrudServiceTest {
 		
 		@Test 
 		void update_whenIdIsNull_shouldReturnNull() {
-			RoleDto actualRoleDto = instance.update(null, new RoleDto(1, "roleName"));
+			RoleDto actualRoleDto = instance.update(null, Map.of("name", "newRoleName"));
 			
 			assertNull(actualRoleDto);
 		}
 		
 		
 		@Test
-		void update_whenRoleDtoIsNull_shouldReturnNull() {
+		void update_whenMapIsNull_shouldReturnNull() {
 			Role roleMock = RoleTestHelper.getMockRole(1, "roleName");
 			RoleDto roleDtoMock = new RoleDto(1, "roleName");
 			
@@ -91,11 +92,9 @@ class RoleCrudServiceTest {
 		
 		@Test
 		void update_whenExistingRoleNotFound_shouldReturnNull() {
-			RoleDto newRoleDtoMock = new RoleDto(1, "newName");
-			
 			when(roleCrudRepository.findById(anyInt())).thenReturn(Optional.empty());
 			
-			RoleDto actualRoleDto = instance.update(1, newRoleDtoMock);
+			RoleDto actualRoleDto = instance.update(1, Map.of("name", "newRoleName"));
 			
 			assertNull(actualRoleDto);
 		}
@@ -108,7 +107,7 @@ class RoleCrudServiceTest {
 			when(roleCrudRepository.findById(anyInt())).thenReturn(Optional.of(roleMock));
 			when(roleConverterService.convertToDto(any(Role.class))).thenReturn(roleDto);		
 			
-			instance.update(1, new RoleDto(1, "newRoleName"));
+			instance.update(1, Map.of("name", "newRoleName"));
 			
 			verify(roleCrudRepository).save(any());
 			verify(roleDto).setName("newRoleName");

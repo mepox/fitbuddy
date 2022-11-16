@@ -14,6 +14,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -151,32 +152,22 @@ class HistoryControllerTest {
 			.andExpect(status().isBadRequest());
 		}
 		
-		@ParameterizedTest
-		@ValueSource(strings = {"abc", "1-1-2022", "01-01-2022", "2022-1-1"})
-		@WithMockUser(authorities = {"USER", "ADMIN"})
-		void whenNewDateIsNotCorrect_shouldReturnBadRequest(String strDate) throws Exception {
-			HistoryDto historyDtoMock = new HistoryDto(1, 11, "exerciseName", 111, 1111, strDate);
-			
-			mockMvc.perform(put(API_PATH + "/abc")
-					.contentType(MediaType.APPLICATION_JSON)
-					.content(objectMapper.writeValueAsString(historyDtoMock)))
-			.andExpect(status().isBadRequest());			
-		}
-		
 		@Test
 		@WithMockUser(authorities = {"USER", "ADMIN"})
 		void whenInputIsCorrect_shouldReturnOk() throws Exception {
 			HistoryDto historyDtoMock = new HistoryDto(1, 11, "exerciseName", 111, 1111, "2022-01-01");
 			AppUserDto appUserDtoMock = new AppUserDto(11, "name", "password", "roleName");			
+			Map<String, String> changesMock = Map.of("weight", "222");
 			
 			when(appUserCrudService.readByName(anyString())).thenReturn(appUserDtoMock);
+			when(historyCrudService.read(anyInt())).thenReturn(historyDtoMock);
 			
 			mockMvc.perform(put(API_PATH + "/1")
 					.contentType(MediaType.APPLICATION_JSON)
-					.content(objectMapper.writeValueAsString(historyDtoMock)))
+					.content(objectMapper.writeValueAsString(changesMock)))
 			.andExpect(status().isOk());
 			
-			verify(historyCrudService).update(1, historyDtoMock);	
+			verify(historyCrudService).update(1, changesMock);	
 		}
 	}
 	

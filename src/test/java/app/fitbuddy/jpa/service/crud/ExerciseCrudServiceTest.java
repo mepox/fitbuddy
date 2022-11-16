@@ -12,6 +12,7 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Nested;
@@ -73,19 +74,13 @@ class ExerciseCrudServiceTest {
 		
 		@Test
 		void update_whenIdIsNull_shouldReturnNull() {
-			ExerciseDto actualExerciseDto = instance.update(null, new ExerciseDto(1, "exerciseName", 11));
+			ExerciseDto actualExerciseDto = instance.update(null, Map.of("name", "exerciseName"));
 			
 			assertNull(actualExerciseDto);
 		}
 		
 		@Test
-		void update_whenExerciseDtoIsNull_shouldReturnNull() {
-			Exercise exerciseMock = ExerciseTestHelper.getMockExercise(1, "exerciseName");
-			ExerciseDto exerciseDtoMock = new ExerciseDto(1, "exerciseName", 11);
-			
-			when(exerciseCrudRepository.findById(anyInt())).thenReturn(Optional.of(exerciseMock));
-			when(exerciseConverterService.convertToDto(any(Exercise.class))).thenReturn(exerciseDtoMock);
-			
+		void update_whenMapIsNull_shouldReturnNull() {
 			ExerciseDto actualExerciseDto = instance.update(1, null);
 			
 			assertNull(actualExerciseDto);
@@ -95,7 +90,7 @@ class ExerciseCrudServiceTest {
 		void update_whenExistingExerciseIsNotFound_shouldReturnNull() {
 			when(exerciseCrudRepository.findById(anyInt())).thenReturn(Optional.empty());
 			
-			ExerciseDto actualExerciseDto = instance.update(1, new ExerciseDto(1, "exerciseName", 11));
+			ExerciseDto actualExerciseDto = instance.update(1, Map.of("name", "exerciseName"));
 			
 			assertNull(actualExerciseDto);
 		}
@@ -108,7 +103,7 @@ class ExerciseCrudServiceTest {
 			when(exerciseCrudRepository.findById(anyInt())).thenReturn(Optional.of(exerciseMock));
 			when(exerciseConverterService.convertToDto(any(Exercise.class))).thenReturn(exerciseDto);
 			
-			instance.update(1, new ExerciseDto(1, "newExerciseName", 11));
+			instance.update(1, Map.of("name", "newExerciseName"));			
 			
 			verify(exerciseCrudRepository).save(any());		
 			verify(exerciseDto).setName("newExerciseName");

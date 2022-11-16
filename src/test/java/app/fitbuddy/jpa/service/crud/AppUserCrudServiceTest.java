@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Nested;
@@ -72,14 +73,16 @@ class AppUserCrudServiceTest {
 	class Update {
 		
 		@Test
-		void update_whenIdIsNull_shouldReturnNull() {
-			AppUserDto actualAppUserDto = instance.update(null, new AppUserDto(1, "name", "password", "roleName"));
+		void update_whenIdIsNull_shouldReturnNull() {			
+			AppUserDto actualAppUserDto = instance.update(null, Map.of(	"name", "newName",
+																		"password", "newPassword",
+																		"rolename", "newRoleName"));
 			
 			assertNull(actualAppUserDto);
 		}
 		
 		@Test
-		void update_whenAppUserDtoIsNull_shouldReturnNull() {
+		void update_whenMapIsNull_shouldReturnNull() {
 			AppUserDto actualAppUserDto = instance.update(1, null);
 			
 			assertNull(actualAppUserDto);
@@ -88,8 +91,10 @@ class AppUserCrudServiceTest {
 		@Test
 		void update_whenExistingAppUserNotFound_shouldReturnNull() {
 			when(appUserCrudRepository.findById(anyInt())).thenReturn(Optional.empty());
-			
-			AppUserDto actualAppUserDto = instance.update(1, new AppUserDto(1, "name", "password", "roleName"));
+						
+			AppUserDto actualAppUserDto = instance.update(1, Map.of("name", "newName",
+																	"password", "newPassword",
+																	"rolename", "newRoleName"));
 			
 			assertNull(actualAppUserDto);
 		}
@@ -102,7 +107,9 @@ class AppUserCrudServiceTest {
 			when(appUserCrudRepository.findById(anyInt())).thenReturn(Optional.of(existingAppUserMock));
 			when(appUserConverterService.convertToDto(any(AppUser.class))).thenReturn(existingAppUserDto);		
 			
-			instance.update(1, new AppUserDto(1, "newName", "newPassword", "newRoleName"));
+			instance.update(1, Map.of(	"name", "newName",
+										"password", "newPassword",
+										"rolename", "newRoleName"));
 			
 			verify(appUserCrudRepository).save(any());		
 			verify(existingAppUserDto).setName("newName");

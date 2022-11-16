@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -137,40 +138,30 @@ class ExerciseControllerTest {
 		@Test
 		@WithMockUser(authorities = {"USER", "ADMIN"})
 		void whenPathVariableNotInteger_shouldReturnBadRequest() throws Exception {
-			ExerciseDto exerciseDtoMock = new ExerciseDto(1, "exerciseName", 11);
+			Map<String, String> changesMock = Map.of("name", "newExerciseName");
 			
 			mockMvc.perform(put(API_PATH + "/abc")
 					.contentType(MediaType.APPLICATION_JSON)
-					.content(objectMapper.writeValueAsString(exerciseDtoMock)))
+					.content(objectMapper.writeValueAsString(changesMock)))
 			.andExpect(status().isBadRequest());
 		}
-		
-		@ParameterizedTest
-		@ValueSource(strings = {"", "exerciseNameexerciseNameexerciseName"}) // <1 or >32
-		@WithMockUser(authorities = {"USER", "ADMIN"})
-		void whenExerciseNameSizeNotCorrect_shouldReturnBadRequest(String name) throws Exception {
-			ExerciseDto exerciseDtoMock = new ExerciseDto(1, name, 11);
-			
-			mockMvc.perform(put(API_PATH + "/1")
-					.contentType(MediaType.APPLICATION_JSON)
-					.content(objectMapper.writeValueAsString(exerciseDtoMock)))
-			.andExpect(status().isBadRequest());
-		}		
 		
 		@Test
 		@WithMockUser(authorities = {"USER", "ADMIN"})
 		void whenInputIsCorrect_shouldReturnOk() throws Exception {
 			AppUserDto appUserDtoMock = new AppUserDto(11, "name", "password", "roleName");
-			ExerciseDto exerciseDtoMock = new ExerciseDto(1, "newExerciseName", 11);
+			ExerciseDto exerciseDtoMock = new ExerciseDto(1, "exerciseName", 11);
+			Map<String, String> changesMock = Map.of("name", "newExerciseName");			
 			
 			when(appUserCrudService.readByName(anyString())).thenReturn(appUserDtoMock);
+			when(exerciseCrudService.read(anyInt())).thenReturn(exerciseDtoMock);
 			
 			mockMvc.perform(put(API_PATH + "/1")
 					.contentType(MediaType.APPLICATION_JSON)
-					.content(objectMapper.writeValueAsString(exerciseDtoMock)))
+					.content(objectMapper.writeValueAsString(changesMock)))
 			.andExpect(status().isOk());
 			
-			verify(exerciseCrudService).update(1, exerciseDtoMock);	
+			verify(exerciseCrudService).update(1, changesMock);	
 		}
 	}
 	

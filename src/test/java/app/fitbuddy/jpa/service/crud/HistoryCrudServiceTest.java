@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Nested;
@@ -59,13 +60,13 @@ class HistoryCrudServiceTest {
 		
 		@Test
 		void update_whenIdIsNull_shouldReturnNull() {
-			HistoryDto actualHistoryDto = instance.update(null, new HistoryDto(1, 11, "exerciseName", 111, 1111, "01-01-2022"));
+			HistoryDto actualHistoryDto = instance.update(null, Map.of("weight", "11"));
 			
 			assertNull(actualHistoryDto);		
 		}
 		
 		@Test
-		void update_whenHistoryDtoIsNull_shouldReturnNull() {
+		void update_whenMapIsNull_shouldReturnNull() {
 			HistoryDto actualHistoryDto = instance.update(1, null);
 			
 			assertNull(actualHistoryDto);
@@ -75,7 +76,7 @@ class HistoryCrudServiceTest {
 		void update_whenExistingHistoryNotFound_shouldReturnNull() {		
 			when(historyCrudRepository.findById(anyInt())).thenReturn(Optional.empty());
 			
-			HistoryDto actualHistoryDto = instance.update(1, new HistoryDto(1, 11, "exerciseName", 111, 1111, "01-01-2022"));
+			HistoryDto actualHistoryDto = instance.update(1, Map.of("weight", "11"));
 			
 			assertNull(actualHistoryDto);
 		}
@@ -88,12 +89,12 @@ class HistoryCrudServiceTest {
 			when(historyCrudRepository.findById(anyInt())).thenReturn(Optional.of(historyMock));
 			when(historyConverterService.convertToDto(any(History.class))).thenReturn(historyDto);
 			
-			instance.update(1, new HistoryDto(1, 11, "newExerciseName", 222, 2222, "02-02-2022"));
+			instance.update(1, Map.of(	"weight", "222",
+										"reps", "2222"));
 			
 			verify(historyCrudRepository).save(any());		
 			verify(historyDto).setWeight(222);
-			verify(historyDto).setReps(2222);
-			verify(historyDto).setCreatedOn("02-02-2022");		
+			verify(historyDto).setReps(2222);				
 		}
 	}
 	
