@@ -1,6 +1,7 @@
 package app.fitbuddy.operation.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -60,11 +61,11 @@ public class AppUserController {
 	
 	@PutMapping("{id}")
 	@PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
-	public void update(@PathVariable("id") @NotNull Integer appUserId, @Valid @RequestBody AppUserDto appUserDto) {
+	public void update(@PathVariable("id") @NotNull Integer appUserId, @NotNull @RequestBody Map<String, String> changes) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Integer currentUserId = appUserCrudService.readByName(auth.getName()).getId();
 		if (currentUserId != null && currentUserId.equals(appUserId)) {
-			appUserCrudService.update(currentUserId, appUserDto);
+			appUserCrudService.update(currentUserId, changes);
 		} else {
 			throw new FitBuddyException("UserIds doesn't match. Cannot delete other AppUser.");
 		}

@@ -2,8 +2,10 @@ package app.fitbuddy.operation.controller;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,15 +69,16 @@ public class ExerciseController {
 	}
 	
 	@PutMapping("{id}")
-	public void update(@PathVariable("id") Integer exerciseId, @Valid @RequestBody ExerciseDto exerciseDto) {
+	public void update(@PathVariable("id") Integer exerciseId, @NotNull @RequestBody Map<String, String> changes) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (exerciseId != null) {
-			Integer userId = appUserCrudService.readByName(auth.getName()).getId();
-			if (userId != null) {				
-				exerciseDto.setAppUserId(userId);
-				exerciseCrudService.update(exerciseId, exerciseDto);	
-				logger.info("Updating the exercise: {}", exerciseDto);
-				
+			Integer currentUserId = appUserCrudService.readByName(auth.getName()).getId();
+			if (currentUserId != null) {
+				if (exerciseCrudService.read(exerciseId).getAppUserId().equals(currentUserId)) {
+					exerciseCrudService.update(exerciseId, changes);
+				} else {
+					throw new FitBuddyException("UserIds doesn't match. Cannot update others Exercise");
+				}
 			}
 		}
 	}

@@ -1,11 +1,13 @@
 package app.fitbuddy.jpa.service.crud;
 
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import app.fitbuddy.dto.RoleDto;
+import app.fitbuddy.exception.FitBuddyException;
 import app.fitbuddy.jpa.entity.Role;
 import app.fitbuddy.jpa.repository.RoleCrudRepository;
 import app.fitbuddy.jpa.service.GenericCrudService;
@@ -35,16 +37,24 @@ public class RoleCrudService extends GenericCrudService<RoleDto, Role> {
 	}
 	
 	@Override
-	public RoleDto update(Integer id, RoleDto roleDto) {
+	public RoleDto update(Integer id, Map<String, String> changes) {		
 		RoleDto existingRoleDto = read(id);
-		if (existingRoleDto != null && roleDto != null && repository.findByName(roleDto.getName()).isEmpty()) {
-			if (roleDto.getName() != null) {
-				existingRoleDto.setName(roleDto.getName());
-			}			
-			Role savedRole = repository.save(converter.convertToEntity(existingRoleDto));
-			return converter.convertToDto(savedRole);
+		if (existingRoleDto != null && changes != null) {
+			if (changes.containsKey("name")) {
+				if (repository.findByName(changes.get("name")).isPresent()) {
+					throw new FitBuddyException("Role name already exists.");
+				}
+				existingRoleDto.setName(changes.get("name"));
+			}
+			return doUpdate(existingRoleDto);
 		}
 		return null;
+	}
+
+	@Override
+	protected RoleDto doUpdate(RoleDto dto) {
+		Role savedRole = repository.save(converter.convertToEntity(dto));
+		return converter.convertToDto(savedRole);
 	}
 
 	public RoleDto readByName(String name) {

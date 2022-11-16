@@ -2,6 +2,8 @@ package app.fitbuddy.jpa.service;
 
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.data.repository.CrudRepository;
 
 public abstract class GenericCrudService<D, E> implements CrudService<D> {
@@ -13,6 +15,8 @@ public abstract class GenericCrudService<D, E> implements CrudService<D> {
 		this.repository = repository;
 		this.converter = converter;
 	}
+	
+	protected abstract D doUpdate(@Valid D dto);
 
 	@Override
 	public D read(Integer id) {

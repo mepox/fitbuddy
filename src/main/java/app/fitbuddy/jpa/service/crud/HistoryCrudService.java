@@ -2,13 +2,16 @@ package app.fitbuddy.jpa.service.crud;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import app.fitbuddy.dto.HistoryDto;
+import app.fitbuddy.exception.FitBuddyException;
 import app.fitbuddy.jpa.entity.History;
 import app.fitbuddy.jpa.repository.HistoryCrudRepository;
 import app.fitbuddy.jpa.service.GenericCrudService;
@@ -39,23 +42,30 @@ public class HistoryCrudService extends GenericCrudService<HistoryDto, History> 
 	}
 	
 	@Override
-	public HistoryDto update(Integer id, HistoryDto historyDto) {
+	public HistoryDto update(Integer id, Map<String, String> changes) {
 		HistoryDto existingHistoryDto = read(id);
-		if (existingHistoryDto != null && historyDto != null) {			
-			if (historyDto.getWeight() != null) {
-				existingHistoryDto.setWeight(historyDto.getWeight());
+		if (existingHistoryDto != null && changes != null) {	
+			try {
+				if (changes.containsKey("weight")) {
+					existingHistoryDto.setWeight(Integer.parseInt(changes.get("weight")));
+				}
+				if (changes.containsKey("reps")) {
+					existingHistoryDto.setReps(Integer.parseInt(changes.get("reps")));
+				}
 			}
-			if (historyDto.getReps() != null) {
-				existingHistoryDto.setReps(historyDto.getReps());
+			catch (NumberFormatException e) {
+				throw new FitBuddyException("Weight and Reps must be a number");
 			}
-			if (historyDto.getCreatedOn() != null) {
-				existingHistoryDto.setCreatedOn(historyDto.getCreatedOn());
-			}			
-			History savedHistory = repository.save(converter.convertToEntity(existingHistoryDto));
-			return converter.convertToDto(savedHistory);
+			return doUpdate(existingHistoryDto);
 		}
 		return null;
 	}	
+
+	@Override
+	protected HistoryDto doUpdate(@Valid HistoryDto dto) {
+		History savedHistory = repository.save(converter.convertToEntity(dto));
+		return converter.convertToDto(savedHistory);
+	}
 
 	@NotNull
 	public List<HistoryDto> readMany(Integer userId, String date) {

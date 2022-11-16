@@ -3,9 +3,11 @@ package app.fitbuddy.operation.controller;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.Map;
 import java.util.Collections;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,19 +84,16 @@ public class HistoryController {
 	}
 	
 	@PutMapping("{id}")
-	public void update(@PathVariable("id") Integer historyId, @Valid @RequestBody HistoryDto historyDto) {
+	public void update(@PathVariable("id") Integer historyId, @NotNull @RequestBody Map<String, String> changes) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (historyId != null) {
-			try {
-				LocalDate.parse(historyDto.getCreatedOn());
-			} catch (DateTimeParseException e) {
-				throw new FitBuddyException(DATE_NOT_VALID);
-			}
-			AppUserDto appUserDto = appUserCrudService.readByName(auth.getName());
-			if (appUserDto != null && appUserDto.getId() != null) {				
-				historyDto.setAppUserId(appUserDto.getId());
-				historyCrudService.update(historyId, historyDto);
-				logger.info("Updating history: {}", historyDto);				
+			Integer currentUserId = appUserCrudService.readByName(auth.getName()).getId();
+			if (currentUserId != null) {				
+				if (historyCrudService.read(historyId).getAppUserId().equals(currentUserId)) {
+					historyCrudService.update(historyId, changes);
+				} else {
+					throw new FitBuddyException("UserIds doesn't match. Cannot update others History.");
+				}								
 			}
 		}
 	}
