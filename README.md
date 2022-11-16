@@ -3,7 +3,7 @@
 <div align="center">
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=fitbuddy-app&metric=sqale_rating)](https://sonarcloud.io/summary/overall?id=fitbuddy-app)
@@ -98,6 +98,7 @@ https://fitbuddy-demo.herokuapp.com/
     </tr>
     <tr>
       <td align="center"><a href="https://github.com/gaurav9777"><img src="https://avatars.githubusercontent.com/u/62351253?v=4?s=100" width="100px;" alt="Gaurav_mango"/><br /><sub><b>Gaurav_mango</b></sub></a><br /><a href="https://github.com/mepox/fitbuddy/commits?author=gaurav9777" title="Code">💻</a></td>
+      <td align="center"><a href="https://github.com/hrandhawa13"><img src="https://avatars.githubusercontent.com/u/25377542?v=4?s=100" width="100px;" alt="Harmanjit"/><br /><sub><b>Harmanjit</b></sub></a><br /><a href="https://github.com/mepox/fitbuddy/commits?author=hrandhawa13" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
