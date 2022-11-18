@@ -1,7 +1,7 @@
 package app.fitbuddy.testhelper;
 
-import app.fitbuddy.dto.RoleDto;
-import app.fitbuddy.jpa.entity.Role;
+import app.fitbuddy.dto.role.RoleResponseDTO;
+import app.fitbuddy.entity.Role;
 
 public class RoleTestHelper {
 	
@@ -19,13 +19,13 @@ public class RoleTestHelper {
 		return role;
 	}
 	
-	public static boolean isEqual(RoleDto roleDto, Role role) {
-		return (roleDto.getId().equals(role.getId()) &&
-				roleDto.getName().equals(role.getName()));
+	public static boolean isEqual(RoleResponseDTO roleResponseDTO, Role role) {
+		return (roleResponseDTO.getId().equals(role.getId()) &&
+				roleResponseDTO.getName().equals(role.getName()));
 	}
 	
-	public static boolean isEqual(Role role, RoleDto roleDto) {
-		return isEqual(roleDto, role);
+	public static boolean isEqual(Role role, RoleResponseDTO roleResponseDTO) {
+		return isEqual(roleResponseDTO, role);
 	}
 
 }

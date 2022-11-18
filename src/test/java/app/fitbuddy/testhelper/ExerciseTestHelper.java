@@ -1,8 +1,8 @@
 package app.fitbuddy.testhelper;
 
-import app.fitbuddy.dto.ExerciseDto;
-import app.fitbuddy.jpa.entity.AppUser;
-import app.fitbuddy.jpa.entity.Exercise;
+import app.fitbuddy.dto.exercise.ExerciseResponseDTO;
+import app.fitbuddy.entity.AppUser;
+import app.fitbuddy.entity.Exercise;
 
 public class ExerciseTestHelper {
 	
@@ -25,14 +25,14 @@ public class ExerciseTestHelper {
 		return exercise;
 	}
 	
-	public static boolean isEqual(ExerciseDto exerciseDto, Exercise exercise) {
-		return (exerciseDto.getId().equals(exercise.getId()) &&
-				exerciseDto.getName().equals(exercise.getName()) &&
-				exerciseDto.getAppUserId().equals(exercise.getAppUser().getId()));
+	public static boolean isEqual(ExerciseResponseDTO exerciseResponseDTO, Exercise exercise) {
+		return (exerciseResponseDTO.getId().equals(exercise.getId()) &&
+				exerciseResponseDTO.getName().equals(exercise.getName()) &&
+				exerciseResponseDTO.getAppUserId().equals(exercise.getAppUser().getId()));
 	}
 	
-	public static boolean isEqual(Exercise exercise, ExerciseDto exerciseDto) {
-		return isEqual(exerciseDto, exercise);
+	public static boolean isEqual(Exercise exercise, ExerciseResponseDTO exerciseResponseDTO) {
+		return isEqual(exerciseResponseDTO, exercise);
 	}
 
 }

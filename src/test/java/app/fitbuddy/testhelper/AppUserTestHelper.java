@@ -1,8 +1,8 @@
 package app.fitbuddy.testhelper;
 
-import app.fitbuddy.dto.AppUserDto;
-import app.fitbuddy.jpa.entity.AppUser;
-import app.fitbuddy.jpa.entity.Role;
+import app.fitbuddy.dto.appuser.AppUserResponseDTO;
+import app.fitbuddy.entity.AppUser;
+import app.fitbuddy.entity.Role;
 
 public class AppUserTestHelper {
 	
@@ -27,15 +27,15 @@ public class AppUserTestHelper {
 		return appUser;
 	}
 	
-	public static boolean isEqual(AppUserDto appUserDto, AppUser appUser) {
-		return (appUserDto.getId().equals(appUser.getId()) &&
-				appUserDto.getName().equals(appUser.getName()) &&
-				appUserDto.getPassword().equals(appUser.getPassword()) &&
-				appUserDto.getRolename().equals(appUser.getRole().getName()));
+	public static boolean isEqual(AppUserResponseDTO appUserResponseDTO, AppUser appUser) {
+		return (appUserResponseDTO.getId().equals(appUser.getId()) &&
+				appUserResponseDTO.getName().equals(appUser.getName()) &&
+				appUserResponseDTO.getPassword().equals(appUser.getPassword()) &&
+				appUserResponseDTO.getRolename().equals(appUser.getRole().getName()));
 	}
 	
-	public static boolean isEqual(AppUser appUser, AppUserDto appUserDto) {
-		return isEqual(appUserDto, appUser);
+	public static boolean isEqual(AppUser appUser, AppUserResponseDTO appUserResponseDTO) {
+		return isEqual(appUserResponseDTO, appUser);
 	}
 	
 }

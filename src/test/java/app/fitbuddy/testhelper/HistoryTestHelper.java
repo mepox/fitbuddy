@@ -1,9 +1,9 @@
 package app.fitbuddy.testhelper;
 
-import app.fitbuddy.dto.HistoryDto;
-import app.fitbuddy.jpa.entity.AppUser;
-import app.fitbuddy.jpa.entity.Exercise;
-import app.fitbuddy.jpa.entity.History;
+import app.fitbuddy.dto.history.HistoryResponseDTO;
+import app.fitbuddy.entity.AppUser;
+import app.fitbuddy.entity.Exercise;
+import app.fitbuddy.entity.History;
 
 public class HistoryTestHelper {
 	
@@ -35,16 +35,16 @@ public class HistoryTestHelper {
 		return history;
 	}
 	
-	public static boolean isEqual(History history, HistoryDto historyDto) {
-		return (history.getId().equals(historyDto.getId()) && 
-				history.getAppUser().getId().equals(historyDto.getAppUserId()) &&				
-				history.getExercise().getName().equals(historyDto.getExerciseName()) &&				
-				history.getWeight().equals(historyDto.getWeight()) &&
-				history.getReps().equals(historyDto.getReps()) &&
-				history.getCreatedOn().equals(historyDto.getCreatedOn()));
+	public static boolean isEqual(History history, HistoryResponseDTO historyResponseDTO) {
+		return (history.getId().equals(historyResponseDTO.getId()) && 
+				history.getAppUser().getId().equals(historyResponseDTO.getAppUserId()) &&				
+				history.getExercise().getName().equals(historyResponseDTO.getExerciseName()) &&				
+				history.getWeight().equals(historyResponseDTO.getWeight()) &&
+				history.getReps().equals(historyResponseDTO.getReps()) &&
+				history.getCreatedOn().equals(historyResponseDTO.getCreatedOn()));
 	}
 	
-	public static boolean isEqual(HistoryDto historyDto, History history) {
-		return isEqual(history, historyDto);
+	public static boolean isEqual(HistoryResponseDTO historyResponseDTO, History history) {
+		return isEqual(history, historyResponseDTO);
 	}
 }
