@@ -11,7 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import app.fitbuddy.dto.appuser.AppUserRequestDTO;
 import app.fitbuddy.dto.appuser.AppUserResponseDTO;
@@ -26,7 +25,6 @@ class RegisterServiceTest {
 	@InjectMocks	RegisterService instance;
 	@Mock	AppUserCrudService appUserCrudService;
 	@Mock	RoleCrudService	roleCrudService;
-	@Mock	BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Test
 	void register_whenNameAlreadyExists_shouldThrowFitBuddyException() {
@@ -53,7 +51,6 @@ class RegisterServiceTest {
 		
 		when(appUserCrudService.readByName(anyString())).thenReturn(null);
 		when(roleCrudService.readByName(anyString())).thenReturn(roleResponseDTO);
-		when(bCryptPasswordEncoder.encode(anyString())).thenReturn("encodedPassword");
 		when(appUserCrudService.create(any(AppUserRequestDTO.class))).thenReturn(appUserResponseDTO);
 		
 		Integer newAppUserId = instance.register("name", "password");

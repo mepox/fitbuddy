@@ -3,7 +3,6 @@ package app.fitbuddy.service.operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import app.fitbuddy.dto.appuser.AppUserRequestDTO;
@@ -23,14 +22,10 @@ public class RegisterService {
 	private final AppUserCrudService appUserCrudService;
 	private final RoleCrudService roleCrudService;
 	
-	private final BCryptPasswordEncoder bCryptPasswordEncoder;
-	
 	@Autowired
-	public RegisterService(AppUserCrudService appUserCrudService, RoleCrudService roleCrudService,
-			BCryptPasswordEncoder bCryptPasswordEncoder) {
+	public RegisterService(AppUserCrudService appUserCrudService, RoleCrudService roleCrudService) {
 		this.appUserCrudService = appUserCrudService;
-		this.roleCrudService = roleCrudService;				
-		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+		this.roleCrudService = roleCrudService;
 		this.logger = LoggerFactory.getLogger(RegisterService.class);
 	}
 	
@@ -47,8 +42,7 @@ public class RegisterService {
 		}
 		
 		// create new app user
-		AppUserRequestDTO appUserRequestDTO = new AppUserRequestDTO(name, 
-				bCryptPasswordEncoder.encode(password), userRoleDto.getName());
+		AppUserRequestDTO appUserRequestDTO = new AppUserRequestDTO(name, password, userRoleDto.getName());
 		
 		AppUserResponseDTO newAppUserDto = appUserCrudService.create(appUserRequestDTO);
 		
