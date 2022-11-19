@@ -1,7 +1,7 @@
 package app.fitbuddy.testhelper;
 
-import app.fitbuddy.dto.ExerciseDto;
-import app.fitbuddy.jpa.entity.DefaultExercise;
+import app.fitbuddy.dto.exercise.ExerciseRequestDTO;
+import app.fitbuddy.entity.DefaultExercise;
 
 public class DefaultExerciseTestHelper {
 	
@@ -19,12 +19,12 @@ public class DefaultExerciseTestHelper {
 		return defaultExercise;
 	}
 
-	public static boolean isEqual(ExerciseDto exerciseDto, DefaultExercise exercise) {
-		return exerciseDto.getName().equals(exercise.getName());
+	public static boolean isEqual(ExerciseRequestDTO exerciseRequestDTO, DefaultExercise exercise) {
+		return exerciseRequestDTO.getName().equals(exercise.getName());
 	}
 
-	public static boolean isEqual(DefaultExercise exercise, ExerciseDto exerciseDto) {
-		return isEqual(exerciseDto, exercise);
+	public static boolean isEqual(DefaultExercise exercise, ExerciseRequestDTO exerciseRequestDTO) {
+		return isEqual(exerciseRequestDTO, exercise);
 	}
 
 }
