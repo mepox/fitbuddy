@@ -93,7 +93,7 @@ class AppUserMapperServiceTest {
 			
 			AppUserResponseDTO actualResponseDTO = appUserMapperService.entityToResponseDto(appUser);
 			
-			assertThat(AppUserTestHelper.isEqual(appUser, actualResponseDTO));
+			assertThat(AppUserTestHelper.isEqual(appUser, actualResponseDTO)).isTrue();
 		}		
 	}
 	
@@ -124,8 +124,8 @@ class AppUserMapperServiceTest {
 			List<AppUserResponseDTO> actualResponseDTOs = appUserMapperService.entitiesToResponseDtos(appUsers);
 			
 			assertEquals(appUsers.size(), actualResponseDTOs.size());
-			assertThat(AppUserTestHelper.isEqual(appUsers.get(0), actualResponseDTOs.get(0)));
-			assertThat(AppUserTestHelper.isEqual(appUsers.get(1), actualResponseDTOs.get(1)));			
+			assertThat(AppUserTestHelper.isEqual(appUsers.get(0), actualResponseDTOs.get(0))).isTrue();
+			assertThat(AppUserTestHelper.isEqual(appUsers.get(1), actualResponseDTOs.get(1))).isTrue();			
 		}
 	}
 	
