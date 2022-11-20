@@ -58,7 +58,7 @@ class HistoryControllerTest {
 		@Test
 		@WithAnonymousUser
 		void whenNotAuthed_shouldReturnRedirect302() throws Exception {
-			HistoryRequestDTO requestDTO = new HistoryRequestDTO(0, "exerciseName", 11, 111, "01-01-2022"); 
+			HistoryRequestDTO requestDTO = new HistoryRequestDTO(0, "exerciseName", 11, 111, "2022-01-01"); 
 			
 			mockMvc.perform(post(API_PATH)
 					.contentType(MediaType.APPLICATION_JSON)
@@ -67,7 +67,7 @@ class HistoryControllerTest {
 		}		
 		
 		/*@ParameterizedTest
-		@ValueSource(strings = {"abc", "1-1-2022", "01-01-2022", "2022-1-1"})
+		@ValueSource(strings = {"abc", "1-1-2022", "01-01-2022", "2022-1-1", "2022-13-01", "2022-01-32"})
 		@WithMockUser(authorities = {"USER", "ADMIN"})		
 		void whenDateIsNotCorrect_shouldReturnBadRequest(String strDate) throws Exception {
 			HistoryRequestDTO requestDTO = new HistoryRequestDTO(0, "exerciseName", 11, 111, strDate);
@@ -84,7 +84,7 @@ class HistoryControllerTest {
 		@Test
 		@WithMockUser(authorities = {"USER", "ADMIN"})
 		void whenInputIsCorrect_shouldReturnOk() throws Exception {
-			HistoryRequestDTO historyRequestDTO = new HistoryRequestDTO(0, "exerciseName", 11, 111, "01-01-2022"); 
+			HistoryRequestDTO historyRequestDTO = new HistoryRequestDTO(0, "exerciseName", 11, 111, "2022-01-01"); 
 			AppUserResponseDTO appUserResponseDTO = new AppUserResponseDTO(11, "name", "password", "roleName");
 			
 			when(appUserCrudService.readByName(anyString())).thenReturn(appUserResponseDTO);
@@ -132,7 +132,7 @@ class HistoryControllerTest {
 		}
 		
 		@ParameterizedTest
-		@ValueSource(strings = {"abc", "1-1-2022", "01-01-2022", "2022-1-1"})
+		@ValueSource(strings = {"abc", "1-1-2022", "01-01-2022", "2022-1-1", "2022-13-01", "2022-01-32"})
 		@WithMockUser(authorities = {"USER", "ADMIN"})
 		void whenPathVariableNotCorrectDate_shouldReturnBadRequest(String strDate) throws Exception {
 			mockMvc.perform(get(API_PATH + "/" + strDate)).andExpect(status().isBadRequest());
