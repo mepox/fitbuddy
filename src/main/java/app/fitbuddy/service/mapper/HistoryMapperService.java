@@ -58,6 +58,9 @@ public class HistoryMapperService implements MapperService<HistoryRequestDTO, Hi
 
 	@Override
 	public HistoryResponseDTO entityToResponseDto(History entity) {
+		if (entity == null) {
+			return null;
+		}
 		return new HistoryResponseDTO(entity.getId(), entity.getAppUser().getId(), entity.getExercise().getName(),
 										entity.getWeight(), entity.getReps(), entity.getCreatedOn());
 	}
