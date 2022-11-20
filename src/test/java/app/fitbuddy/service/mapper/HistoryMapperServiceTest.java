@@ -148,8 +148,8 @@ class HistoryMapperServiceTest {
 			List<HistoryResponseDTO> responseDTOs = historyMapperService.entitiesToResponseDtos(histories);
 			
 			assertEquals(histories.size(), responseDTOs.size());
-			assertThat(HistoryTestHelper.isEqual(histories.get(0), responseDTOs.get(0)));
-			assertThat(HistoryTestHelper.isEqual(histories.get(1), responseDTOs.get(1)));			
+			assertThat(HistoryTestHelper.isEqual(histories.get(0), responseDTOs.get(0))).isTrue();
+			assertThat(HistoryTestHelper.isEqual(histories.get(1), responseDTOs.get(1))).isTrue();
 		}
 	}
 	
