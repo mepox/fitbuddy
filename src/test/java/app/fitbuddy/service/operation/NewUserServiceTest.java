@@ -25,14 +25,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class NewUserServiceTest {
+class NewUserServiceTest {
 	private final static int DUMMY_USER_ID = 17;
 	@InjectMocks	NewUserService newUserService;
 	@Mock	DefaultExerciseRepository defaultExerciseRepository;
 	@Mock	ExerciseCrudService exerciseCrudService;
 
 	@Test
-	public void newUser_whenAddsDefaultExercises_shouldFindAllDefaultExercises() {
+	void newUser_whenAddsDefaultExercises_shouldFindAllDefaultExercises() {
 		when(defaultExerciseRepository.findAll()).thenReturn(dummyDefaultExercises());
 
 		newUserService.addDefaultExercises(DUMMY_USER_ID);
@@ -41,7 +41,7 @@ public class NewUserServiceTest {
 	}
 
 	@Test
-	public void newUser_whenAddsDefaultExercises_shouldCreateDtoForEachDefaultExercise() {
+	void newUser_whenAddsDefaultExercises_shouldCreateDtoForEachDefaultExercise() {
 		when(defaultExerciseRepository.findAll()).thenReturn(dummyDefaultExercises());
 
 		newUserService.addDefaultExercises(DUMMY_USER_ID);
@@ -50,7 +50,7 @@ public class NewUserServiceTest {
 	}
 
 	@Test
-	public void newUser_whenAddsDefaultExercises_shouldCreateCorrespondingExerciseDtoFromDefaultExercises() {
+	void newUser_whenAddsDefaultExercises_shouldCreateCorrespondingExerciseDtoFromDefaultExercises() {
 		when(defaultExerciseRepository.findAll()).thenReturn(dummyDefaultExercises());
 		ArgumentCaptor<ExerciseRequestDTO> requestDTOCaptor = ArgumentCaptor.forClass(ExerciseRequestDTO.class);
 
@@ -68,7 +68,7 @@ public class NewUserServiceTest {
 	@ParameterizedTest
 	@NullSource
 	@ValueSource(ints = {-7, -1, -1000001})
-	public void newUser_whenAppUserIsNullOrNegative_shouldThrowException(Integer appUserId) {
+	void newUser_whenAppUserIsNullOrNegative_shouldThrowException(Integer appUserId) {
 		assertThrows(FitBuddyException.class, () -> {
 			newUserService.addDefaultExercises(appUserId);
 		});
