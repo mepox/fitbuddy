@@ -25,7 +25,10 @@ public class RoleMapperService implements MapperService<RoleRequestDTO, RoleResp
 	}
 
 	@Override
-	public RoleResponseDTO entityToResponseDto(Role entity) {		
+	public RoleResponseDTO entityToResponseDto(Role entity) {
+		if (entity == null) {
+			return null;
+		}
 		return new RoleResponseDTO(entity.getId(), entity.getName());
 	}
 
