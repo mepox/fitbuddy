@@ -1,6 +1,7 @@
 package app.fitbuddy.service.crud;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
@@ -129,16 +130,18 @@ class AppUserCrudServiceTest {
 		}
 		
 		@Test
-		void callSave() {
+		void applyAndSave() {
 			AppUserUpdateDTO updateDTO = new AppUserUpdateDTO("name", "roleName");
 			AppUser appUser = AppUserTestHelper.getMockAppUser();
 			
 			when(appUserRepository.findById(anyInt())).thenReturn(Optional.of(appUser));
 			when(appUserRepository.findByName(anyString())).thenReturn(Optional.empty());
-			when(appUserMapperService.applyUpdateDtoToEntity(appUser, updateDTO)).thenReturn(appUser);
+			when(appUserMapperService.applyUpdateDtoToEntity(any(AppUser.class), 
+					any(AppUserUpdateDTO.class))).thenReturn(appUser);			
 			
 			appUserCrudService.update(1, updateDTO);
 			
+			verify(appUserMapperService).applyUpdateDtoToEntity(appUser, updateDTO);
 			verify(appUserRepository).save(appUser);
 		}
 	}
