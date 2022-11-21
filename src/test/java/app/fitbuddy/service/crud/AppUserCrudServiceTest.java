@@ -6,7 +6,6 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Nested;
@@ -19,7 +18,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import app.fitbuddy.dto.appuser.AppUserRequestDTO;
 import app.fitbuddy.repository.AppUserRepository;
 import app.fitbuddy.service.mapper.AppUserMapperService;
-import app.fitbuddy.dto.appuser.AppUserResponseDTO;
 import app.fitbuddy.dto.appuser.AppUserUpdateDTO;
 import app.fitbuddy.entity.AppUser;
 import app.fitbuddy.exception.FitBuddyException;
@@ -41,35 +39,8 @@ class AppUserCrudServiceTest {
 	class Create {
 		
 		@Test
-		void callSave() {
-			AppUserRequestDTO appUserRequestDTO = new AppUserRequestDTO("name", "password", "roleName");
-			
-			when(appUserRepository.findByName(anyString())).thenReturn(Optional.empty());
-			when(appUserMapperService.requestDtoToEntity(appUserRequestDTO)).thenReturn(null);
-			
-			appUserCrudService.create(appUserRequestDTO);
-			
-			verify(appUserRepository).save(null);
-		}
-		
-		@Test
-		void returnResponseDTO() {
-			AppUserRequestDTO appUserRequestDTO = new AppUserRequestDTO("name", "password", "roleName");
-			AppUser appUser = AppUserTestHelper.getMockAppUser();
-			
-			when(appUserRepository.findByName(anyString())).thenReturn(Optional.empty());
-			when(appUserMapperService.requestDtoToEntity(appUserRequestDTO)).thenReturn(appUser);
-			
-			appUserCrudService.create(appUserRequestDTO);
-			
-			verify(appUserRepository).save(appUser);
-		}
-		
-		@Test
-		void requestDTOIsNull_returnNull() {
-			AppUserResponseDTO actualResponseDTO = appUserCrudService.create(null);
-			
-			assertNull(actualResponseDTO);
+		void requestDTOIsNull_returnNull() {			
+			assertNull(appUserCrudService.create(null));
 		}
 		
 		@Test
@@ -81,6 +52,19 @@ class AppUserCrudServiceTest {
 			
 			assertThrows(FitBuddyException.class, () -> appUserCrudService.create(appUserRequestDTO));
 		}
+		
+		@Test
+		void callSave() {
+			AppUserRequestDTO appUserRequestDTO = new AppUserRequestDTO("name", "password", "roleName");
+			AppUser appUser = AppUserTestHelper.getMockAppUser();
+			
+			when(appUserRepository.findByName(anyString())).thenReturn(Optional.empty());
+			when(appUserMapperService.requestDtoToEntity(appUserRequestDTO)).thenReturn(appUser);
+			
+			appUserCrudService.create(appUserRequestDTO);
+			
+			verify(appUserRepository).save(appUser);
+		}
 	}
 	
 	@Nested
@@ -90,9 +74,7 @@ class AppUserCrudServiceTest {
 		void notFoundById_returnNull() {
 			when(appUserRepository.findById(anyInt())).thenReturn(Optional.empty());
 			
-			AppUserResponseDTO actualResponseDTO = appUserCrudService.readById(1);
-			
-			assertNull(actualResponseDTO);			
+			assertNull(appUserCrudService.readById(1));			
 		}
 	}
 	
@@ -103,9 +85,7 @@ class AppUserCrudServiceTest {
 		void notFoundByName_returnNull() {
 			when(appUserRepository.findByName(anyString())).thenReturn(Optional.empty());
 
-			AppUserResponseDTO actualResponseDTO = appUserCrudService.readByName("name");
-
-			assertNull(actualResponseDTO);
+			assertNull(appUserCrudService.readByName("name"));
 		}
 	}
 	
@@ -113,22 +93,10 @@ class AppUserCrudServiceTest {
 	class ReadAll {
 		
 		@Test
-		void returnListOfResponseDTOs() {
-			AppUser appUser1 = AppUserTestHelper.getMockAppUser();
-			AppUser appUser2 = AppUserTestHelper.getMockAppUser();
-			List<AppUser> appUsers = List.of(appUser1, appUser2);
-			AppUserResponseDTO responseDTO_1 = new AppUserResponseDTO(1, "name1", "password1", "roleName1");
-			AppUserResponseDTO responseDTO_2 = new AppUserResponseDTO(2, "name2", "password2", "roleName2");
-			List<AppUserResponseDTO> responseDTOs = List.of(responseDTO_1, responseDTO_2);
+		void callAppUserRepository() {
+			appUserCrudService.readAll();
 			
-			when(appUserRepository.findAll()).thenReturn(appUsers);
-			when(appUserMapperService.entitiesToResponseDtos(appUsers)).thenReturn(responseDTOs);
-			
-			List<AppUserResponseDTO> actualResponseDTOs = appUserCrudService.readAll();
-			
-			assertEquals(responseDTOs.size(), actualResponseDTOs.size());
-			assertEquals(responseDTOs.get(0), actualResponseDTOs.get(0));
-			assertEquals(responseDTOs.get(1), actualResponseDTOs.get(1));
+			verify(appUserRepository).findAll();		
 		}
 	}
 	
@@ -136,10 +104,8 @@ class AppUserCrudServiceTest {
 	class Update {
 		
 		@Test
-		void updateDTOIsNull_returnNull() {
-			AppUserResponseDTO actualResponseDTO = appUserCrudService.update(1, null);
-			
-			assertNull(actualResponseDTO);
+		void updateDTOIsNull_returnNull() {			
+			assertNull(appUserCrudService.update(1, null));
 		}
 		
 		@Test
@@ -148,9 +114,7 @@ class AppUserCrudServiceTest {
 			
 			when(appUserRepository.findById(anyInt())).thenReturn(Optional.empty());
 			
-			AppUserResponseDTO actualResponseDTO = appUserCrudService.update(1, updateDTO);
-			
-			assertNull(actualResponseDTO);
+			assertNull(appUserCrudService.update(1, updateDTO));
 		}
 		
 		@Test
