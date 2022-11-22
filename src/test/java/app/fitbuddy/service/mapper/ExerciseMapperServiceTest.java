@@ -73,9 +73,9 @@ class ExerciseMapperServiceTest {
 		
 		@Test
 		void entityIsNull_returnNull() {
-			Exercise actualExercise = exerciseMapperService.requestDtoToEntity(null);
+			ExerciseResponseDTO actualResponseDTO = exerciseMapperService.entityToResponseDto(null);
 			
-			assertNull(actualExercise);		
+			assertNull(actualResponseDTO);		
 		}
 		
 		@Test
