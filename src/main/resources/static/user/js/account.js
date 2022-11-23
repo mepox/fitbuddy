@@ -56,8 +56,12 @@ function updateAccount() {
 		return;
 	}
 	
-	let data = { "name" : name,
+	let data = { "name" : name };
+	
+	if (newPassword.length > 0) {
+		data = { "name" : name,
 				"password" : newPassword };
+	}				
 	
 	let xhr = new XMLHttpRequest();	
 	xhr.open("PUT", ACCOUNT_API_PATH);	
@@ -73,7 +77,7 @@ function updateAccount() {
 				// ERROR
 				console.log("ERROR: " + this.responseText);
 			}
-			showAccount();
+			onLogout();
 		}		
 	}
 }
