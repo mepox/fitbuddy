@@ -75,6 +75,9 @@ public class AppUserMapperService implements MapperService<AppUserRequestDTO, Ap
 		if (updateDTO.getName() != null) {
 			entity.setName(updateDTO.getName());
 		}
+		if (updateDTO.getPassword() != null) {
+			entity.setPassword(bCryptPasswordEncoder.encode(updateDTO.getPassword()));
+		}
 		if (updateDTO.getRolename() != null) {
 			Optional<Role> optionalRole = roleRepository.findByName(updateDTO.getRolename());
 			if (optionalRole.isEmpty()) {
