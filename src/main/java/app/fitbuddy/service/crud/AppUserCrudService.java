@@ -71,8 +71,9 @@ public class AppUserCrudService implements CrudService<AppUserRequestDTO, AppUse
 		if (optionalExistingAppUser.isEmpty()) {
 			return null;
 		}
-		if (appUserRepository.findByName(updateDTO.getName()).isPresent()) {
-			throw new FitBuddyException("Username already exists.");
+		if (!optionalExistingAppUser.get().getName().equals(updateDTO.getName()) &&
+			appUserRepository.findByName(updateDTO.getName()).isPresent()) {
+				throw new FitBuddyException("Username already exists.");			
 		}
 		AppUser savedAppUser = appUserRepository.save(
 				appUserMapperService.applyUpdateDtoToEntity(optionalExistingAppUser.get(), updateDTO));		

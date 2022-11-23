@@ -65,9 +65,10 @@ public class ExerciseCrudService implements CrudService<ExerciseRequestDTO, Exer
 		if (optionalExistingExercise.isEmpty()) {
 			return null;
 		}
-		if (exerciseRepository.findByName(updateDTO.getName()).isPresent()) {
-			throw new FitBuddyException("Exercise name already exists.");
-		}
+		if (!optionalExistingExercise.get().getName().equals(updateDTO.getName()) &&
+			exerciseRepository.findByName(updateDTO.getName()).isPresent()) {
+				throw new FitBuddyException("Exercise name already exists.");			
+		}		
 		Exercise savedExercise = exerciseRepository.save(
 				exerciseMapperService.applyUpdateDtoToEntity(optionalExistingExercise.get(), updateDTO));
 		return exerciseMapperService.entityToResponseDto(savedExercise);

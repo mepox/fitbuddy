@@ -71,8 +71,9 @@ public class RoleCrudService implements CrudService<RoleRequestDTO, RoleResponse
 		if (optionalExistingRole.isEmpty()) {
 			return null;
 		}
-		if (roleRepository.findByName(updateDTO.getName()).isPresent()) {
-			throw new FitBuddyException("Role name already exists.");
+		if (!optionalExistingRole.get().getName().equals(updateDTO.getName()) &&
+			roleRepository.findByName(updateDTO.getName()).isPresent()) {
+				throw new FitBuddyException("Role name already exists.");
 		}
 		Role savedRole = roleRepository.save(
 				roleMapperService.applyUpdateDtoToEntity(optionalExistingRole.get(), updateDTO));
