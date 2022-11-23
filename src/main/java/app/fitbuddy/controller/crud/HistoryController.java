@@ -77,21 +77,21 @@ public class HistoryController {
 	}
 	
 	@PutMapping("{id}")
-	public void update(@PathVariable("id") Integer historyId, @Valid @RequestBody HistoryUpdateDTO historyUpdateDTO) {
+	public void update(@PathVariable("id") @NotNull Integer historyId, @Valid @RequestBody HistoryUpdateDTO historyUpdateDTO) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (historyId != null) {
+		
 			Integer userId = appUserCrudService.readByName(auth.getName()).getId();
 			if (userId != null) {
 				historyCrudService.update(historyId, historyUpdateDTO);
 				logger.info("Updating history: {}", historyUpdateDTO);				
 			}
-		}
+		
 	}
 	
 	@DeleteMapping("{id}")
-	public void delete(@PathVariable("id") Integer historyId) {
+	public void delete(@PathVariable("id") @NotNull Integer historyId) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (historyId != null) {
+	
 			Integer userId = appUserCrudService.readByName(auth.getName()).getId();
 			if (userId != null) {
 				HistoryResponseDTO historyResponseDTO = historyCrudService.readById(historyId);				
@@ -102,6 +102,6 @@ public class HistoryController {
 					throw new FitBuddyException("UserIds doesn't match. Cannot delete others History.");
 				}
 			}
-		}	
+		
 	}
 }
