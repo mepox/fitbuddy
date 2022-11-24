@@ -31,7 +31,7 @@ function showAccount() {
 				// SUCCESS
 				let data = JSON.parse(this.responseText);
 				
-				document.forms["account-form"]["username"].value = data.name;
+				clearFormValue("account-form", "old-password");
 				clearFormValue("account-form", "new-password");
 				clearFormValue("account-form", "confirm-new-password");															
 			} else {
@@ -43,11 +43,11 @@ function showAccount() {
 }
 
 function updateAccount() {
-	let name = document.forms["account-form"]["username"].value;
+	let oldPassword = document.forms["account-form"]["old-password"].value;
 	let newPassword = document.forms["account-form"]["new-password"].value;
 	let confirmNewPassword = document.forms["account-form"]["confirm-new-password"].value;
 	
-	name = name.trim();
+	oldPassword = oldPassword.trim();
 	newPassword = newPassword.trim();
 	confirmNewPassword = confirmNewPassword.trim();
 	
@@ -56,12 +56,8 @@ function updateAccount() {
 		return;
 	}
 	
-	let data = { "name" : name };
-	
-	if (newPassword.length > 0) {
-		data = { "name" : name,
-				"password" : newPassword };
-	}				
+	let data = { "oldPassword" : oldPassword,
+				"newPassword" : newPassword };			
 	
 	let xhr = new XMLHttpRequest();	
 	xhr.open("PUT", ACCOUNT_API_PATH);	
@@ -77,7 +73,7 @@ function updateAccount() {
 				// ERROR
 				console.log("ERROR: " + this.responseText);
 			}
-			onLogout();
+			showAccount();
 		}		
 	}
 }

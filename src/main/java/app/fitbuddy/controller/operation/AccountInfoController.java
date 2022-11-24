@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import app.fitbuddy.dto.accountinfo.AccountInfoResponseDTO;
 import app.fitbuddy.dto.accountinfo.AccountInfoUpdateDTO;
-import app.fitbuddy.dto.appuser.AppUserResponseDTO;
 import app.fitbuddy.service.operation.AccountInfoService;
 
 @RestController
@@ -29,7 +29,7 @@ public class AccountInfoController {
 	}
 	
 	@GetMapping
-	public AppUserResponseDTO read() {
+	public AccountInfoResponseDTO read() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		return accountInfoService.read(auth.getName());
 	}
