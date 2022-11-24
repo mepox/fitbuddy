@@ -14,9 +14,10 @@ public class AccountInfoUpdateDTO {
 	
 	@NotBlank
 	@Size(min = 4, max = 15)
-	private String name;
+	private String oldPassword;
 	
+	@NotBlank
 	@Size(min = 4, max = 15)
-	private String password;
+	private String newPassword;
 
 }
