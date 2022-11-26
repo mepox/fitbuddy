@@ -52,8 +52,7 @@ function deleteExercise(exerciseId) {
 			} else {
 				// ERROR
 				console.log("ERROR: " + this.responseText);
-			}
-			//showStatus(this.responseText);
+			}			
 			showExercises();
 		}		
 	}	
@@ -79,7 +78,6 @@ function onAddExercise() {
 				// ERROR
 				console.log("ERROR: " + this.responseText);
 			}
-			//showStatus(this.responseText);
 			showExercises();
 		}		
 	}
@@ -123,7 +121,6 @@ function saveExercise(exerciseId) {
 				// ERROR
 				console.log("ERROR: " + this.responseText);
 			}
-			//showStatus(this.responseText);
 			showExercises();
 		}		
 	}

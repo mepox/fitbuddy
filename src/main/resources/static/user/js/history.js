@@ -123,7 +123,6 @@ function deleteHistory(historyId) {
 				// ERROR
 				console.log("ERROR: " + this.responseText);
 			}
-			//showStatus(this.responseText);
 			showHistory();
 		}		
 	}	
@@ -159,7 +158,6 @@ function onAddHistory() {
 				// ERROR
 				console.log("ERROR: " + this.responseText);
 			}
-			//showStatus(this.responseText);
 			showHistory();
 		}		
 	}			
@@ -216,7 +214,6 @@ function saveHistory(historyId) {
 				// ERROR
 				console.log("ERROR: " + this.responseText);
 			}
-			//showStatus(this.responseText);
 			showHistory();
 		}		
 	}
