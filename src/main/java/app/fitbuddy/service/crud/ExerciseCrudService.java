@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import app.fitbuddy.dto.exercise.ExerciseRequestDTO;
@@ -76,7 +77,11 @@ public class ExerciseCrudService implements CrudService<ExerciseRequestDTO, Exer
 	
 	@Override
 	public void delete(Integer id) {
-		exerciseRepository.deleteById(id);		
+		try {
+			exerciseRepository.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new FitBuddyException("Exercise cannot be deleted, it's in use.");
+		}
 	}	
 	
 }
