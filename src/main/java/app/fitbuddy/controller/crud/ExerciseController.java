@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,30 +69,26 @@ public class ExerciseController {
 	}
 	
 	@PutMapping("{id}")
-	public void update(@PathVariable("id") Integer exerciseId, @Valid @RequestBody ExerciseUpdateDTO exerciseUpdateDTO) {
+	public void update(@PathVariable("id") @NotNull Integer exerciseId, @Valid @RequestBody ExerciseUpdateDTO exerciseUpdateDTO) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (exerciseId != null) {
-			Integer userId = appUserCrudService.readByName(auth.getName()).getId();
-			if (userId != null) {
-				exerciseCrudService.update(exerciseId, exerciseUpdateDTO);	
-				logger.info("Updating the exercise: {}", exerciseUpdateDTO);
-			}
+		Integer userId = appUserCrudService.readByName(auth.getName()).getId();
+		if (userId != null) {
+			exerciseCrudService.update(exerciseId, exerciseUpdateDTO);
+			logger.info("Updating the exercise: {}", exerciseUpdateDTO);
 		}
 	}
 	
 	@DeleteMapping("{id}")
-	public void delete(@PathVariable("id") Integer exerciseId) {
+	public void delete(@PathVariable("id") @NotNull Integer exerciseId) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (exerciseId != null) {
-			Integer userId = appUserCrudService.readByName(auth.getName()).getId();			
-			if (userId != null) {
-				ExerciseResponseDTO exerciseResponseDTO = exerciseCrudService.readById(exerciseId);				
-				if (exerciseResponseDTO != null && exerciseResponseDTO.getAppUserId().equals(userId)) {
-					exerciseCrudService.delete(exerciseId);
-					logger.info("Deleting exercise: {}", exerciseResponseDTO);
-				} else {
-					throw new FitBuddyException("UserIds doesn't match. Cannot delete others Exercise.");
-				}
+		Integer userId = appUserCrudService.readByName(auth.getName()).getId();
+		if (userId != null) {
+			ExerciseResponseDTO exerciseResponseDTO = exerciseCrudService.readById(exerciseId);
+			if (exerciseResponseDTO != null && exerciseResponseDTO.getAppUserId().equals(userId)) {
+				exerciseCrudService.delete(exerciseId);
+				logger.info("Deleting exercise: {}", exerciseResponseDTO);
+			} else {
+				throw new FitBuddyException("UserIds doesn't match. Cannot delete others Exercise.");
 			}
 		}
 	}
