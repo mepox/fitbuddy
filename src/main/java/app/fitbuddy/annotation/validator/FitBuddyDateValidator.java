@@ -11,24 +11,24 @@ import javax.validation.ConstraintValidatorContext;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 @Service
 public class FitBuddyDateValidator implements ConstraintValidator<FitBuddyDate, String> {
 
-	private final String datePattern;
+	private final DateTimeFormatter dateTimeFormatter;
 
 	@Autowired
 	public FitBuddyDateValidator(@Value("${fitbuddy.validation.pattern.date:yyyy-MM-dd}") String datePattern) {
-		this.datePattern = datePattern;
+		dateTimeFormatter = DateTimeFormatter.ofPattern(datePattern);
 	}
 
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {
-		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(datePattern);
 		try {
 			LocalDate.parse(value, dateTimeFormatter);
 			return true;
-		} catch (Throwable ignoredThrowable) {
+		} catch (DateTimeParseException parseException) {
 			return false;
 		}
 	}
