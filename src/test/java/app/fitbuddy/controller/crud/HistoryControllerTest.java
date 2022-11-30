@@ -66,7 +66,7 @@ class HistoryControllerTest {
 			.andExpect(status().is(302));			
 		}		
 		
-		/*@ParameterizedTest
+		@ParameterizedTest
 		@ValueSource(strings = {"abc", "1-1-2022", "01-01-2022", "2022-1-1", "2022-13-01", "2022-01-32"})
 		@WithMockUser(authorities = {"USER", "ADMIN"})		
 		void whenDateIsNotCorrect_shouldReturnBadRequest(String strDate) throws Exception {
@@ -79,7 +79,7 @@ class HistoryControllerTest {
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(objectMapper.writeValueAsString(requestDTO)))			
 			.andExpect(status().isBadRequest());
-		}*/
+		}
 		
 		@Test
 		@WithMockUser(authorities = {"USER", "ADMIN"})
