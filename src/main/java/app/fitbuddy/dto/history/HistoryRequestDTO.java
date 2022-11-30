@@ -5,6 +5,8 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 
+import app.fitbuddy.annotation.FitBuddyDate;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
@@ -29,7 +31,7 @@ public class HistoryRequestDTO {
 	@Positive
 	private Integer reps;
 	
-	// TODO: regex pattern validation
+	@FitBuddyDate
 	private String createdOn;
 
 }
