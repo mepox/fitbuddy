@@ -80,10 +80,14 @@ public class HistoryController {
     		@AuthenticationPrincipal AppUserPrincipal appUserPrincipal) {
         Integer userId = appUserPrincipal.getId();
         if (userId != null) {
-            historyCrudService.update(historyId, historyUpdateDTO);
-            logger.info("Updating history: {}", historyUpdateDTO);
+        	HistoryResponseDTO historyResponseDTO = historyCrudService.readById(historyId);
+        	if (historyResponseDTO != null && historyResponseDTO.getAppUserId().equals(userId)) {
+        		historyCrudService.update(historyId, historyUpdateDTO);
+                logger.info("Updating history: {}", historyUpdateDTO);
+        	} else {
+        		throw new FitBuddyException("UserIds doesn't match. Cannot update others History.");
+        	}            
         }
-
     }
 
     @DeleteMapping("{id}")
@@ -99,6 +103,5 @@ public class HistoryController {
                 throw new FitBuddyException("UserIds doesn't match. Cannot delete others History.");
             }
         }
-
     }
 }
