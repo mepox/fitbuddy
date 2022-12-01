@@ -69,8 +69,13 @@ public class ExerciseController {
 			@AuthenticationPrincipal AppUserPrincipal appUserPrincipal) {		
 		Integer userId = appUserPrincipal.getId();
 		if (userId != null) {
-			exerciseCrudService.update(exerciseId, exerciseUpdateDTO);
-			logger.info("Updating the exercise: {}", exerciseUpdateDTO);
+			ExerciseResponseDTO exerciseResponseDTO = exerciseCrudService.readById(exerciseId);
+			if (exerciseResponseDTO != null && exerciseResponseDTO.getAppUserId().equals(userId)) {
+				exerciseCrudService.update(exerciseId, exerciseUpdateDTO);
+				logger.info("Updating the exercise: {}", exerciseUpdateDTO);
+			} else {
+				throw new FitBuddyException("UserIds doesn't match. Cannot update others Exercise.");
+			}
 		}
 	}
 	
