@@ -1,7 +1,7 @@
 package app.fitbuddy.service.operation;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,9 +15,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import app.fitbuddy.dto.appuser.AppUserResponseDTO;
+import app.fitbuddy.entity.AppUser;
 import app.fitbuddy.exception.FitBuddyException;
-import app.fitbuddy.service.crud.AppUserCrudService;
+import app.fitbuddy.repository.AppUserRepository;
+import app.fitbuddy.security.AppUserPrincipal;
 
 /**
  * Provides a service to handle the login process.
@@ -26,42 +27,44 @@ import app.fitbuddy.service.crud.AppUserCrudService;
 public class LoginService {	
 	
 	private final Logger logger;
-	private final AppUserCrudService appUserCrudService;
+	private final AppUserRepository appUserRepository;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Autowired
-	public LoginService(AppUserCrudService appUserCrudService) {
-		this.appUserCrudService = appUserCrudService;
-		this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
+	public LoginService(AppUserRepository appUserRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+		this.appUserRepository = appUserRepository;
+		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 		this.logger = LoggerFactory.getLogger(LoginService.class);
 	}
 	
 	public void login(String name, String password) {		
 		// find the user
-		AppUserResponseDTO appUserResponseDTO = appUserCrudService.readByName(name);
-		if (appUserResponseDTO == null) {
+		Optional<AppUser> optionalAppUser = appUserRepository.findByName(name);
+		if (optionalAppUser.isEmpty()) {
 			throw new FitBuddyException("Username not found.");
 		}		
 		
 		// check the password
-		if (!bCryptPasswordEncoder.matches(password, appUserResponseDTO.getPassword())) {
+		if (!bCryptPasswordEncoder.matches(password, optionalAppUser.get().getPassword())) {
 			throw new FitBuddyException("Incorrect password.");
 		}
 		
-		// create the GrantedAuthority list
-		List<GrantedAuthority> grantList = new ArrayList<>();
+		// create the authorities
+		List<GrantedAuthority> authorities = List.of(
+				new SimpleGrantedAuthority(optionalAppUser.get().getRole().getName()));
 		
-		// add the role name
-		grantList.add(new SimpleGrantedAuthority(appUserResponseDTO.getRolename()));				
+		// create a new authentication
+		Authentication authentication = new UsernamePasswordAuthenticationToken(
+				new AppUserPrincipal(optionalAppUser.get()), password, authorities);
 		
-		// create a new auth
-		Authentication auth = new UsernamePasswordAuthenticationToken(name, password, grantList);
+		// create an empty SecurityContext and set the authentication
+		SecurityContext context = SecurityContextHolder.createEmptyContext();		
+		context.setAuthentication(authentication);
 		
-		// login the user
-		SecurityContext sc = SecurityContextHolder.getContext();
-		sc.setAuthentication(auth);
+		// set the SecurityContext
+		SecurityContextHolder.setContext(context);
 		
-		logger.info("Logged in: {}", appUserResponseDTO);
+		logger.info("Logged in: {}", optionalAppUser.get());
 	}
 
 }
