@@ -143,8 +143,8 @@ class AppUserControllerTest {
 		
 		@Test
 		void whenAuthedWithAdmin_shouldReturnAppUserDtoList() throws Exception {
-			AppUserResponseDTO responseDTO_1 = new AppUserResponseDTO(1, "name", "password", "roleName");
-			AppUserResponseDTO responseDTO_2 = new AppUserResponseDTO(2, "name", "password", "roleName");
+			AppUserResponseDTO responseDTO_1 = new AppUserResponseDTO(1, "name", null, "roleName");
+			AppUserResponseDTO responseDTO_2 = new AppUserResponseDTO(2, "name", null, "roleName");
 			List<AppUserResponseDTO> responseDTOs = List.of(responseDTO_1, responseDTO_2);
 			
 			when(appUserCrudService.readAll()).thenReturn(responseDTOs);
