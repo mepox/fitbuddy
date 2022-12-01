@@ -9,8 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import app.fitbuddy.dto.appuser.AppUserRequestDTO;
 import app.fitbuddy.dto.appuser.AppUserResponseDTO;
 import app.fitbuddy.dto.appuser.AppUserUpdateDTO;
+import app.fitbuddy.security.AppUserPrincipal;
 import app.fitbuddy.service.crud.AppUserCrudService;
 
 @RestController
@@ -52,9 +52,9 @@ public class AppUserController {
 	
 	@PutMapping("{id}")
 	public void update(@PathVariable("id") @NotNull Integer appUserId, 
-			@Valid @RequestBody AppUserUpdateDTO appUserUpdateDTO) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Integer currentUserId = appUserCrudService.readByName(auth.getName()).getId();
+			@Valid @RequestBody AppUserUpdateDTO appUserUpdateDTO, 
+			@AuthenticationPrincipal AppUserPrincipal appUserPrincipal) {		
+		Integer currentUserId = appUserPrincipal.getId();
 		if (currentUserId != null) {
 			appUserCrudService.update(currentUserId, appUserUpdateDTO);
 		}
