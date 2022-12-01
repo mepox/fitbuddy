@@ -155,8 +155,11 @@ class ExerciseControllerTest {
 		}		
 		
 		@Test
-		void whenInputIsCorrect_shouldReturnOk() throws Exception {			
+		void whenInputIsCorrect_shouldReturnOk() throws Exception {
+			ExerciseResponseDTO responseDTO = new ExerciseResponseDTO(1, "oldExerciseName", 1);
 			ExerciseUpdateDTO udpateDTO = new ExerciseUpdateDTO("exerciseName");
+			
+			when(exerciseCrudService.readById(anyInt())).thenReturn(responseDTO);
 			
 			mockMvc.perform(put(API_PATH + "/1")
 					.contentType(MediaType.APPLICATION_JSON)
