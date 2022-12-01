@@ -153,7 +153,11 @@ class HistoryControllerTest {
 		
 		@Test
 		void whenInputIsCorrect_shouldReturnOk() throws Exception {
-			HistoryUpdateDTO historyUpdateDTO = new HistoryUpdateDTO(11, 111);
+			HistoryResponseDTO historyResponseDTO = new HistoryResponseDTO(1, 1, "exerciseName",
+					111, 1111, "2022-01-01");
+			HistoryUpdateDTO historyUpdateDTO = new HistoryUpdateDTO(22, 222);
+			
+			when(historyCrudService.readById(anyInt())).thenReturn(historyResponseDTO);
 						
 			mockMvc.perform(put(API_PATH + "/1")
 					.contentType(MediaType.APPLICATION_JSON)
