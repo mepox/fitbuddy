@@ -12,8 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +26,7 @@ import app.fitbuddy.dto.history.HistoryRequestDTO;
 import app.fitbuddy.dto.history.HistoryResponseDTO;
 import app.fitbuddy.dto.history.HistoryUpdateDTO;
 import app.fitbuddy.exception.FitBuddyException;
-import app.fitbuddy.service.crud.AppUserCrudService;
+import app.fitbuddy.security.AppUserPrincipal;
 import app.fitbuddy.service.crud.HistoryCrudService;
 
 @RestController
@@ -37,20 +36,18 @@ public class HistoryController {
 
     private final Logger logger;
     private final HistoryCrudService historyCrudService;
-    private final AppUserCrudService appUserCrudService;
     private final String DATE_NOT_VALID = "Date is not valid";
 
     @Autowired
-    public HistoryController(HistoryCrudService historyCrudService, AppUserCrudService appUserCrudService) {
+    public HistoryController(HistoryCrudService historyCrudService) {
         this.historyCrudService = historyCrudService;
-        this.appUserCrudService = appUserCrudService;
         this.logger = LoggerFactory.getLogger(HistoryController.class);
     }
 
     @PostMapping
-    public void create(@Valid @RequestBody HistoryRequestDTO historyRequestDTO) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Integer userId = appUserCrudService.readByName(auth.getName()).getId();
+    public void create(@Valid @RequestBody HistoryRequestDTO historyRequestDTO,
+    		@AuthenticationPrincipal AppUserPrincipal appUserPrincipal) {
+        Integer userId = appUserPrincipal.getId();
         if (userId != null) {
             historyRequestDTO.setAppUserId(userId);
             historyCrudService.create(historyRequestDTO);
@@ -59,15 +56,15 @@ public class HistoryController {
     }
 
     @GetMapping("{date}")
-    public List<HistoryResponseDTO> readAll(@PathVariable("date") String strDate) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    public List<HistoryResponseDTO> readAll(@PathVariable("date") String strDate,
+    		@AuthenticationPrincipal AppUserPrincipal appUserPrincipal) {
         if (strDate != null) {
             try {
                 LocalDate.parse(strDate);
             } catch (DateTimeParseException e) {
                 throw new FitBuddyException(DATE_NOT_VALID);
             }
-            Integer userId = appUserCrudService.readByName(auth.getName()).getId();
+            Integer userId = appUserPrincipal.getId();
             if (userId != null) {
                 List<HistoryResponseDTO> historyResponseDTOs = historyCrudService.readMany(userId, strDate);
                 logger.info("Sending a history for: {}", strDate);
@@ -78,9 +75,10 @@ public class HistoryController {
     }
 
     @PutMapping("{id}")
-    public void update(@PathVariable("id") @NotNull Integer historyId, @Valid @RequestBody HistoryUpdateDTO historyUpdateDTO) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Integer userId = appUserCrudService.readByName(auth.getName()).getId();
+    public void update(@PathVariable("id") @NotNull Integer historyId,
+    		@Valid @RequestBody HistoryUpdateDTO historyUpdateDTO,
+    		@AuthenticationPrincipal AppUserPrincipal appUserPrincipal) {
+        Integer userId = appUserPrincipal.getId();
         if (userId != null) {
             historyCrudService.update(historyId, historyUpdateDTO);
             logger.info("Updating history: {}", historyUpdateDTO);
@@ -89,9 +87,9 @@ public class HistoryController {
     }
 
     @DeleteMapping("{id}")
-    public void delete(@PathVariable("id") @NotNull Integer historyId) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Integer userId = appUserCrudService.readByName(auth.getName()).getId();
+    public void delete(@PathVariable("id") @NotNull Integer historyId,
+    		@AuthenticationPrincipal AppUserPrincipal appUserPrincipal) {
+        Integer userId = appUserPrincipal.getId();
         if (userId != null) {
             HistoryResponseDTO historyResponseDTO = historyCrudService.readById(historyId);
             if (historyResponseDTO != null && historyResponseDTO.getAppUserId().equals(userId)) {

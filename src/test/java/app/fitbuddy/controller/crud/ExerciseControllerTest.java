@@ -11,7 +11,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -25,7 +24,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -35,25 +33,29 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import app.fitbuddy.FitBuddyApplication;
 import app.fitbuddy.config.SecurityConfig;
-import app.fitbuddy.dto.appuser.AppUserResponseDTO;
 import app.fitbuddy.dto.exercise.ExerciseRequestDTO;
 import app.fitbuddy.dto.exercise.ExerciseResponseDTO;
 import app.fitbuddy.dto.exercise.ExerciseUpdateDTO;
-import app.fitbuddy.service.crud.AppUserCrudService;
 import app.fitbuddy.service.crud.ExerciseCrudService;
+import app.fitbuddy.testhelper.annotation.WithMockAppUserPrincipal;
 
 @WebMvcTest(ExerciseController.class)
 @ContextConfiguration(classes = {FitBuddyApplication.class, SecurityConfig.class})
 class ExerciseControllerTest {
 	
-	@Autowired	MockMvc mockMvc;
-	@Autowired	ObjectMapper objectMapper;
-	@MockBean	ExerciseCrudService exerciseCrudService;
-	@MockBean	AppUserCrudService appUserCrudService;
+	@Autowired
+	MockMvc mockMvc;
+	
+	@Autowired
+	ObjectMapper objectMapper;
+	
+	@MockBean
+	ExerciseCrudService exerciseCrudService;	
 	
 	final String API_PATH = "/user/exercises";
 	
 	@Nested
+	@WithMockAppUserPrincipal(authority = "USER")
 	class Create {
 		
 		@Test
@@ -69,7 +71,6 @@ class ExerciseControllerTest {
 		
 		@ParameterizedTest
 		@ValueSource(strings = {"", "exerciseNameexerciseNameexerciseName"}) // <1 or >32
-		@WithMockUser(authorities = {"USER", "ADMIN"})
 		void whenExerciseNameSizeNotCorrect_shouldReturnBadRequest(String name) throws Exception {
 			ExerciseRequestDTO requestDTO = new ExerciseRequestDTO(name, null);
 			
@@ -80,12 +81,8 @@ class ExerciseControllerTest {
 		}
 		
 		@Test
-		@WithMockUser(authorities = {"USER", "ADMIN"})
 		void whenInputIsCorrect_shouldReturnOk() throws Exception {
 			ExerciseRequestDTO requestDTO = new ExerciseRequestDTO("exerciseName", null);
-			AppUserResponseDTO appUserResponseDTO = new AppUserResponseDTO(11, "name", "password", "roleName");
-			
-			when(appUserCrudService.readByName(anyString())).thenReturn(appUserResponseDTO);
 			
 			mockMvc.perform(post(API_PATH)
 					.contentType(MediaType.APPLICATION_JSON)
@@ -97,6 +94,7 @@ class ExerciseControllerTest {
 	}
 	
 	@Nested
+	@WithMockAppUserPrincipal(authority = "USER")
 	class ReadAll {
 		
 		@Test
@@ -106,14 +104,11 @@ class ExerciseControllerTest {
 		}
 		
 		@Test
-		@WithMockUser(authorities = {"USER", "ADMIN"})
-		void whenAuthed_shouldReturnExerciseDtoList() throws Exception {
-			AppUserResponseDTO appUserResponseDTO = new AppUserResponseDTO(11, "name", "password", "roleName");
+		void whenAuthed_shouldReturnExerciseDtoList() throws Exception {			
 			ExerciseResponseDTO exerciseResponseDTO_1 = new ExerciseResponseDTO(1, "exerciseName", 11);
 			ExerciseResponseDTO exerciseResponseDTO_2 = new ExerciseResponseDTO(2, "exerciseName", 11);
 			List<ExerciseResponseDTO> exerciseResponseDTOs = List.of(exerciseResponseDTO_1, exerciseResponseDTO_2);
 			
-			when(appUserCrudService.readByName(anyString())).thenReturn(appUserResponseDTO);
 			when(exerciseCrudService.readMany(anyInt())).thenReturn(exerciseResponseDTOs);
 			
 			MvcResult mvcResult = mockMvc.perform(get(API_PATH)).andExpect(status().isOk()).andReturn();
@@ -129,6 +124,7 @@ class ExerciseControllerTest {
 	}
 	
 	@Nested
+	@WithMockAppUserPrincipal(authority = "USER")
 	class Update {
 		
 		@Test
@@ -138,7 +134,6 @@ class ExerciseControllerTest {
 		}
 		
 		@Test
-		@WithMockUser(authorities = {"USER", "ADMIN"})
 		void whenPathVariableNotInteger_shouldReturnBadRequest() throws Exception {
 			ExerciseUpdateDTO udpateDTO = new ExerciseUpdateDTO("exerciseName");
 			
@@ -150,7 +145,6 @@ class ExerciseControllerTest {
 		
 		@ParameterizedTest
 		@ValueSource(strings = {"", "exerciseNameexerciseNameexerciseName"}) // <1 or >32
-		@WithMockUser(authorities = {"USER", "ADMIN"})
 		void whenExerciseNameSizeNotCorrect_shouldReturnBadRequest(String name) throws Exception {
 			ExerciseUpdateDTO udpateDTO = new ExerciseUpdateDTO(name);
 			
@@ -161,12 +155,8 @@ class ExerciseControllerTest {
 		}		
 		
 		@Test
-		@WithMockUser(authorities = {"USER", "ADMIN"})
-		void whenInputIsCorrect_shouldReturnOk() throws Exception {
-			AppUserResponseDTO appUserResponseDTO = new AppUserResponseDTO(11, "name", "password", "roleName");
+		void whenInputIsCorrect_shouldReturnOk() throws Exception {			
 			ExerciseUpdateDTO udpateDTO = new ExerciseUpdateDTO("exerciseName");
-			
-			when(appUserCrudService.readByName(anyString())).thenReturn(appUserResponseDTO);
 			
 			mockMvc.perform(put(API_PATH + "/1")
 					.contentType(MediaType.APPLICATION_JSON)
@@ -178,6 +168,7 @@ class ExerciseControllerTest {
 	}
 	
 	@Nested
+	@WithMockAppUserPrincipal(authority = "USER")
 	class Delete {
 		
 		@Test
@@ -187,18 +178,14 @@ class ExerciseControllerTest {
 		}
 		
 		@Test
-		@WithMockUser(authorities = {"USER", "ADMIN"})
 		void whenPathVariableNotInteger_shouldReturnBadRequest() throws Exception {
 			mockMvc.perform(delete(API_PATH + "/abc")).andExpect(status().isBadRequest());
 		}		
 		
 		@Test
-		@WithMockUser(authorities = {"USER", "ADMIN"})
 		void whenAppUserIdDoesntMatch_shouldReturnBadRequest() throws Exception {
-			AppUserResponseDTO appUserResponseDTO = new AppUserResponseDTO(11, "name", "password", "roleName");
 			ExerciseResponseDTO exerciseResponseDTO = new ExerciseResponseDTO(1, "exerciseName", 22);
 			
-			when(appUserCrudService.readByName(anyString())).thenReturn(appUserResponseDTO);
 			when(exerciseCrudService.readById(anyInt())).thenReturn(exerciseResponseDTO);
 			
 			mockMvc.perform(delete(API_PATH + "/1")).andExpect(status().isBadRequest());
@@ -207,12 +194,9 @@ class ExerciseControllerTest {
 		}
 		
 		@Test
-		@WithMockUser(authorities = {"USER", "ADMIN"})
-		void whenInputIsCorrect_shouldReturnOk() throws Exception {
-			AppUserResponseDTO appUserResponseDTO = new AppUserResponseDTO(11, "name", "password", "roleName");
-			ExerciseResponseDTO exerciseResponseDTO = new ExerciseResponseDTO(1, "exerciseName", 11);
+		void whenInputIsCorrect_shouldReturnOk() throws Exception {			
+			ExerciseResponseDTO exerciseResponseDTO = new ExerciseResponseDTO(1, "exerciseName", 1);
 			
-			when(appUserCrudService.readByName(anyString())).thenReturn(appUserResponseDTO);
 			when(exerciseCrudService.readById(anyInt())).thenReturn(exerciseResponseDTO);
 			
 			mockMvc.perform(delete(API_PATH + "/1")).andExpect(status().isOk());

@@ -10,8 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +24,7 @@ import app.fitbuddy.dto.exercise.ExerciseRequestDTO;
 import app.fitbuddy.dto.exercise.ExerciseResponseDTO;
 import app.fitbuddy.dto.exercise.ExerciseUpdateDTO;
 import app.fitbuddy.exception.FitBuddyException;
-import app.fitbuddy.service.crud.AppUserCrudService;
+import app.fitbuddy.security.AppUserPrincipal;
 import app.fitbuddy.service.crud.ExerciseCrudService;
 
 @RestController
@@ -35,20 +34,17 @@ public class ExerciseController {
 	
 	private final Logger logger;
 	private final ExerciseCrudService exerciseCrudService;
-	private final AppUserCrudService appUserCrudService;
 	
 	@Autowired
-	public ExerciseController(ExerciseCrudService exerciseCrudService, 
-								AppUserCrudService appUserCrudService) {
+	public ExerciseController(ExerciseCrudService exerciseCrudService) {
 		this.exerciseCrudService = exerciseCrudService;
-		this.appUserCrudService = appUserCrudService;
 		this.logger = LoggerFactory.getLogger(ExerciseController.class);
 	}
 	
 	@PostMapping
-	public void create(@RequestBody @Valid ExerciseRequestDTO exerciseRequestDTO) {		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Integer userId = appUserCrudService.readByName(auth.getName()).getId();
+	public void create(@RequestBody @Valid ExerciseRequestDTO exerciseRequestDTO,
+			@AuthenticationPrincipal AppUserPrincipal appUserPrincipal) {
+		Integer userId = appUserPrincipal.getId();
 		if (userId != null) {	
 			exerciseRequestDTO.setAppUserId(userId);
 			exerciseCrudService.create(exerciseRequestDTO);
@@ -57,9 +53,8 @@ public class ExerciseController {
 	}
 
 	@GetMapping
-	public List<ExerciseResponseDTO> readAll() {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Integer userId = appUserCrudService.readByName(auth.getName()).getId();		
+	public List<ExerciseResponseDTO> readAll(@AuthenticationPrincipal AppUserPrincipal appUserPrincipal) {		
+		Integer userId = appUserPrincipal.getId();
 		if (userId != null) {
 			List<ExerciseResponseDTO> responseDTOs = exerciseCrudService.readMany(userId);
 			logger.info("Sending a list of exercises: {}", responseDTOs);
@@ -69,9 +64,10 @@ public class ExerciseController {
 	}
 	
 	@PutMapping("{id}")
-	public void update(@PathVariable("id") @NotNull Integer exerciseId, @Valid @RequestBody ExerciseUpdateDTO exerciseUpdateDTO) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Integer userId = appUserCrudService.readByName(auth.getName()).getId();
+	public void update(@PathVariable("id") @NotNull Integer exerciseId, 
+			@Valid @RequestBody ExerciseUpdateDTO exerciseUpdateDTO,
+			@AuthenticationPrincipal AppUserPrincipal appUserPrincipal) {		
+		Integer userId = appUserPrincipal.getId();
 		if (userId != null) {
 			exerciseCrudService.update(exerciseId, exerciseUpdateDTO);
 			logger.info("Updating the exercise: {}", exerciseUpdateDTO);
@@ -79,9 +75,9 @@ public class ExerciseController {
 	}
 	
 	@DeleteMapping("{id}")
-	public void delete(@PathVariable("id") @NotNull Integer exerciseId) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Integer userId = appUserCrudService.readByName(auth.getName()).getId();
+	public void delete(@PathVariable("id") @NotNull Integer exerciseId,
+			@AuthenticationPrincipal AppUserPrincipal appUserPrincipal) {
+		Integer userId = appUserPrincipal.getId();
 		if (userId != null) {
 			ExerciseResponseDTO exerciseResponseDTO = exerciseCrudService.readById(exerciseId);
 			if (exerciseResponseDTO != null && exerciseResponseDTO.getAppUserId().equals(userId)) {

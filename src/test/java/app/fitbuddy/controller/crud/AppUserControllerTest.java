@@ -36,18 +36,25 @@ import app.fitbuddy.dto.appuser.AppUserRequestDTO;
 import app.fitbuddy.dto.appuser.AppUserResponseDTO;
 import app.fitbuddy.dto.appuser.AppUserUpdateDTO;
 import app.fitbuddy.service.crud.AppUserCrudService;
+import app.fitbuddy.testhelper.annotation.WithMockAppUserPrincipal;
 
 @WebMvcTest(AppUserController.class)
 @ContextConfiguration(classes = {FitBuddyApplication.class, SecurityConfig.class})
 class AppUserControllerTest {
 		
-	@Autowired	MockMvc mockMvc;
-	@Autowired	ObjectMapper objectMapper;
-	@MockBean	AppUserCrudService appUserCrudService;
+	@Autowired
+	MockMvc mockMvc;
+	
+	@Autowired
+	ObjectMapper objectMapper;
+	
+	@MockBean
+	AppUserCrudService appUserCrudService;
 	
 	final String API_PATH = "/users";
 	
 	@Nested
+	@WithMockAppUserPrincipal(authority = "ADMIN")
 	class Create {
 		
 		@Test
@@ -62,7 +69,6 @@ class AppUserControllerTest {
 		}
 		
 		@Test
-		@WithMockUser(authorities = {"ADMIN"})
 		void whenAuthedWithAdmin_shouldReturnOk() throws Exception {
 			AppUserRequestDTO requestDTO = new AppUserRequestDTO("name", "password", "rolename");
 			
@@ -87,7 +93,6 @@ class AppUserControllerTest {
 		
 		@ParameterizedTest
 		@ValueSource(strings = {"nam", "namenamenamename"}) // <4 and >15 characters
-		@WithMockUser(authorities = {"ADMIN"})
 		void whenNameSizeNotCorrect_shouldReturnBadRequest(String name) throws Exception {
 			AppUserRequestDTO requestDTO = new AppUserRequestDTO(name, "password", "rolename");
 			
@@ -99,7 +104,6 @@ class AppUserControllerTest {
 		
 		@ParameterizedTest
 		@ValueSource(strings = {"pas", "passwordpassword"}) // <4 and >15 characters
-		@WithMockUser(authorities = {"ADMIN"})
 		void whenPasswordSizeNotCorrect_shouldReturnBadRequest(String password) throws Exception {			
 			AppUserRequestDTO requestDTO = new AppUserRequestDTO("name", password, "rolename");
 			
@@ -111,7 +115,6 @@ class AppUserControllerTest {
 		
 		@ParameterizedTest
 		@ValueSource(strings = {"rol", "roleNameroleNamer"}) // <4 and >16 characters
-		@WithMockUser(authorities = {"ADMIN"})
 		void whenRoleNameSizeNotCorrect_shouldReturnBadRequest(String roleName) throws Exception {			
 			AppUserRequestDTO requestDTO = new AppUserRequestDTO("name", "password", roleName);
 			
@@ -123,6 +126,7 @@ class AppUserControllerTest {
 	}	
 	
 	@Nested
+	@WithMockAppUserPrincipal(authority = "ADMIN")
 	class ReadMany {
 		
 		@Test
@@ -138,7 +142,6 @@ class AppUserControllerTest {
 		}
 		
 		@Test
-		@WithMockUser(authorities = {"ADMIN"})
 		void whenAuthedWithAdmin_shouldReturnAppUserDtoList() throws Exception {
 			AppUserResponseDTO responseDTO_1 = new AppUserResponseDTO(1, "name", "password", "roleName");
 			AppUserResponseDTO responseDTO_2 = new AppUserResponseDTO(2, "name", "password", "roleName");
@@ -159,6 +162,7 @@ class AppUserControllerTest {
 	}
 	
 	@Nested
+	@WithMockAppUserPrincipal(authority = "ADMIN")
 	class Update {
 		
 		@Test
@@ -168,14 +172,12 @@ class AppUserControllerTest {
 		}
 		
 		@Test
-		@WithMockUser(authorities = {"ADMIN"})
 		void whenPathVariableNotInteger_shouldReturnBadRequest() throws Exception {
 			mockMvc.perform(put(API_PATH + "/abc")).andExpect(status().isBadRequest());
 		}
 		
 		@ParameterizedTest
 		@ValueSource(strings = {"nam", "namenamenamename"}) // <4 and >15 characters
-		@WithMockUser(authorities = {"ADMIN"})
 		void whenNameSizeNotCorrect_shouldReturnBadRequest(String name) throws Exception {			
 			AppUserUpdateDTO updateDTO = new AppUserUpdateDTO(name, "roleName");
 			
@@ -187,7 +189,6 @@ class AppUserControllerTest {
 		
 		@ParameterizedTest
 		@ValueSource(strings = {"rol", "roleNameroleNamer"}) // <4 and >16 characters
-		@WithMockUser(authorities = {"ADMIN"})
 		void whenRoleNameSizeNotCorrect_shouldReturnBadRequest(String roleName) throws Exception {
 			AppUserUpdateDTO updateDTO = new AppUserUpdateDTO("name", roleName);
 			
@@ -209,7 +210,6 @@ class AppUserControllerTest {
 		}
 		
 		@Test
-		@WithMockUser(authorities = {"ADMIN"})
 		void whenAuthedWithAdmin_shouldReturnOk() throws Exception {
 			AppUserUpdateDTO updateDTO = new AppUserUpdateDTO("newName", "newRoleName");
 			AppUserResponseDTO responseDTO = new AppUserResponseDTO(1, "name", "password", "roleName");
@@ -226,6 +226,7 @@ class AppUserControllerTest {
 	}
 	
 	@Nested
+	@WithMockAppUserPrincipal(authority = "ADMIN")
 	class Delete {
 		
 		@Test
@@ -235,7 +236,6 @@ class AppUserControllerTest {
 		}
 		
 		@Test
-		@WithMockUser(authorities = {"ADMIN"})
 		void whenPathVariableNotInteger_shouldReturnBadRequest() throws Exception {
 			mockMvc.perform(delete(API_PATH + "/abc")).andExpect(status().isBadRequest());
 		}
@@ -247,7 +247,6 @@ class AppUserControllerTest {
 		}
 		
 		@Test
-		@WithMockUser(authorities = {"ADMIN"})
 		void whenAuthedWithAdmin_shouldCallDelete() throws Exception {
 			mockMvc.perform(delete(API_PATH + "/1")).andExpect(status().isOk());
 			
