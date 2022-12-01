@@ -1,9 +1,10 @@
 package app.fitbuddy.service.operation;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,43 +13,37 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import app.fitbuddy.dto.appuser.AppUserResponseDTO;
+import app.fitbuddy.entity.AppUser;
 import app.fitbuddy.exception.FitBuddyException;
-import app.fitbuddy.service.crud.AppUserCrudService;
+import app.fitbuddy.repository.AppUserRepository;
+import app.fitbuddy.testhelper.AppUserTestHelper;
 
 @ExtendWith(MockitoExtension.class)
 class LoginServiceTest {
 	
-	@InjectMocks	LoginService instance;
-	@Mock	AppUserCrudService appUserCrudService;	
+	@InjectMocks	
+	LoginService loginService;
+	
+	@Mock
+	AppUserRepository appUserRepository;
+	
+	@Mock
+	BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Test
-	void login_whenUsernameNotFound_shouldThrowFitBuddyException() {
-		when(appUserCrudService.readByName(anyString())).thenReturn(null);
+	void usernameNotFound_throwFitBuddyException() {
+		when(appUserRepository.findByName(anyString())).thenReturn(Optional.empty());
 		
-		assertThrows(FitBuddyException.class, () -> instance.login("name", "password"));
+		assertThrows(FitBuddyException.class, () -> loginService.login("name", "password"));
 	}
 	
 	@Test
-	void login_whenPasswordDoesntMatch_shouldThrowFitBuddyException() {
-		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-		AppUserResponseDTO appUserDtoMock = new AppUserResponseDTO(1, "name", 
-				bCryptPasswordEncoder.encode("userPassword"), "roleName");
+	void passwordDoesntMatch_throwFitBuddyException() {
+		AppUser appUser = AppUserTestHelper.getMockAppUser();
 		
-		when(appUserCrudService.readByName(anyString())).thenReturn(appUserDtoMock);
+		when(appUserRepository.findByName(anyString())).thenReturn(Optional.of(appUser));
+		when(bCryptPasswordEncoder.matches(anyString(), anyString())).thenReturn(false);
 		
-		assertThrows(FitBuddyException.class, () -> instance.login("name", "incorrectPassword"));		
-	}
-	
-	@Test
-	void login_whenSuccess_shouldntThrowException() {
-		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();		
-		AppUserResponseDTO appUserDtoMock = new AppUserResponseDTO(1, "name",
-				bCryptPasswordEncoder.encode("userPassword"), "roleName");
-		
-		when(appUserCrudService.readByName(anyString())).thenReturn(appUserDtoMock);		
-		
-		assertDoesNotThrow(() -> instance.login("name", "userPassword"));
-	}
-	
+		assertThrows(FitBuddyException.class, () -> loginService.login("name", "incorrectPassword"));		
+	}	
 }
