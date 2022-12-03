@@ -67,7 +67,7 @@ Please view the [Contributing guidelines](https://github.com/mepox/fitbuddy/blob
 
 ## Live demo
 
-https://fitbuddy-demo.herokuapp.com/
+https://fitbuddy-demo.up.railway.app/
 
 ## Screenshots
 
