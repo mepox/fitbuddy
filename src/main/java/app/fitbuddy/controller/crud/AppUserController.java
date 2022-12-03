@@ -53,11 +53,8 @@ public class AppUserController {
 	@PutMapping("{id}")
 	public void update(@PathVariable("id") @NotNull Integer appUserId, 
 			@Valid @RequestBody AppUserUpdateDTO appUserUpdateDTO, 
-			@AuthenticationPrincipal AppUserPrincipal appUserPrincipal) {		
-		Integer currentUserId = appUserPrincipal.getId();
-		if (currentUserId != null) {
-			appUserCrudService.update(currentUserId, appUserUpdateDTO);
-		}
+			@AuthenticationPrincipal AppUserPrincipal appUserPrincipal) {
+		appUserCrudService.update(appUserPrincipal.getId(), appUserUpdateDTO);
 	}
 	
 	@DeleteMapping("{id}")
