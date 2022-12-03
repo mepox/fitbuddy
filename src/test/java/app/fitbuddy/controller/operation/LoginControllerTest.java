@@ -40,7 +40,7 @@ class LoginControllerTest {
 				.content(objectMapper.writeValueAsString(loginDtoMock)))
 		.andExpect(status().isOk());
 		
-		verify(loginService).login("name", "password");
+		verify(loginService).login(loginDtoMock);
 	}
 	
 	@ParameterizedTest

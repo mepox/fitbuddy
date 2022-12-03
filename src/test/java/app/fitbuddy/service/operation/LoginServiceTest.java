@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
+import app.fitbuddy.dto.LoginDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -33,8 +34,8 @@ class LoginServiceTest {
 	@Test
 	void usernameNotFound_throwFitBuddyException() {
 		when(appUserRepository.findByName(anyString())).thenReturn(Optional.empty());
-		
-		assertThrows(FitBuddyException.class, () -> loginService.login("name", "password"));
+
+		assertThrows(FitBuddyException.class, () -> loginService.login(new LoginDTO("name", "password")));
 	}
 	
 	@Test
@@ -44,6 +45,6 @@ class LoginServiceTest {
 		when(appUserRepository.findByName(anyString())).thenReturn(Optional.of(appUser));
 		when(bCryptPasswordEncoder.matches(anyString(), anyString())).thenReturn(false);
 		
-		assertThrows(FitBuddyException.class, () -> loginService.login("name", "incorrectPassword"));		
+		assertThrows(FitBuddyException.class, () -> loginService.login(new LoginDTO("name", "incorrectPassword")));
 	}	
 }

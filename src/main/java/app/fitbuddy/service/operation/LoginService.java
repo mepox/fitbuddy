@@ -3,6 +3,7 @@ package app.fitbuddy.service.operation;
 import java.util.List;
 import java.util.Optional;
 
+import app.fitbuddy.dto.LoginDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,15 +38,15 @@ public class LoginService {
 		this.logger = LoggerFactory.getLogger(LoginService.class);
 	}
 	
-	public void login(String name, String password) {		
+	public void login(LoginDTO loginDTO) {
 		// find the user
-		Optional<AppUser> optionalAppUser = appUserRepository.findByName(name);
+		Optional<AppUser> optionalAppUser = appUserRepository.findByName(loginDTO.getName());
 		if (optionalAppUser.isEmpty()) {
 			throw new FitBuddyException("Username not found.");
 		}		
 		
 		// check the password
-		if (!bCryptPasswordEncoder.matches(password, optionalAppUser.get().getPassword())) {
+		if (!bCryptPasswordEncoder.matches(loginDTO.getPassword(), optionalAppUser.get().getPassword())) {
 			throw new FitBuddyException("Incorrect password.");
 		}
 		
@@ -55,7 +56,7 @@ public class LoginService {
 		
 		// create a new authentication
 		Authentication authentication = new UsernamePasswordAuthenticationToken(
-				new AppUserPrincipal(optionalAppUser.get()), password, authorities);
+				new AppUserPrincipal(optionalAppUser.get()), loginDTO.getPassword(), authorities);
 		
 		// create an empty SecurityContext and set the authentication
 		SecurityContext context = SecurityContextHolder.createEmptyContext();		

@@ -30,7 +30,7 @@ public class LoginController {
 	@PostMapping("/login/perform_login")
 	public void login(@Valid @RequestBody LoginDTO loginDTO) {
 		logger.info("Trying to log in: {}", loginDTO);
-		loginService.login(loginDTO.getName(), loginDTO.getPassword());
+		loginService.login(loginDTO);
 	}
 	
 }
