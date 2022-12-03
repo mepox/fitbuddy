@@ -33,18 +33,19 @@ class LoginServiceTest {
 	
 	@Test
 	void usernameNotFound_throwFitBuddyException() {
+		LoginDTO loginDtoMock = new LoginDTO("name", "password");
 		when(appUserRepository.findByName(anyString())).thenReturn(Optional.empty());
 
-		assertThrows(FitBuddyException.class, () -> loginService.login(new LoginDTO("name", "password")));
+		assertThrows(FitBuddyException.class, () -> loginService.login(loginDtoMock));
 	}
 	
 	@Test
 	void passwordDoesntMatch_throwFitBuddyException() {
 		AppUser appUser = AppUserTestHelper.getMockAppUser();
-		
+		LoginDTO loginDtoMock = new LoginDTO("name", "incorrectPassword");
 		when(appUserRepository.findByName(anyString())).thenReturn(Optional.of(appUser));
 		when(bCryptPasswordEncoder.matches(anyString(), anyString())).thenReturn(false);
 		
-		assertThrows(FitBuddyException.class, () -> loginService.login(new LoginDTO("name", "incorrectPassword")));
+		assertThrows(FitBuddyException.class, () -> loginService.login(loginDtoMock));
 	}	
 }
