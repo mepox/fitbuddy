@@ -50,6 +50,11 @@ public class HistoryCrudService implements CrudService<HistoryRequestDTO, Histor
 		return historyMapperService.entitiesToResponseDtos(historyRepository.findAllByUserIdAndDate(appUserId, date));
 	}
 	
+	@NotNull
+	public List<HistoryResponseDTO> readMany(Integer appUserId) {
+		return historyMapperService.entitiesToResponseDtos(historyRepository.findAllByUserId(appUserId));
+	}
+	
 	@Override
 	public HistoryResponseDTO update(Integer id, HistoryUpdateDTO updateDTO) {
 		if (updateDTO == null) {

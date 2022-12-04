@@ -10,6 +10,9 @@ import app.fitbuddy.entity.History;
 public interface HistoryRepository extends CrudRepository<History, Integer> {
 	
 	@Query(value = "SELECT * FROM history WHERE app_user_id = ?1 AND created_on = ?2", nativeQuery = true)
-	List<History> findAllByUserIdAndDate(Integer userId, String date); 
+	List<History> findAllByUserIdAndDate(Integer userId, String date);
+	
+	@Query(value = "SELECT * FROM history WHERE app_user_id = ?1", nativeQuery = true)
+	List<History> findAllByUserId(Integer userId);
 
 }
