@@ -2,11 +2,13 @@ package app.fitbuddy.service.operation;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.support.PeriodicTrigger;
 import org.springframework.stereotype.Service;
 
 import app.fitbuddy.config.DemoUserProperties;
@@ -23,6 +25,7 @@ import app.fitbuddy.service.crud.HistoryCrudService;
 @Service
 public class DemoUserService {
 	
+	private final TaskScheduler taskScheduler;
 	private final AppUserCrudService appUserCrudService;
 	private final NewUserService newUserService;
 	private final ExerciseCrudService exerciseCrudService;
@@ -31,10 +34,10 @@ public class DemoUserService {
 	private Integer demoUserId;
 	
 	@Autowired
-	public DemoUserService(AppUserCrudService appUserCrudService, NewUserService newUserService,
+	public DemoUserService(TaskScheduler taskScheduler, AppUserCrudService appUserCrudService, NewUserService newUserService,
 			ExerciseCrudService exerciseCrudService, HistoryCrudService historyCrudService,
 			DemoUserProperties demoUserProperties) {
-		super();
+		this.taskScheduler = taskScheduler;	
 		this.appUserCrudService = appUserCrudService;
 		this.newUserService = newUserService;
 		this.exerciseCrudService = exerciseCrudService;
@@ -46,8 +49,7 @@ public class DemoUserService {
 	public void createDemoUser() {
 		if (!demoUserProperties.isEnabled()) {
 			return;
-		}
-		
+		}		
 		// create the demo user
 		AppUserResponseDTO appUserResponseDTO = appUserCrudService.create(
 				new AppUserRequestDTO(demoUserProperties.getName(),
@@ -56,13 +58,15 @@ public class DemoUserService {
 		if (appUserResponseDTO == null) {
 			throw new FitBuddyException("Couldn't create the demo user.");
 		}
-		demoUserId = appUserResponseDTO.getId();
-		
-		clearAndAddData();
+		demoUserId = appUserResponseDTO.getId();		
+		PeriodicTrigger periodicTrigger = new PeriodicTrigger(demoUserProperties.getResetPeriod(), TimeUnit.SECONDS);		
+		taskScheduler.schedule(() -> clearAndAddData(), periodicTrigger);
 	}
 	
-	@Scheduled(fixedRateString = "${fitbuddy.demo-user.reset-period}")
 	public void clearAndAddData() {
+		if (appUserCrudService.readById(demoUserId) == null) {
+			throw new FitBuddyException("Demo user not found.");
+		}
 		// clear all history
 		for (HistoryResponseDTO historyResponseDTO : historyCrudService.readMany(demoUserId)) {
 			historyCrudService.delete(historyResponseDTO.getId());
@@ -70,13 +74,11 @@ public class DemoUserService {
 		// clear all exercises
 		for (ExerciseResponseDTO exerciseResponseDTO : exerciseCrudService.readMany(demoUserId)) {
 			exerciseCrudService.delete(exerciseResponseDTO.getId());
-		}
-		
+		}		
 		// add default exercises
 		if (demoUserProperties.isAddDefaultExercises()) {
 			newUserService.addDefaultExercises(demoUserId);
-		}
-		
+		}		
 		// add history
 		if (demoUserProperties.isAddHistory()) {
 			List<ExerciseResponseDTO> exerciseResponseDTOs = exerciseCrudService.readMany(demoUserId);

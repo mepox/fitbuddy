@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import app.fitbuddy.config.DemoUserProperties;
 import app.fitbuddy.dto.accountinfo.AccountInfoResponseDTO;
 import app.fitbuddy.dto.accountinfo.AccountInfoUpdateDTO;
 import app.fitbuddy.dto.appuser.AppUserResponseDTO;
@@ -17,11 +18,14 @@ import app.fitbuddy.service.crud.AppUserCrudService;
 public class AccountInfoService {
 	
 	private final AppUserCrudService appUserCrudService;
+	private final DemoUserProperties demoUserProperties;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Autowired
-	public AccountInfoService(AppUserCrudService appUserCrudService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+	public AccountInfoService(AppUserCrudService appUserCrudService, DemoUserProperties demoUserProperties,
+			BCryptPasswordEncoder bCryptPasswordEncoder) {
 		this.appUserCrudService = appUserCrudService;
+		this.demoUserProperties = demoUserProperties;
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
 	
@@ -30,6 +34,9 @@ public class AccountInfoService {
 	}
 	
 	public void update(String name, @Valid AccountInfoUpdateDTO accountInfoUpdateDTO) {
+		if (name.equals(demoUserProperties.getName())) {
+			throw new FitBuddyException("Demo user's password cannot be changed.");
+		}
 		AppUserResponseDTO appUserResponseDTO = appUserCrudService.readByName(name);
 		if (appUserResponseDTO == null) {
 			throw new FitBuddyException("User not found with name: " + name);
