@@ -16,10 +16,16 @@ function onRegister() {
 	password = password.trim();
 	passwordConfirm = passwordConfirm.trim();
 	
+	if (password !== passwordConfirm) {
+		let message = "Password and confirm password doesn't match.";
+		console.log("ERROR: " + message);
+		showStatus(message);
+		return;
+	}
+	
 	let url = "/register";
 	let data = { 	name : name,
-					password : password,
-					passwordConfirm : passwordConfirm };
+					password : password };
 					
 	let xhr = new XMLHttpRequest();
 	xhr.open("POST", url);
