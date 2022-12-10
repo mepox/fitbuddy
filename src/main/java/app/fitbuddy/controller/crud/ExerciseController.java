@@ -34,16 +34,14 @@ public class ExerciseController {
 	@PostMapping
 	public void create(@RequestBody @Valid ExerciseRequestDTO exerciseRequestDTO,
 			@AuthenticationPrincipal AppUserPrincipal appUserPrincipal) {
-		Integer userId = appUserPrincipal.getId();
-		exerciseRequestDTO.setAppUserId(userId);
+		exerciseRequestDTO.setAppUserId(appUserPrincipal.getId());
 		exerciseCrudService.create(exerciseRequestDTO);
 		logger.info("Creating new exercise: {}", exerciseRequestDTO);
 	}
 
 	@GetMapping
 	public List<ExerciseResponseDTO> readAll(@AuthenticationPrincipal AppUserPrincipal appUserPrincipal) {		
-		Integer userId = appUserPrincipal.getId();
-		List<ExerciseResponseDTO> responseDTOs = exerciseCrudService.readMany(userId);
+		List<ExerciseResponseDTO> responseDTOs = exerciseCrudService.readMany(appUserPrincipal.getId());
 		logger.info("Sending a list of exercises: {}", responseDTOs);
 		return responseDTOs;
 	}
@@ -52,9 +50,8 @@ public class ExerciseController {
 	public void update(@PathVariable("id") @NotNull Integer exerciseId, 
 			@Valid @RequestBody ExerciseUpdateDTO exerciseUpdateDTO,
 			@AuthenticationPrincipal AppUserPrincipal appUserPrincipal) {		
-		Integer userId = appUserPrincipal.getId();
 		ExerciseResponseDTO exerciseResponseDTO = exerciseCrudService.readById(exerciseId);
-		if (exerciseResponseDTO != null && exerciseResponseDTO.getAppUserId().equals(userId)) {
+		if (exerciseResponseDTO != null && exerciseResponseDTO.getAppUserId().equals(appUserPrincipal.getId())) {
 			exerciseCrudService.update(exerciseId, exerciseUpdateDTO);
 			logger.info("Updating the exercise: {}", exerciseUpdateDTO);
 		} else {
@@ -65,9 +62,8 @@ public class ExerciseController {
 	@DeleteMapping("{id}")
 	public void delete(@PathVariable("id") @NotNull Integer exerciseId,
 			@AuthenticationPrincipal AppUserPrincipal appUserPrincipal) {
-		Integer userId = appUserPrincipal.getId();
 		ExerciseResponseDTO exerciseResponseDTO = exerciseCrudService.readById(exerciseId);
-		if (exerciseResponseDTO != null && exerciseResponseDTO.getAppUserId().equals(userId)) {
+		if (exerciseResponseDTO != null && exerciseResponseDTO.getAppUserId().equals(appUserPrincipal.getId())) {
 			exerciseCrudService.delete(exerciseId);
 			logger.info("Deleting exercise: {}", exerciseResponseDTO);
 		} else {
