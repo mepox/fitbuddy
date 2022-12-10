@@ -30,7 +30,7 @@ function showExercises() {
 							"</td></tr>";			
 				}
 				
-				tbody.innerHTML = add;				
+				tbody.innerHTML = add;								
 			} else {
 				// ERROR				
 				console.log("ERROR: " + this.responseText);
@@ -40,6 +40,7 @@ function showExercises() {
 }
 
 function deleteExercise(exerciseId) {
+	hideStatus();
     let xhr = new XMLHttpRequest();
 	xhr.open("DELETE", EXERCISES_API_PATH + "/" + exerciseId);
 	xhr.send();  
@@ -52,6 +53,7 @@ function deleteExercise(exerciseId) {
 			} else {
 				// ERROR
 				console.log("ERROR: " + this.responseText);
+				showStatus(this.responseText);
 			}			
 			showExercises();
 		}		
@@ -59,6 +61,7 @@ function deleteExercise(exerciseId) {
 }
 
 function onAddExercise() {
+	hideStatus();
 	let name = document.forms["new-exercise-form"]["name"].value;	
 	name = name.trim();
 	
@@ -77,6 +80,7 @@ function onAddExercise() {
 			} else {
 				// ERROR
 				console.log("ERROR: " + this.responseText);
+				showStatus(this.responseText);
 			}
 			showExercises();
 		}		
@@ -100,6 +104,7 @@ function editExercise(exerciseId) {
 }
 
 function saveExercise(exerciseId) {
+	hideStatus();
 	// read the exercise name
 	let exerciseNameElement = document.getElementById("exercise-name-" + exerciseId);
 	let exerciseName = exerciseNameElement.firstChild.value;
@@ -120,6 +125,7 @@ function saveExercise(exerciseId) {
 			} else {
 				// ERROR
 				console.log("ERROR: " + this.responseText);
+				showStatus(this.responseText);
 			}
 			showExercises();
 		}		

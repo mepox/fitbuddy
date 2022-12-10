@@ -68,7 +68,7 @@ function showHistory() {
 				}
 				
 				tbody.innerHTML += add;
-				
+				hideStatus();				
 			} else {
 				// ERROR				
 				console.log("ERROR: " + this.responseText);
@@ -122,6 +122,7 @@ function deleteHistory(historyId) {
 			} else {
 				// ERROR
 				console.log("ERROR: " + this.responseText);
+				showStatus(this.responseText);
 			}
 			showHistory();
 		}		
@@ -157,6 +158,7 @@ function onAddHistory() {
 			} else {
 				// ERROR
 				console.log("ERROR: " + this.responseText);
+				showStatus(this.responseText);
 			}
 			showHistory();
 		}		
@@ -213,6 +215,7 @@ function saveHistory(historyId) {
 			} else {
 				// ERROR
 				console.log("ERROR: " + this.responseText);
+				showStatus(this.responseText);
 			}
 			showHistory();
 		}		

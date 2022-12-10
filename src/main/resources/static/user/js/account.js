@@ -33,7 +33,7 @@ function showAccount() {
 				
 				clearFormValue("account-form", "old-password");
 				clearFormValue("account-form", "new-password");
-				clearFormValue("account-form", "confirm-new-password");															
+				clearFormValue("account-form", "confirm-new-password");																	
 			} else {
 				// ERROR				
 				console.log("ERROR: " + this.responseText);				
@@ -42,7 +42,7 @@ function showAccount() {
 	};      
 }
 
-function updateAccount() {
+function updateAccount() {	
 	let oldPassword = document.forms["account-form"]["old-password"].value;
 	let newPassword = document.forms["account-form"]["new-password"].value;
 	let confirmNewPassword = document.forms["account-form"]["confirm-new-password"].value;
@@ -52,7 +52,9 @@ function updateAccount() {
 	confirmNewPassword = confirmNewPassword.trim();
 	
 	if (newPassword !== confirmNewPassword) {
-		console.log("ERROR: Passwords doesn't match.");
+		let message = "New password and confirm new password doesn't match.";
+		console.log("ERROR: " + message);
+		showStatus(message);
 		return;
 	}
 	
@@ -72,6 +74,7 @@ function updateAccount() {
 			} else {
 				// ERROR
 				console.log("ERROR: " + this.responseText);
+				showStatus(this.responseText);
 			}
 			showAccount();
 		}		
