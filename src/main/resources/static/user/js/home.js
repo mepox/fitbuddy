@@ -13,21 +13,24 @@ function onLogout() {
 }
 
 function onExercises() {
+	hideStatus();
 	hideDiv("History");
 	hideDiv("Account");
-	showDiv("Exercises");
+	showDiv("Exercises");	
 	showExercises();
 }
 
 function onHistory() {
+	hideStatus();
 	hideDiv("Exercises");
 	hideDiv("Account");
 	showDiv("History");
-	resetCalendar();
+	resetCalendar();	
 	showHistory();
 }
 
 function onAccount() {
+	hideStatus();
 	hideDiv("History");
 	hideDiv("Exercises");
 	showDiv("Account");
