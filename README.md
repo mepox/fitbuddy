@@ -3,7 +3,7 @@
 <div align="center">
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-12-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=fitbuddy-app&metric=sqale_rating)](https://sonarcloud.io/summary/overall?id=fitbuddy-app)
@@ -102,6 +102,7 @@ https://fitbuddy-demo.up.railway.app/
       <td align="center"><a href="https://github.com/MaximoVincente"><img src="https://avatars.githubusercontent.com/u/103771906?v=4?s=100" width="100px;" alt="Maximo Vincente Mejia  "/><br /><sub><b>Maximo Vincente Mejia  </b></sub></a><br /><a href="https://github.com/mepox/fitbuddy/commits?author=MaximoVincente" title="Code">💻</a></td>
       <td align="center"><a href="http://linkedin.com/in/mathewtorres"><img src="https://avatars.githubusercontent.com/u/104056426?v=4?s=100" width="100px;" alt="Mathew Torres"/><br /><sub><b>Mathew Torres</b></sub></a><br /><a href="https://github.com/mepox/fitbuddy/commits?author=mtorres6739" title="Code">💻</a></td>
       <td align="center"><a href="https://github.com/iravimandalia"><img src="https://avatars.githubusercontent.com/u/28585939?v=4?s=100" width="100px;" alt="Ravi Mandalia"/><br /><sub><b>Ravi Mandalia</b></sub></a><br /><a href="https://github.com/mepox/fitbuddy/commits?author=iravimandalia" title="Code">💻</a></td>
+      <td align="center"><a href="https://github.com/cerrussell"><img src="https://avatars.githubusercontent.com/u/80227828?v=4?s=100" width="100px;" alt="cerrussell"/><br /><sub><b>cerrussell</b></sub></a><br /><a href="https://github.com/mepox/fitbuddy/commits?author=cerrussell" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
