@@ -20,7 +20,7 @@
 
 </div>
 
-FitBuddy is a workout tracker app made with Spring Boot
+FitBuddy is a workout tracker app made with Spring Boot.
 
 ## What's inside
 
